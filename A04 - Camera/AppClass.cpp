@@ -20,15 +20,15 @@ void Application::InitVariables(void)
 	m_pMyMeshMngr = MyMeshManager::GetInstance();
 	m_pMyMeshMngr->SetCamera(m_pCamera);
 
-	//creeper
-	m_pCreeper = new Model();
-	m_pCreeper->Load("Minecraft\\Creeper.obj");
-	m_pCreeperRB = new MyRigidBody(m_pCreeper->GetVertexList());
+	////creeper
+	//m_pCreeper = new Model();
+	//m_pCreeper->Load("Minecraft\\Creeper.obj");
+	//m_pCreeperRB = new MyRigidBody(m_pCreeper->GetVertexList());
 
-	//steve
-	m_pSteve = new Model();
-	m_pSteve->Load("Minecraft\\Steve.obj");
-	m_pSteveRB = new MyRigidBody(m_pSteve->GetVertexList());
+	////steve
+	//m_pSteve = new Model();
+	//m_pSteve->Load("Minecraft\\Steve.obj");
+	//m_pSteveRB = new MyRigidBody(m_pSteve->GetVertexList());
 }
 void Application::Update(void)
 {
@@ -41,28 +41,37 @@ void Application::Update(void)
 	//Is the first person camera active?
 	CameraRotation();
 
-	//Set model matrix to the creeper
-	matrix4 mCreeper = glm::translate(m_v3Creeper) * ToMatrix4(m_qCreeper) * ToMatrix4(m_qArcBall);
-	m_pCreeper->SetModelMatrix(mCreeper);
-	m_pCreeperRB->SetModelMatrix(mCreeper);
-	m_pMeshMngr->AddAxisToRenderList(mCreeper);
+	//Add objects to the Manager
+	for (int j = -50; j < 50; j += 2)
+	{
+		for (int i = -50; i < 50; i += 2)
+		{
+			m_pMyMeshMngr->AddConeToRenderList(glm::translate(vector3(i, 0.0f, j)));
+		}
+	}
 
-	//Set model matrix to Steve
-	matrix4 mSteve = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
-	m_pSteve->SetModelMatrix(mSteve);
-	m_pSteveRB->SetModelMatrix(mSteve);
-	m_pMeshMngr->AddAxisToRenderList(mSteve);
+	////Set model matrix to the creeper
+	//matrix4 mCreeper = glm::translate(m_v3Creeper) * ToMatrix4(m_qCreeper) * ToMatrix4(m_qArcBall);
+	//m_pCreeper->SetModelMatrix(mCreeper);
+	//m_pCreeperRB->SetModelMatrix(mCreeper);
+	//m_pMeshMngr->AddAxisToRenderList(mCreeper);
 
-	bool bColliding = m_pCreeperRB->IsColliding(m_pSteveRB);
+	////Set model matrix to Steve
+	//matrix4 mSteve = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
+	//m_pSteve->SetModelMatrix(mSteve);
+	//m_pSteveRB->SetModelMatrix(mSteve);
+	//m_pMeshMngr->AddAxisToRenderList(mSteve);
 
-	m_pCreeper->AddToRenderList();
-	m_pCreeperRB->AddToRenderList();
+	//bool bColliding = m_pCreeperRB->IsColliding(m_pSteveRB);
 
-	m_pSteve->AddToRenderList();
-	m_pSteveRB->AddToRenderList();
+	//m_pCreeper->AddToRenderList();
+	//m_pCreeperRB->AddToRenderList();
+
+	//m_pSteve->AddToRenderList();
+	//m_pSteveRB->AddToRenderList();
 
 	m_pMeshMngr->Print("Colliding: ");
-	if (bColliding)
+	if (false)
 		m_pMeshMngr->PrintLine("YES!", C_RED);
 	else
 		m_pMeshMngr->PrintLine("no", C_YELLOW);
