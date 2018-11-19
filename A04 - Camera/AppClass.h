@@ -11,6 +11,7 @@ Date: 2017/05
 #include "imgui\ImGuiObject.h"
 
 #include "MyMeshManager.h"
+#include "MyRigidBody.h"
 namespace Simplex
 {
 
@@ -19,6 +20,16 @@ class Application
 	MyCamera* m_pCamera = nullptr; //Camera class
 	MyMeshManager* m_pMyMeshMngr = nullptr; //My Mesh Manager
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu"; //Programmer
+
+	vector3 m_v3Creeper; //position of the creeper
+	Model* m_pCreeper = nullptr; //model to display
+	Model* m_pSteve = nullptr; //model to display
+
+	quaternion m_qCreeper; //quaternion for the creeper
+
+	MyRigidBody* m_pCreeperRB = nullptr; //Rigid Body of the model
+	MyRigidBody* m_pSteveRB = nullptr; //Rigid Body of the model
+
 private:
 	static ImGuiObject gui; //GUI object
 
