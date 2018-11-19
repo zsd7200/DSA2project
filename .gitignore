@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Other stuff to make commits smaller
+.vs/
+Z_DELETE/
+*.zip
