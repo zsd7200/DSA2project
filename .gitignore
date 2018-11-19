@@ -1,3 +1,6 @@
+# Normally, DLLs and LIBs would be ignored, but we kinda need them for
+# Simplex
+
 # Prerequisites
 *.d
 
@@ -14,7 +17,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -24,7 +26,6 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
@@ -34,4 +35,3 @@
 # Other stuff to make commits smaller
 .vs/
 Z_DELETE/
-*.zip
