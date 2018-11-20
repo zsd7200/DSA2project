@@ -84,7 +84,7 @@ void Application::InitVariables(void)
 
 	//load model
 	m_pModel = new Simplex::Model();
-	//m_pModel->Load("HarryPotter\\Hogwarts.obj");
+	//m_pModel->Load("HarryPotter\\Hogwarts.fbx");
 	m_pModel->Load("Mario\\Bowser.obj");
 	m_pModelRB = new MyRigidBody(m_pModel->GetVertexList());
 
