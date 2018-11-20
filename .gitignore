@@ -1,5 +1,5 @@
-# Normally, DLLs and LIBs would be ignored, but we kinda need them for
-# Simplex
+# Normally, DLLs, OBJs, EXEs, and LIBs would be ignored, but we kinda need them for
+# Simplex and for being graded
 
 # Prerequisites
 *.d
@@ -8,7 +8,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -28,7 +27,6 @@
 *.a
 
 # Executables
-*.exe
 *.out
 *.app
 
