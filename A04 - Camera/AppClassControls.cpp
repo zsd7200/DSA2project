@@ -370,8 +370,30 @@ void Application::CameraRotation(float a_fSpeed)
 	}
 
 	//Change the Yaw and the Pitch of the camera
-	m_pCamera->ChangePitch(-fAngleX);
-	m_pCamera->ChangeYaw(-fAngleY);
+	vector3 pos = m_pCamera->GetPosition();
+	vector3 target = m_pCamera->GetTarget();
+
+	//Updates the yaw and pitch coordinates
+	m_v2rotation += vector2(fAngleX, fAngleY);
+
+	//prevents the pitch from going too far up or down
+	if ((float)(m_v2rotation.x)<(float)(-PI / 2.0f))
+		m_v2rotation.x = (float)(-PI / 2.0f);
+	else if (m_v2rotation.x > PI / 2)
+		m_v2rotation.x = (float)(PI / 2.0f);
+
+	//applies the yaw and pitch to the rotation of the camera
+	target = vector3(0, 0, 1)*glm::angleAxis(-m_v2rotation.x, vector3(1, 0, 0));
+	target = target*glm::angleAxis(-m_v2rotation.y, vector3(0, 1, 0));
+
+	//Adds the position of the player to the target because the target position is relative to the players current position.
+	target = target + pos;
+
+	//Sets the target posiion for the player.
+	m_pCamera->SetTarget(target);
+
+
+	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
