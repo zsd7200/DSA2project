@@ -12,7 +12,7 @@ public:
 	~Enemy();
 
 	Model* enemyModel = nullptr;
-	MyRigidBody* rigidBody = nullptr;
+	MyRigidBody* enemyRB = nullptr;
 	float acceleration = 2.0f;
 	float maxVel = 4;
 	vector3 velocity = vector3();

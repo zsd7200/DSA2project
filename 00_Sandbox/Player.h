@@ -14,7 +14,7 @@ public:
 
 	Model* playerModel = nullptr;
 	MyRigidBody* playerRB = nullptr;
-	void CreatePlayer();
+	//void CreatePlayer();
 	void CreateProjectile(vector3);
 
 	//std::vector<Model*> bullets;

@@ -82,20 +82,23 @@ void Application::InitVariables(void)
 	m_soundBuffer.loadFromFile(sRoute + "12C.wav");
 	m_sound.setBuffer(m_soundBuffer);
 
-	//load model
+	//load model			//currently bowser (not the player sprite)
 	m_pModel = new Simplex::Model();
 	//m_pModel->Load("HarryPotter\\Hogwarts.fbx");
 	m_pModel->Load("Mario\\Bowser.obj");
 	m_pModelRB = new MyRigidBody(m_pModel->GetVertexList());
 
+	//load collision model	//currently warp pipe
 	m_pCollisionModel = new Model();
 	m_pCollisionModel->Load("Mario\\WarpPipe.obj");
 	m_pCollisionModelRB = new MyRigidBody(m_pCollisionModel->GetVertexList());
 
 
 	mainPlayer = new Player();
+	firstEnemy = new Enemy();
 
-	mainPlayer->CreatePlayer();
+
+	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
 	//m_pPlayerModel->Load("HarryPotter\\Broom.obj");
 	m_pPlayerModel->Load("Mario\\Bowser.obj");
@@ -142,11 +145,13 @@ void Application::Update(void)
 	m_pCollisionModelRB->SetModelMatrix(mCollisionModel);
 	m_pMeshMngr->AddAxisToRenderList(mCollisionModel);
 
+	//Set model matrix to the model
 
 	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
 	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
 	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
-	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));
+	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));	//player moves with camera
+	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(vector3(0, 0, 10) + m_pCameraMngr->GetPosition()));
 
 
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
@@ -169,7 +174,8 @@ void Application::Update(void)
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
-	
+	firstEnemy->enemyModel->AddToRenderList();
+	firstEnemy->enemyRB->AddToRenderList();
 
 	m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)

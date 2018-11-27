@@ -12,6 +12,8 @@ Date: 2017/06
 
 #include "MyRigidBody.h"
 #include "Player.h"
+#include "Enemy.h"
+
 
 namespace Simplex
 {
@@ -30,6 +32,8 @@ class Application
 	MyRigidBody* m_pPlayerRB = nullptr;
 	
 	Player* mainPlayer;
+	Enemy* firstEnemy;
+
 
 private:
 	static ImGuiObject gui; //GUI object

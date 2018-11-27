@@ -1,16 +1,6 @@
 #include "Player.h"
 Player::Player()
 {
-}
-
-
-Player::~Player()
-{
-
-}
-
-void Player::CreatePlayer()
-{
 	//Create the player's model
 	playerModel = new Model();
 
@@ -20,6 +10,17 @@ void Player::CreatePlayer()
 	//Set the player's rigidbody
 	playerRB = new MyRigidBody(playerModel->GetVertexList());
 }
+
+
+Player::~Player()
+{
+
+}
+
+//void Player::CreatePlayer()
+//{
+//	
+//}
 
 void Player::CreateProjectile(vector3 tempForward)
 {
