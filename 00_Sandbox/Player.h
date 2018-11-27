@@ -2,6 +2,7 @@
 
 #include "MyRigidBody.h"
 #include "Definitions.h"
+#include "Bullet.h"
 #include <string>
 using namespace Simplex;
 
@@ -14,8 +15,11 @@ public:
 	Model* playerModel = nullptr;
 	MyRigidBody* playerRB = nullptr;
 	void CreatePlayer();
-	void CreateProjectile();
+	void CreateProjectile(vector3);
 
+	//std::vector<Model*> bullets;
+	//std::vector<MyRigidBody*> bulletsRB;
+	std::vector<Bullet*> bullets;
 	matrix4 UpdatePosition(vector3);
 
 };

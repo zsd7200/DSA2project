@@ -1,7 +1,4 @@
 #include "Player.h"
-
-
-
 Player::Player()
 {
 }
@@ -9,6 +6,7 @@ Player::Player()
 
 Player::~Player()
 {
+
 }
 
 void Player::CreatePlayer()
@@ -23,7 +21,20 @@ void Player::CreatePlayer()
 	playerRB = new MyRigidBody(playerModel->GetVertexList());
 }
 
-//Can add in more parameters to 
+void Player::CreateProjectile(vector3 tempForward)
+{
+	Model* tempMod = new Model();
+	tempMod->Load("HarryPotter\\Blast.fbx");
+	MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
+
+	Bullet* tempBul = new Bullet(tempMod, tempRB);
+
+	tempBul->SetForward(tempForward);
+
+	bullets.push_back(tempBul);
+}
+
+//Can add in more parameters to make movement better
 matrix4 Player::UpdatePosition(vector3 basePoint)
 {
 	//Setting the location of the player

@@ -148,6 +148,14 @@ void Application::Update(void)
 	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
 	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));
 
+
+	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
+	{
+		m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
+		mainPlayer->bullets[i]->bulletModel->AddToRenderList();
+		mainPlayer->bullets[i]->bulletRB->AddToRenderList();
+
+	}
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
 	m_pModel->AddToRenderList();
@@ -160,6 +168,8 @@ void Application::Update(void)
 	//m_pPlayerRB->AddToRenderList();
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
+
+	
 
 	m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)
