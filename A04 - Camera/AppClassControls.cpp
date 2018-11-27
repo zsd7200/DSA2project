@@ -392,9 +392,6 @@ void Application::CameraRotation(float a_fSpeed)
 	//Sets the target posiion for the player.
 	m_pCamera->SetTarget(target);
 
-
-	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
-
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard
