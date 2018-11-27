@@ -11,6 +11,7 @@ Date: 2017/06
 #include "imgui\ImGuiObject.h"
 
 #include "MyRigidBody.h"
+#include "Player.h"
 
 namespace Simplex
 {
@@ -24,6 +25,11 @@ class Application
 	MyRigidBody* m_pModelRB = nullptr;
 	Model* m_pCollisionModel = nullptr;
 	MyRigidBody* m_pCollisionModelRB = nullptr;
+
+	Model* m_pPlayerModel = nullptr;
+	MyRigidBody* m_pPlayerRB = nullptr;
+	
+	Player* mainPlayer;
 
 private:
 	static ImGuiObject gui; //GUI object

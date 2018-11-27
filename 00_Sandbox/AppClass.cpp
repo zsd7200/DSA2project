@@ -91,6 +91,17 @@ void Application::InitVariables(void)
 	m_pCollisionModel = new Model();
 	m_pCollisionModel->Load("Mario\\WarpPipe.obj");
 	m_pCollisionModelRB = new MyRigidBody(m_pCollisionModel->GetVertexList());
+
+
+	mainPlayer = new Player();
+
+	mainPlayer->CreatePlayer();
+	/*m_pPlayerModel = new Model();
+	//m_pPlayerModel->Load("HarryPotter\\Broom.obj");
+	m_pPlayerModel->Load("Mario\\Bowser.obj");
+
+	m_pPlayerRB = new MyRigidBody(m_pPlayerModel->GetVertexList());
+	*/
 #pragma endregion
 }
 void Application::Update(void)
@@ -131,6 +142,12 @@ void Application::Update(void)
 	m_pCollisionModelRB->SetModelMatrix(mCollisionModel);
 	m_pMeshMngr->AddAxisToRenderList(mCollisionModel);
 
+
+	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
+	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
+	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
+	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));
+
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
 	m_pModel->AddToRenderList();
@@ -139,11 +156,18 @@ void Application::Update(void)
 	m_pCollisionModel->AddToRenderList();
 	m_pCollisionModelRB->AddToRenderList();
 
+	//m_pPlayerModel->AddToRenderList();
+	//m_pPlayerRB->AddToRenderList();
+	mainPlayer->playerModel->AddToRenderList();
+	mainPlayer->playerRB->AddToRenderList();
+
 	m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)
 		m_pMeshMngr->PrintLine("YES!", C_RED);
 	else
 		m_pMeshMngr->PrintLine("no", C_YELLOW);
+
+	//std::cout << "Cam Position: " << m_pCameraMngr->GetPosition().x <<  " " << m_pCameraMngr->GetPosition().y <<  " " << m_pCameraMngr->GetPosition().z << std::endl;
 }
 void Application::Display(void)
 {
