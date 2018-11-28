@@ -22,16 +22,18 @@ Player::~Player()
 //	
 //}
 
-void Player::CreateProjectile(vector3 tempForward)
+void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 {
+	//Loading in the model
 	Model* tempMod = new Model();
 	tempMod->Load("HarryPotter\\Blast.fbx");
+	//Creating the rigid body
 	MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
 
-	Bullet* tempBul = new Bullet(tempMod, tempRB);
+	//Creating the bullet
+	Bullet* tempBul = new Bullet(tempMod, tempRB, currentPos, tempForward);
 
-	tempBul->SetForward(tempForward);
-
+	//Adding the bullet to the list of bullets
 	bullets.push_back(tempBul);
 }
 

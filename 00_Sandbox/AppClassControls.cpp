@@ -429,8 +429,9 @@ void Application::ProcessKeyboard(void)
 		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 
+	//Spawning in projectiles
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-		mainPlayer->CreateProjectile(m_pCameraMngr->GetForward());
+		mainPlayer->CreateProjectile(m_pCameraMngr->GetForward(), m_pCameraMngr->GetPosition());
 }
 //Joystick
 void Application::ProcessJoystick(void)

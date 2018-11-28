@@ -158,9 +158,10 @@ void Application::Update(void)
 	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition())); // SETS BOO TO CAMERA, NOT WHAT WE WANT
 	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
 
-
+	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
+		//Adding to the render list
 		m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
 		mainPlayer->bullets[i]->bulletModel->AddToRenderList();
 		mainPlayer->bullets[i]->bulletRB->AddToRenderList();
@@ -181,6 +182,8 @@ void Application::Update(void)
 
 	firstEnemy->enemyModel->AddToRenderList();
 	firstEnemy->enemyRB->AddToRenderList();
+
+	std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 
 	m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)

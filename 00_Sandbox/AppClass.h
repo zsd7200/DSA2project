@@ -31,7 +31,10 @@ class Application
 	Model* m_pPlayerModel = nullptr;
 	MyRigidBody* m_pPlayerRB = nullptr;
 	
+	//Player pointer
 	Player* mainPlayer;
+
+	//Test enemy pointer
 	Enemy* firstEnemy;
 
 
