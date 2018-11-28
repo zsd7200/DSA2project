@@ -99,6 +99,9 @@ void Application::InitVariables(void)
 	mainPlayer = new Player();
 	firstEnemy = new Enemy();
 
+	// load hogwarts bg
+	m_pHogwarts = new Model();
+	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
 
 	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
@@ -133,7 +136,9 @@ void Application::Update(void)
 	m_pLightMngr->SetColor(v3Color, 1); //set the color of first light
 	m_pMeshMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(0.15f)), v3Color, RENDER_SOLID); //add a sphere to "see" it
 
-
+	matrix4 mHogwarts = glm::translate(vector3(0, 0, -25)) * glm::scale(vector3(0.1));
+	m_pHogwarts->SetModelMatrix(mHogwarts);
+	m_pMeshMngr->AddAxisToRenderList(mHogwarts);
 
 	//Set model matrix to the model			//BOWSER (NOT PLAYER)
 	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
@@ -169,6 +174,8 @@ void Application::Update(void)
 	}
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
+	m_pHogwarts->AddToRenderList();
+
 	m_pModel->AddToRenderList();
 	m_pModelRB->AddToRenderList();
 
@@ -191,7 +198,7 @@ void Application::Update(void)
 	else
 		m_pMeshMngr->PrintLine("no", C_YELLOW);
 
-	std::cout << "Cam Position: " << m_pCameraMngr->GetPosition().x <<  " " << m_pCameraMngr->GetPosition().y <<  " " << m_pCameraMngr->GetPosition().z << std::endl;
+	//std::cout << "Cam Position: " << m_pCameraMngr->GetPosition().x <<  " " << m_pCameraMngr->GetPosition().y <<  " " << m_pCameraMngr->GetPosition().z << std::endl;
 }
 void Application::Display(void)
 {
@@ -228,6 +235,7 @@ void Application::Release(void)
 	SafeDelete(m_pModelRB);
 	SafeDelete(m_pCollisionModel);
 	SafeDelete(m_pCollisionModelRB);
+	SafeDelete(m_pHogwarts);
 	SafeDelete(mainPlayer);
 	SafeDelete(firstEnemy);
 }
