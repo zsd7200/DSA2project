@@ -16,10 +16,12 @@ Bullet::~Bullet()
 
 matrix4 Bullet::UpdatePosition()
 {
+	//vector3 tempForward = startVector;
+
 	vector3 tempForward = (glm::normalize(forward) * timesMoved) + startVector;
 	//std::cout << "bullet : " << tempForward.x << " " << tempForward.y << " " << tempForward.z << std::endl;
 	//Setting the location of the player
-	matrix4 mBulletMatrix = glm::scale(vector3(10.0f)) * glm::translate(vector3(tempForward.x, tempForward.y, tempForward.z));
+	matrix4 mBulletMatrix = glm::translate(vector3(tempForward.x, tempForward.y, tempForward.z)) * glm::scale(vector3(5.0f));
 
 	//Seting the model matrixes 
 	bulletModel->SetModelMatrix(mBulletMatrix);

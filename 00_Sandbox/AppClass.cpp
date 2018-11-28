@@ -161,8 +161,10 @@ void Application::Update(void)
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
 	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition())); // SETS BOO TO CAMERA, NOT WHAT WE WANT
-	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
+	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
 
+	static bool renderModel = true;
+	static bool renderColModel = true;
 	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
@@ -171,24 +173,38 @@ void Application::Update(void)
 		mainPlayer->bullets[i]->bulletModel->AddToRenderList();
 		mainPlayer->bullets[i]->bulletRB->AddToRenderList();
 
+		bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
+		if (tempBool)
+			renderModel = false;
+		tempBool = m_pCollisionModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
+		if (tempBool)
+			renderColModel = false;
 	}
+
+
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
 	m_pHogwarts->AddToRenderList();
 
-	m_pModel->AddToRenderList();
-	m_pModelRB->AddToRenderList();
+	if (renderModel)
+	{
+		m_pModel->AddToRenderList();
+		m_pModelRB->AddToRenderList();
+	}
 
-	m_pCollisionModel->AddToRenderList();
-	m_pCollisionModelRB->AddToRenderList();
+	if (renderColModel)
+	{
+		m_pCollisionModel->AddToRenderList();
+		m_pCollisionModelRB->AddToRenderList();
+	}
 
 	//m_pPlayerModel->AddToRenderList();
 	//m_pPlayerRB->AddToRenderList();
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
-	firstEnemy->enemyModel->AddToRenderList();
-	firstEnemy->enemyRB->AddToRenderList();
+	//firstEnemy->enemyModel->AddToRenderList();
+	//firstEnemy->enemyRB->AddToRenderList();
 
 	//std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 
