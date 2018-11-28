@@ -82,6 +82,8 @@ void Application::InitVariables(void)
 	m_soundBuffer.loadFromFile(sRoute + "12C.wav");
 	m_sound.setBuffer(m_soundBuffer);
 
+
+
 	//load model			//currently bowser (not the player sprite)
 	m_pModel = new Simplex::Model();
 	//m_pModel->Load("HarryPotter\\Hogwarts.fbx");
@@ -133,25 +135,28 @@ void Application::Update(void)
 
 
 
-	//Set model matrix to the model
-	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);
+	//Set model matrix to the model			//BOWSER (NOT PLAYER)
+	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
 	m_pModel->SetModelMatrix(mModel);
 	m_pModelRB->SetModelMatrix(mModel);
 	m_pMeshMngr->AddAxisToRenderList(mModel);
 
-	//Set model matrix to CollisionModel
+	//Set model matrix to CollisionModel	//WARP PIPE
 	matrix4 mCollisionModel = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
 	m_pCollisionModel->SetModelMatrix(mCollisionModel);
 	m_pCollisionModelRB->SetModelMatrix(mCollisionModel);
 	m_pMeshMngr->AddAxisToRenderList(mCollisionModel);
 
-	//Set model matrix to the model
-
+	//Set model matrix to the model			//PLAYER (BOWSER)
 	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
 	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
 	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
 	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));	//player moves with camera
-	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(vector3(0, 0, 10) + m_pCameraMngr->GetPosition()));
+	
+	//Set model matrix to the model			//ENEMY (BOO)
+	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
+	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition())); // SETS BOO TO CAMERA, NOT WHAT WE WANT
+	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
 
 
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
@@ -220,4 +225,6 @@ void Application::Release(void)
 	SafeDelete(m_pModelRB);
 	SafeDelete(m_pCollisionModel);
 	SafeDelete(m_pCollisionModelRB);
+	SafeDelete(mainPlayer);
+	SafeDelete(firstEnemy);
 }
