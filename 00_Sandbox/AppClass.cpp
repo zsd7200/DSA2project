@@ -183,7 +183,7 @@ void Application::Update(void)
 	firstEnemy->enemyModel->AddToRenderList();
 	firstEnemy->enemyRB->AddToRenderList();
 
-	std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
+	//std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 
 	m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)
@@ -191,7 +191,7 @@ void Application::Update(void)
 	else
 		m_pMeshMngr->PrintLine("no", C_YELLOW);
 
-	//std::cout << "Cam Position: " << m_pCameraMngr->GetPosition().x <<  " " << m_pCameraMngr->GetPosition().y <<  " " << m_pCameraMngr->GetPosition().z << std::endl;
+	std::cout << "Cam Position: " << m_pCameraMngr->GetPosition().x <<  " " << m_pCameraMngr->GetPosition().y <<  " " << m_pCameraMngr->GetPosition().z << std::endl;
 }
 void Application::Display(void)
 {
