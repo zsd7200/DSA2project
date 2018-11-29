@@ -27,9 +27,12 @@ void Enemy::Update()
 matrix4 Enemy::UpdatePosition(vector3 basePoint)
 {
 	//set model matrix to the enemy model
-	mEnemyMatrix = glm::translate(vector3(basePoint.x, basePoint.y, basePoint.z)) * glm::rotate(IDENTITY_M4, glm::radians(10.0f), AXIS_Z);
+	//mEnemyMatrix = glm::translate(vector3(basePoint.x, basePoint.y, basePoint.z)) * glm::rotate(IDENTITY_M4, glm::radians(10.0f), AXIS_Z);
+	mEnemyMatrix = glm::translate(basePoint) /** ToMatrix4(model) * ToMatrix4(arcBall)*/;
+	mEnemyMatrix = glm::scale(mEnemyMatrix, vector3(0.01f));
+
 	//make enemies face direction theyre moving in
-	//mEnemyMatrix = glm::lookAt(basePoint,rigidBody->GetCenterGlobal(),vector3(0,1,0));
+	mEnemyMatrix *= glm::lookAt(vector3(0,0,1),vector3(0),vector3(0,1,0));
 	enemyModel->SetModelMatrix(mEnemyMatrix);
 	enemyRB->SetModelMatrix(mEnemyMatrix);
 	// m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??

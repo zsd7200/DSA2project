@@ -102,6 +102,8 @@ void Application::InitVariables(void)
 	// load hogwarts bg
 	m_pHogwarts = new Model();
 	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
+	//m_pHogwarts->Load("HarryPotter\\hog_color2AndKnuckles.fbx");
+
 
 	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
@@ -160,7 +162,7 @@ void Application::Update(void)
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
-	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
+	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(vector3(0,10,0)));	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
