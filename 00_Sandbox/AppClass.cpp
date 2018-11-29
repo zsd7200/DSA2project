@@ -82,20 +82,28 @@ void Application::InitVariables(void)
 	m_soundBuffer.loadFromFile(sRoute + "12C.wav");
 	m_sound.setBuffer(m_soundBuffer);
 
-	//load model
+
+
+	//load model			//currently bowser (not the player sprite)
 	m_pModel = new Simplex::Model();
 	//m_pModel->Load("HarryPotter\\Hogwarts.fbx");
 	m_pModel->Load("Mario\\Bowser.obj");
 	m_pModelRB = new MyRigidBody(m_pModel->GetVertexList());
 
+	//load collision model	//currently warp pipe
 	m_pCollisionModel = new Model();
 	m_pCollisionModel->Load("Mario\\WarpPipe.obj");
 	m_pCollisionModelRB = new MyRigidBody(m_pCollisionModel->GetVertexList());
 
 
 	mainPlayer = new Player();
+	firstEnemy = new Enemy();
 
-	mainPlayer->CreatePlayer();
+	// load hogwarts bg
+	m_pHogwarts = new Model();
+	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
+
+	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
 	//m_pPlayerModel->Load("HarryPotter\\Broom.obj");
 	m_pPlayerModel->Load("Mario\\Bowser.obj");
@@ -128,48 +136,77 @@ void Application::Update(void)
 	m_pLightMngr->SetColor(v3Color, 1); //set the color of first light
 	m_pMeshMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(0.15f)), v3Color, RENDER_SOLID); //add a sphere to "see" it
 
+	matrix4 mHogwarts = glm::translate(vector3(0, 0, -25)) * glm::scale(vector3(0.1));
+	m_pHogwarts->SetModelMatrix(mHogwarts);
+	m_pMeshMngr->AddAxisToRenderList(mHogwarts);
 
-
-	//Set model matrix to the model
-	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);
+	//Set model matrix to the model			//BOWSER (NOT PLAYER)
+	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
 	m_pModel->SetModelMatrix(mModel);
 	m_pModelRB->SetModelMatrix(mModel);
 	m_pMeshMngr->AddAxisToRenderList(mModel);
 
-	//Set model matrix to CollisionModel
+	//Set model matrix to CollisionModel	//WARP PIPE
 	matrix4 mCollisionModel = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
 	m_pCollisionModel->SetModelMatrix(mCollisionModel);
 	m_pCollisionModelRB->SetModelMatrix(mCollisionModel);
 	m_pMeshMngr->AddAxisToRenderList(mCollisionModel);
 
-
+	//Set model matrix to the model			//PLAYER (BOWSER)
 	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
 	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
 	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
-	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));
+	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));	//player moves with camera
+	
+	//Set model matrix to the model			//ENEMY (BOO)
+	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
+	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition())); // SETS BOO TO CAMERA, NOT WHAT WE WANT
+	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
 
-
+	static bool renderModel = true;
+	static bool renderColModel = true;
+	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
+		//Adding to the render list
 		m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
 		mainPlayer->bullets[i]->bulletModel->AddToRenderList();
 		mainPlayer->bullets[i]->bulletRB->AddToRenderList();
 
+		bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
+		if (tempBool)
+			renderModel = false;
+		tempBool = m_pCollisionModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
+		if (tempBool)
+			renderColModel = false;
 	}
+
+
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
-	m_pModel->AddToRenderList();
-	m_pModelRB->AddToRenderList();
+	m_pHogwarts->AddToRenderList();
 
-	m_pCollisionModel->AddToRenderList();
-	m_pCollisionModelRB->AddToRenderList();
+	if (renderModel)
+	{
+		m_pModel->AddToRenderList();
+		m_pModelRB->AddToRenderList();
+	}
+
+	if (renderColModel)
+	{
+		m_pCollisionModel->AddToRenderList();
+		m_pCollisionModelRB->AddToRenderList();
+	}
 
 	//m_pPlayerModel->AddToRenderList();
 	//m_pPlayerRB->AddToRenderList();
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
-	
+	//firstEnemy->enemyModel->AddToRenderList();
+	//firstEnemy->enemyRB->AddToRenderList();
+
+	//std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 
 	m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)
@@ -214,4 +251,7 @@ void Application::Release(void)
 	SafeDelete(m_pModelRB);
 	SafeDelete(m_pCollisionModel);
 	SafeDelete(m_pCollisionModelRB);
+	SafeDelete(m_pHogwarts);
+	SafeDelete(mainPlayer);
+	SafeDelete(firstEnemy);
 }
