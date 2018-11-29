@@ -160,8 +160,7 @@ void Application::Update(void)
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
-	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition())); // SETS BOO TO CAMERA, NOT WHAT WE WANT
-	//m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
+	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(m_pCameraMngr->GetPosition()));	//NEEDS A WAY TO ACCESS ENEMY'S MODEL MATRIX
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
@@ -203,8 +202,8 @@ void Application::Update(void)
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
-	//firstEnemy->enemyModel->AddToRenderList();
-	//firstEnemy->enemyRB->AddToRenderList();
+	firstEnemy->enemyModel->AddToRenderList();
+	firstEnemy->enemyRB->AddToRenderList();
 
 	//std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 

@@ -1,16 +1,11 @@
 #include "Enemy.h"
 Enemy::Enemy()
 {
-	//Create the enemy's model
-	enemyModel = new Model();
-	
-	//Load it
-	enemyModel->Load("HarryPotter\\Boo.FBX");
-	
-	//Set the enemy's rigidbody
-	enemyRB = new MyRigidBody(enemyModel->GetVertexList());
+	enemyModel = new Model();								//Create the enemy's model
+	enemyModel->Load("HarryPotter\\Boo.FBX");				//Load it
+	enemyRB = new MyRigidBody(enemyModel->GetVertexList());	//Set the enemy's rigidbody
 
-	mEnemyMatrix = IDENTITY_M4;
+	mEnemyMatrix = IDENTITY_M4;	//initial enemy position/rotation/scale
 
 	//UpdatePosition(vector3(10, 10, 10));
 }
