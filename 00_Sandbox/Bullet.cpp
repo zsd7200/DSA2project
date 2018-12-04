@@ -34,5 +34,6 @@ matrix4 Bullet::UpdatePosition()
 
 	//Moving the position forward consecutievely
 	timesMoved += .1f;
+
 	return mBulletMatrix;
 }
