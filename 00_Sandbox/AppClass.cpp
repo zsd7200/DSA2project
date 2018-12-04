@@ -102,8 +102,6 @@ void Application::InitVariables(void)
 	// load hogwarts bg
 	m_pHogwarts = new Model();
 	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
-	//m_pHogwarts->Load("HarryPotter\\hog_color2AndKnuckles.fbx");
-
 
 	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
