@@ -199,6 +199,7 @@ void Application::Update(void)
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
+	static std::vector<int> indexesToDelete;
 	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
@@ -209,13 +210,31 @@ void Application::Update(void)
 
 		bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
+		{
 			renderModel = false;
+			/*if (mainPlayer->bullets[i].isTimedOut == false)
+				indexesToDelete.push_back(i);
+				*/
+		}
 		tempBool = m_pCollisionModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
+		{
 			renderColModel = false;
+			/*if (mainPlayer->bullets[i].isTimedOut == false)
+				indexesToDelete.push_back(i);
+				*/
+		}
+		//if (mainPlayer->bullets[i].isTimedOut)
+			//indexesToDelete.push_back(i);
 	}
 
-
+	/*for (size_t i = 0; i < indexesToDelete.size(); i++)
+	{
+		SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
+		mainPlayer->bullets.erase(indexesToDelete[i]);
+	}
+	indexesToDelete.clear();
+	*/
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
 	m_pHogwarts->AddToRenderList();
@@ -231,10 +250,6 @@ void Application::Update(void)
 		m_pCollisionModel->AddToRenderList();
 		m_pCollisionModelRB->AddToRenderList();
 	}
-
-	//m_pPlayerModel->AddToRenderList();
-	//m_pPlayerRB->AddToRenderList();
-
 	//Rendering the player in the world
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();

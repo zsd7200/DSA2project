@@ -14,13 +14,18 @@ Player::Player()
 
 Player::~Player()
 {
+	//Deleting objects
+	SafeDelete(playerModel);
+	playerModel = nullptr;
+	SafeDelete(playerRB);
+	playerRB = nullptr;
 
+	for (size_t i = 0; i < bullets.size(); i++)
+	{
+		SafeDelete(bullets[i]);
+	}
+	bullets.clear();
 }
-
-//void Player::CreatePlayer()
-//{
-//	
-//}
 
 void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 {
