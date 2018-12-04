@@ -137,6 +137,10 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 			}
 		}
 		break;
+		//Spawning in projectiles
+	case sf::Keyboard::Z:
+		mainPlayer->CreateProjectile(m_pCameraMngr->GetForward(), m_pCameraMngr->GetPosition());
+		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
 		m_bModifier = false;
@@ -429,9 +433,7 @@ void Application::ProcessKeyboard(void)
 		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 
-	//Spawning in projectiles
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-		mainPlayer->CreateProjectile(m_pCameraMngr->GetForward(), m_pCameraMngr->GetPosition());
+	
 }
 //Joystick
 void Application::ProcessJoystick(void)

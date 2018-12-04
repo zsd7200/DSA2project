@@ -23,6 +23,9 @@ class Application
 	vector3 m_v3Model;
 	quaternion m_qModel;
 
+	std::map<std::string, Model*> walls;
+	std::map<std::string, MyRigidBody*> wallRBs;
+
 	Simplex::Model* m_pModel = nullptr; //Model to try
 	MyRigidBody* m_pModelRB = nullptr;
 	Model* m_pCollisionModel = nullptr;
@@ -37,6 +40,9 @@ class Application
 
 	//Test enemy pointer
 	Enemy* firstEnemy;
+
+	std::vector<Model*> m_vSceneModels;
+	std::vector<MyRigidBody*> m_vSceneRigidBodies;
 
 
 private:

@@ -30,5 +30,7 @@ public:
 
 	//Used for moving the bullet
 	matrix4 UpdatePosition();
+
+	bool isTimedOut;
 };
 

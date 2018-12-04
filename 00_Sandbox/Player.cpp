@@ -14,19 +14,24 @@ Player::Player()
 
 Player::~Player()
 {
+	//Deleting objects
+	SafeDelete(playerModel);
+	playerModel = nullptr;
+	SafeDelete(playerRB);
+	playerRB = nullptr;
 
+	for (size_t i = 0; i < bullets.size(); i++)
+	{
+		SafeDelete(bullets[i]);
+	}
+	bullets.clear();
 }
-
-//void Player::CreatePlayer()
-//{
-//	
-//}
 
 void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 {
 	//Loading in the model
 	Model* tempMod = new Model();
-	tempMod->Load("HarryPotter\\Blast.fbx");
+	tempMod->Load("HarryPotter\\Blast.obj");
 	//Creating the rigid body
 	MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
 

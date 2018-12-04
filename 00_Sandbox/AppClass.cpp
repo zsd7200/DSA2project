@@ -82,12 +82,9 @@ void Application::InitVariables(void)
 	m_soundBuffer.loadFromFile(sRoute + "12C.wav");
 	m_sound.setBuffer(m_soundBuffer);
 
-
-
-	//load model			//currently bowser (not the player sprite)
+	//load model			//currently minecraft block
 	m_pModel = new Simplex::Model();
-	//m_pModel->Load("HarryPotter\\Hogwarts.fbx");
-	m_pModel->Load("Mario\\Bowser.obj");
+	m_pModel->Load("Minecraft\\Cube.obj");
 	m_pModelRB = new MyRigidBody(m_pModel->GetVertexList());
 
 	//load collision model	//currently warp pipe
@@ -95,19 +92,38 @@ void Application::InitVariables(void)
 	m_pCollisionModel->Load("Mario\\WarpPipe.obj");
 	m_pCollisionModelRB = new MyRigidBody(m_pCollisionModel->GetVertexList());
 
+	// instantiate models/RBs for walls
+
+	walls["bottom"] = new Model();
+	walls["bottom"]->Load("HarryPotter\\Cube.obj");
+	walls["top"] = new Model();
+	walls["back"] = new Model();
+	walls["front"] = new Model();
+	walls["right"] = new Model();
+	walls["left"] = new Model();
+
+	// loop through rest of walls and load Transparent Cube
+	for (auto const& x : walls)
+		if (x.first != "bottom") // do not load transcube on bottom
+			x.second->Load("HarryPotter\\TransCube.obj"); // x.second gets the model data
+
+	wallRBs["bottom"] = new MyRigidBody(walls["bottom"]->GetVertexList());
+	wallRBs["top"] = new MyRigidBody(walls["top"]->GetVertexList());
+	wallRBs["back"] = new MyRigidBody(walls["back"]->GetVertexList());
+	wallRBs["front"] = new MyRigidBody(walls["front"]->GetVertexList());
+	wallRBs["right"] = new MyRigidBody(walls["right"]->GetVertexList());
+	wallRBs["left"] = new MyRigidBody(walls["left"]->GetVertexList());
 
 	mainPlayer = new Player();
-	firstEnemy = new Enemy(vector3(10,0,0));
+	firstEnemy = new Enemy(vector3(10, 0, 0));
 
 	// load hogwarts bg
 	m_pHogwarts = new Model();
 	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
-	//m_pHogwarts->Load("HarryPotter\\hog_color2AndKnuckles.fbx");
-
 
 	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
-	//m_pPlayerModel->Load("HarryPotter\\Broom.obj");
+	//m_pPlayerModel->Load("HarryPotter\\Br	oom.obj");
 	m_pPlayerModel->Load("Mario\\Bowser.obj");
 
 	m_pPlayerRB = new MyRigidBody(m_pPlayerModel->GetVertexList());
@@ -142,11 +158,13 @@ void Application::Update(void)
 	m_pHogwarts->SetModelMatrix(mHogwarts);
 	m_pMeshMngr->AddAxisToRenderList(mHogwarts);
 
-	//Set model matrix to the model			//BOWSER (NOT PLAYER)
-	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
-	m_pModel->SetModelMatrix(mModel);
-	m_pModelRB->SetModelMatrix(mModel);
-	m_pMeshMngr->AddAxisToRenderList(mModel);
+	// disable drawing the cube in the center of view
+
+	////Set model matrix to the model			//minecraft block
+	//matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
+	//m_pModel->SetModelMatrix(mModel);
+	//m_pModelRB->SetModelMatrix(mModel);
+	//m_pMeshMngr->AddAxisToRenderList(mModel);
 
 	//Set model matrix to CollisionModel	//WARP PIPE
 	matrix4 mCollisionModel = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
@@ -165,8 +183,54 @@ void Application::Update(void)
 	firstEnemy->Update();
 	m_pMeshMngr->AddAxisToRenderList(firstEnemy->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 
+
+
+	// grass and walls
+	matrix4 botAxis, topAxis, backAxis, frontAxis, rightAxis, leftAxis;
+
+	// grass
+	//botAxis = glm::translate(vector3(-50, -4, -75)) * glm::scale(vector3(100, 2, 100));
+	botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
+	walls["bottom"]->SetModelMatrix(botAxis);
+	wallRBs["bottom"]->SetModelMatrix(botAxis);
+	walls["bottom"]->AddToRenderList();
+	//m_pMeshMngr->AddCubeToRenderList(botAxis, vector3(0.2, 0.75, 0.2));
+
+	// ceiling
+	topAxis = glm::translate(vector3(0, 97, -25)) * glm::scale(vector3(100, 2, 100));
+	m_pMeshMngr->AddWireCubeToRenderList(topAxis, C_BLUE);
+	walls["top"]->SetModelMatrix(topAxis);
+	wallRBs["top"]->SetModelMatrix(topAxis);
+	walls["top"]->AddToRenderList();
+
+	// walls
+	backAxis = glm::translate(vector3(0, 48, -76)) * glm::scale(vector3(100, 100, 2));
+	m_pMeshMngr->AddWireCubeToRenderList(backAxis, C_RED);
+	walls["back"]->SetModelMatrix(backAxis);
+	wallRBs["back"]->SetModelMatrix(backAxis);
+	walls["back"]->AddToRenderList();
+
+	frontAxis = glm::translate(vector3(0, 48, 26)) * glm::scale(vector3(100, 100, 2));
+	m_pMeshMngr->AddWireCubeToRenderList(frontAxis, C_RED);
+	walls["front"]->SetModelMatrix(frontAxis);
+	wallRBs["front"]->SetModelMatrix(frontAxis);
+	walls["front"]->AddToRenderList();
+
+	rightAxis = glm::translate(vector3(51, 48, -25)) * glm::scale(vector3(2, 100, 100));
+	m_pMeshMngr->AddWireCubeToRenderList(rightAxis, C_PURPLE);
+	walls["right"]->SetModelMatrix(rightAxis);
+	wallRBs["right"]->SetModelMatrix(rightAxis);
+	walls["right"]->AddToRenderList();
+
+	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
+	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
+	walls["left"]->SetModelMatrix(leftAxis);
+	wallRBs["left"]->SetModelMatrix(leftAxis);
+	walls["left"]->AddToRenderList();
+
 	static bool renderModel = true;
 	static bool renderColModel = true;
+	static std::vector<int> indexesToDelete;
 	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
@@ -177,13 +241,31 @@ void Application::Update(void)
 
 		bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
+		{
 			renderModel = false;
+			/*if (mainPlayer->bullets[i].isTimedOut == false)
+				indexesToDelete.push_back(i);
+				*/
+		}
 		tempBool = m_pCollisionModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
+		{
 			renderColModel = false;
+			/*if (mainPlayer->bullets[i].isTimedOut == false)
+				indexesToDelete.push_back(i);
+				*/
+		}
+		//if (mainPlayer->bullets[i].isTimedOut)
+			//indexesToDelete.push_back(i);
 	}
 
-
+	/*for (size_t i = 0; i < indexesToDelete.size(); i++)
+	{
+		SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
+		mainPlayer->bullets.erase(indexesToDelete[i]);
+	}
+	indexesToDelete.clear();
+	*/
 	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
 
 	m_pHogwarts->AddToRenderList();
@@ -199,9 +281,7 @@ void Application::Update(void)
 		m_pCollisionModel->AddToRenderList();
 		m_pCollisionModelRB->AddToRenderList();
 	}
-
-	//m_pPlayerModel->AddToRenderList();
-	//m_pPlayerRB->AddToRenderList();
+	//Rendering the player in the world
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
@@ -249,6 +329,12 @@ void Application::Release(void)
 	ShutdownGUI();
 
 	//release variables
+
+	for (auto & x : walls)
+		SafeDelete(x.second);
+	for (auto & x : wallRBs)
+		SafeDelete(x.second);
+
 	SafeDelete(m_pModel);
 	SafeDelete(m_pModelRB);
 	SafeDelete(m_pCollisionModel);

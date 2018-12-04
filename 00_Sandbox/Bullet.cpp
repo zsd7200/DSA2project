@@ -11,17 +11,22 @@ Bullet::Bullet(Model* tempMod, MyRigidBody* tempRB, vector3 tempPos, vector3 tem
 
 Bullet::~Bullet()
 {
+	SafeDelete(bulletModel);
+	bulletModel = nullptr;
+	SafeDelete(bulletRB);
+	bulletRB = nullptr;
 
+	startVector = vector3(0.0f);
+	forward = vector3(0.0f);
 }
 
 matrix4 Bullet::UpdatePosition()
 {
-	//vector3 tempForward = startVector;
-
+	//Getting the initial position for the object to start
 	vector3 tempForward = (glm::normalize(forward) * timesMoved) + startVector;
-	//std::cout << "bullet : " << tempForward.x << " " << tempForward.y << " " << tempForward.z << std::endl;
+
 	//Setting the location of the player
-	matrix4 mBulletMatrix = glm::translate(vector3(tempForward.x, tempForward.y, tempForward.z)) * glm::scale(vector3(5.0f));
+	matrix4 mBulletMatrix = glm::translate(vector3(tempForward.x, tempForward.y, tempForward.z)) * glm::scale(vector3(1.0f));
 
 	//Seting the model matrixes 
 	bulletModel->SetModelMatrix(mBulletMatrix);
@@ -29,5 +34,6 @@ matrix4 Bullet::UpdatePosition()
 
 	//Moving the position forward consecutievely
 	timesMoved += .1f;
+
 	return mBulletMatrix;
 }
