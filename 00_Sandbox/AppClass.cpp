@@ -162,9 +162,8 @@ void Application::Update(void)
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
-	float time = GetCurrentTime() / 500.000f;
-
-	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(vector3(cos(time)*4,10+cos(time*2)*2,sin(time)*4)));	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
+	firstEnemy->Update();
+	m_pMeshMngr->AddAxisToRenderList(firstEnemy->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 
 	static bool renderModel = true;
 	static bool renderColModel = true;

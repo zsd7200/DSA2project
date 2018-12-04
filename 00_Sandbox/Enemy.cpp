@@ -10,6 +10,7 @@ Enemy::Enemy(vector3 curPos)
 	this->curPos = curPos;
 
 	//UpdatePosition(curPos);
+	time = GetCurrentTime();
 }
 
 
@@ -21,11 +22,43 @@ Enemy::~Enemy()
 
 void Enemy::Update() 
 {
-	/*if (velocity.length > maxVel) {
-		velocity /= velocity.length;
-		velocity *= maxVel;
-	}*/
+	float deltaTime = GetCurrentTime() - time;
 
+	if (glm::length(velocity) > maxVel) {
+		velocity = glm::normalize(velocity);
+		velocity *= maxVel;
+	}
+	
+	UpdatePosition(curPos+velocity*deltaTime);
+}
+
+void Enemy::Wander()
+{
+
+}
+
+void Enemy::Approach(vector3 target)
+{
+	float deltaTime = GetCurrentTime() - time;
+
+	vector3 desVel = target - curPos;
+	desVel = glm::normalize(desVel);
+	desVel *= maxVel;
+
+	vector3 changeNeeded = (desVel - velocity);
+	if (glm::length(changeNeeded) > acceleration)
+	{
+		changeNeeded = glm::normalize(changeNeeded)*acceleration;
+	}
+	if (glm::length(changeNeeded) > 0.1f) 
+	{
+		velocity += changeNeeded*deltaTime;
+	}
+}
+
+vector3 Enemy::RandomUnitSphere()
+{
+	return glm::normalize(vector3(rand(),rand(),rand()));
 }
 
 matrix4 Enemy::UpdatePosition(vector3 basePoint)
@@ -53,8 +86,8 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 		if (tLookDir.x != 0 || tLookDir.z != 0)
 			this->lookDir = tLookDir;
 	}	
-	mEnemyMatrix *= glm::lookAt(vector3(-this->lookDir.x, -this->lookDir.y, -this->lookDir.z), vector3(0), up);
-	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
+	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
+	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
 	
 
 	enemyModel->SetModelMatrix(mEnemyMatrix);
@@ -62,3 +95,5 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	//m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??
 	return mEnemyMatrix;
 }
+
+
