@@ -38,6 +38,9 @@ class Application
 	//Test enemy pointer
 	Enemy* firstEnemy;
 
+	std::vector<Model*> m_vSceneModels;
+	std::vector<MyRigidBody*> m_vSceneRigidBodies;
+
 
 private:
 	static ImGuiObject gui; //GUI object

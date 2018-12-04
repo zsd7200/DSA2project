@@ -104,7 +104,7 @@ void Application::InitVariables(void)
 
 	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
-	//m_pPlayerModel->Load("HarryPotter\\Broom.obj");
+	//m_pPlayerModel->Load("HarryPotter\\Br	oom.obj");
 	m_pPlayerModel->Load("Mario\\Bowser.obj");
 
 	m_pPlayerRB = new MyRigidBody(m_pPlayerModel->GetVertexList());
@@ -234,6 +234,8 @@ void Application::Update(void)
 
 	//m_pPlayerModel->AddToRenderList();
 	//m_pPlayerRB->AddToRenderList();
+
+	//Rendering the player in the world
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 

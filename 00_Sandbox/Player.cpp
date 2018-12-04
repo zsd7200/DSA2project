@@ -26,7 +26,7 @@ void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 {
 	//Loading in the model
 	Model* tempMod = new Model();
-	tempMod->Load("HarryPotter\\Blast.fbx");
+	tempMod->Load("HarryPotter\\Blast.obj");
 	//Creating the rigid body
 	MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
 
