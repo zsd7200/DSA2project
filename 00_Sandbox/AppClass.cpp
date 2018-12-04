@@ -82,8 +82,6 @@ void Application::InitVariables(void)
 	m_soundBuffer.loadFromFile(sRoute + "12C.wav");
 	m_sound.setBuffer(m_soundBuffer);
 
-
-
 	//load model			//currently minecraft block
 	m_pModel = new Simplex::Model();
 	m_pModel->Load("Minecraft\\Cube.obj");
@@ -94,9 +92,30 @@ void Application::InitVariables(void)
 	m_pCollisionModel->Load("Mario\\WarpPipe.obj");
 	m_pCollisionModelRB = new MyRigidBody(m_pCollisionModel->GetVertexList());
 
+	// instantiate models/RBs for walls
+
+	walls["bottom"] = new Model();
+	walls["bottom"]->Load("HarryPotter\\Cube.obj");
+	walls["top"] = new Model();
+	walls["back"] = new Model();
+	walls["front"] = new Model();
+	walls["right"] = new Model();
+	walls["left"] = new Model();
+
+	// loop through rest of walls and load Transparent Cube
+	for (auto const& x : walls)
+		if (x.first != "bottom") // do not load transcube on bottom
+			x.second->Load("HarryPotter\\TransCube.obj"); // x.second gets the model data
+
+	wallRBs["bottom"] = new MyRigidBody(walls["bottom"]->GetVertexList());
+	wallRBs["top"] = new MyRigidBody(walls["top"]->GetVertexList());
+	wallRBs["back"] = new MyRigidBody(walls["back"]->GetVertexList());
+	wallRBs["front"] = new MyRigidBody(walls["front"]->GetVertexList());
+	wallRBs["right"] = new MyRigidBody(walls["right"]->GetVertexList());
+	wallRBs["left"] = new MyRigidBody(walls["left"]->GetVertexList());
 
 	mainPlayer = new Player();
-	firstEnemy = new Enemy(vector3(10,0,0));
+	firstEnemy = new Enemy(vector3(10, 0, 0));
 
 	// load hogwarts bg
 	m_pHogwarts = new Model();
@@ -135,7 +154,7 @@ void Application::Update(void)
 	m_pLightMngr->SetColor(v3Color, 1); //set the color of first light
 	m_pMeshMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(0.15f)), v3Color, RENDER_SOLID); //add a sphere to "see" it
 
-	matrix4 mHogwarts = glm::translate(vector3(0, -2, -25)) * glm::scale(vector3(0.1));
+	matrix4 mHogwarts = glm::translate(vector3(0, 0, -25)) * glm::scale(vector3(0.1));
 	m_pHogwarts->SetModelMatrix(mHogwarts);
 	m_pMeshMngr->AddAxisToRenderList(mHogwarts);
 
@@ -171,31 +190,44 @@ void Application::Update(void)
 	matrix4 botAxis, topAxis, backAxis, frontAxis, rightAxis, leftAxis;
 
 	// grass
-	botAxis = glm::translate(vector3(-50, -4, -75)) * glm::scale(vector3(100, 2, 100));
-	//botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
+	//botAxis = glm::translate(vector3(-50, -4, -75)) * glm::scale(vector3(100, 2, 100));
+	botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
+	walls["bottom"]->SetModelMatrix(botAxis);
+	wallRBs["bottom"]->SetModelMatrix(botAxis);
+	walls["bottom"]->AddToRenderList();
 	//m_pMeshMngr->AddCubeToRenderList(botAxis, vector3(0.2, 0.75, 0.2));
 
 	// ceiling
 	topAxis = glm::translate(vector3(0, 97, -25)) * glm::scale(vector3(100, 2, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(topAxis, C_BLUE);
+	walls["top"]->SetModelMatrix(topAxis);
+	wallRBs["top"]->SetModelMatrix(topAxis);
+	walls["top"]->AddToRenderList();
 
 	// walls
 	backAxis = glm::translate(vector3(0, 48, -76)) * glm::scale(vector3(100, 100, 2));
 	m_pMeshMngr->AddWireCubeToRenderList(backAxis, C_RED);
+	walls["back"]->SetModelMatrix(backAxis);
+	wallRBs["back"]->SetModelMatrix(backAxis);
+	walls["back"]->AddToRenderList();
 
 	frontAxis = glm::translate(vector3(0, 48, 26)) * glm::scale(vector3(100, 100, 2));
 	m_pMeshMngr->AddWireCubeToRenderList(frontAxis, C_RED);
+	walls["front"]->SetModelMatrix(frontAxis);
+	wallRBs["front"]->SetModelMatrix(frontAxis);
+	walls["front"]->AddToRenderList();
 
 	rightAxis = glm::translate(vector3(51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(rightAxis, C_PURPLE);
+	walls["right"]->SetModelMatrix(rightAxis);
+	wallRBs["right"]->SetModelMatrix(rightAxis);
+	walls["right"]->AddToRenderList();
 
 	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
-
-	//Set model matrix to the model			//minecraft block for grass box
-	m_pModel->SetModelMatrix(botAxis);
-	m_pModelRB->SetModelMatrix(botAxis);
-	//m_pMeshMngr->AddAxisToRenderList(botAxis);
+	walls["left"]->SetModelMatrix(leftAxis);
+	wallRBs["left"]->SetModelMatrix(leftAxis);
+	walls["left"]->AddToRenderList();
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
@@ -298,6 +330,12 @@ void Application::Release(void)
 	ShutdownGUI();
 
 	//release variables
+
+	for (auto & x : walls)
+		SafeDelete(x.second);
+	for (auto & x : wallRBs)
+		SafeDelete(x.second);
+
 	SafeDelete(m_pModel);
 	SafeDelete(m_pModelRB);
 	SafeDelete(m_pCollisionModel);
