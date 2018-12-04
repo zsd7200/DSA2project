@@ -117,6 +117,10 @@ void Application::InitVariables(void)
 	mainPlayer = new Player();
 	firstEnemy = new Enemy(vector3(10, 0, 0));
 
+	for (int i = 0; i < 30; i++) {
+		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 - 25, rand() % 50 - 25)));
+	}
+
 	// load hogwarts bg
 	m_pHogwarts = new Model();
 	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
@@ -180,9 +184,10 @@ void Application::Update(void)
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
-	firstEnemy->Update();
-	m_pMeshMngr->AddAxisToRenderList(firstEnemy->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
-
+	for (int i = 0; i < enemies.size(); i++) {
+		enemies[i]->Update();
+		m_pMeshMngr->AddAxisToRenderList(enemies[i]->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
+	}
 
 
 	// grass and walls
@@ -288,6 +293,12 @@ void Application::Update(void)
 	firstEnemy->enemyModel->AddToRenderList();
 	firstEnemy->enemyRB->AddToRenderList();
 
+	for (int i = 0; i < enemies.size(); i++) 
+	{
+		enemies[i]->enemyModel->AddToRenderList();
+		enemies[i]->enemyRB->AddToRenderList();
+	}
+
 	//std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 
 	m_pMeshMngr->Print("Colliding: ");
@@ -334,6 +345,8 @@ void Application::Release(void)
 		SafeDelete(x.second);
 	for (auto & x : wallRBs)
 		SafeDelete(x.second);
+	for (auto & x : enemies)
+		SafeDelete(x);
 
 	SafeDelete(m_pModel);
 	SafeDelete(m_pModelRB);

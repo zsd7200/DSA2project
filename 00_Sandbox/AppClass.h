@@ -42,6 +42,7 @@ class Application
 	Enemy* firstEnemy;
 
 	std::vector<Model*> m_vSceneModels;
+	std::vector<Enemy*> enemies;
 	std::vector<MyRigidBody*> m_vSceneRigidBodies;
 
 

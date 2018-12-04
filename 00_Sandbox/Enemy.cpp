@@ -9,7 +9,9 @@ Enemy::Enemy(vector3 curPos)
 
 	this->curPos = curPos;
 
-	//UpdatePosition(curPos);
+	std::printf("%f, %f",curPos.x,curPos.y);
+
+	UpdatePosition(curPos);
 	time = GetCurrentTime();
 }
 
