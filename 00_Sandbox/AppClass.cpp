@@ -84,10 +84,9 @@ void Application::InitVariables(void)
 
 
 
-	//load model			//currently bowser (not the player sprite)
+	//load model			//currently minecraft block
 	m_pModel = new Simplex::Model();
-	//m_pModel->Load("HarryPotter\\Hogwarts.fbx");
-	m_pModel->Load("Mario\\Bowser.obj");
+	m_pModel->Load("Minecraft\\Cube.obj");
 	m_pModelRB = new MyRigidBody(m_pModel->GetVertexList());
 
 	//load collision model	//currently warp pipe
@@ -136,15 +135,17 @@ void Application::Update(void)
 	m_pLightMngr->SetColor(v3Color, 1); //set the color of first light
 	m_pMeshMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(0.15f)), v3Color, RENDER_SOLID); //add a sphere to "see" it
 
-	matrix4 mHogwarts = glm::translate(vector3(0, 0, -25)) * glm::scale(vector3(0.1));
+	matrix4 mHogwarts = glm::translate(vector3(0, -2, -25)) * glm::scale(vector3(0.1));
 	m_pHogwarts->SetModelMatrix(mHogwarts);
 	m_pMeshMngr->AddAxisToRenderList(mHogwarts);
 
-	//Set model matrix to the model			//BOWSER (NOT PLAYER)
-	matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
-	m_pModel->SetModelMatrix(mModel);
-	m_pModelRB->SetModelMatrix(mModel);
-	m_pMeshMngr->AddAxisToRenderList(mModel);
+	// disable drawing the cube in the center of view
+
+	////Set model matrix to the model			//minecraft block
+	//matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
+	//m_pModel->SetModelMatrix(mModel);
+	//m_pModelRB->SetModelMatrix(mModel);
+	//m_pMeshMngr->AddAxisToRenderList(mModel);
 
 	//Set model matrix to CollisionModel	//WARP PIPE
 	matrix4 mCollisionModel = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
@@ -170,8 +171,9 @@ void Application::Update(void)
 	matrix4 botAxis, topAxis, backAxis, frontAxis, rightAxis, leftAxis;
 
 	// grass
-	botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
-	m_pMeshMngr->AddCubeToRenderList(botAxis, vector3(0.2, 0.75, 0.2));
+	botAxis = glm::translate(vector3(-50, -4, -75)) * glm::scale(vector3(100, 2, 100));
+	//botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
+	//m_pMeshMngr->AddCubeToRenderList(botAxis, vector3(0.2, 0.75, 0.2));
 
 	// ceiling
 	topAxis = glm::translate(vector3(0, 97, -25)) * glm::scale(vector3(100, 2, 100));
@@ -190,7 +192,10 @@ void Application::Update(void)
 	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
 
-
+	//Set model matrix to the model			//minecraft block for grass box
+	m_pModel->SetModelMatrix(botAxis);
+	m_pModelRB->SetModelMatrix(botAxis);
+	//m_pMeshMngr->AddAxisToRenderList(botAxis);
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
