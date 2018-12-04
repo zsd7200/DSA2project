@@ -164,6 +164,34 @@ void Application::Update(void)
 
 	m_pMeshMngr->AddAxisToRenderList(firstEnemy->UpdatePosition(vector3(cos(time)*4,10+cos(time*2)*2,sin(time)*4)));	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 
+
+
+	// grass and walls
+	matrix4 botAxis, topAxis, backAxis, frontAxis, rightAxis, leftAxis;
+
+	// grass
+	botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
+	m_pMeshMngr->AddCubeToRenderList(botAxis, vector3(0.2, 0.75, 0.2));
+
+	// ceiling
+	topAxis = glm::translate(vector3(0, 97, -25)) * glm::scale(vector3(100, 2, 100));
+	m_pMeshMngr->AddWireCubeToRenderList(topAxis, C_BLUE);
+
+	// walls
+	backAxis = glm::translate(vector3(0, 48, -76)) * glm::scale(vector3(100, 100, 2));
+	m_pMeshMngr->AddWireCubeToRenderList(backAxis, C_RED);
+
+	frontAxis = glm::translate(vector3(0, 48, 26)) * glm::scale(vector3(100, 100, 2));
+	m_pMeshMngr->AddWireCubeToRenderList(frontAxis, C_RED);
+
+	rightAxis = glm::translate(vector3(51, 48, -25)) * glm::scale(vector3(2, 100, 100));
+	m_pMeshMngr->AddWireCubeToRenderList(rightAxis, C_PURPLE);
+
+	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
+	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
+
+
+
 	static bool renderModel = true;
 	static bool renderColModel = true;
 	//Looping through each bullet in the field
