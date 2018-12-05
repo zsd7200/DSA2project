@@ -34,6 +34,8 @@ matrix4 Bullet::UpdatePosition()
 
 	//Moving the position forward consecutievely
 	timesMoved += .1f;
-
+	
+	if (timesMoved > 10.0f)
+		isTimedOut = true;
 	return mBulletMatrix;
 }

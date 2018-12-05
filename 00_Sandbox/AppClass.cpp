@@ -75,6 +75,8 @@ void Application::InitVariables(void)
 #pragma region Sandbox
 	//Background music
 	m_soundBGM.openFromFile(sRoute + "elementary-wave-11.ogg");
+	//m_soundBGM.openFromFile(sRoute + "Music.ogg");
+
 	m_soundBGM.play();
 	m_soundBGM.setLoop(true);
 
@@ -248,29 +250,52 @@ void Application::Update(void)
 		if (tempBool)
 		{
 			renderModel = false;
-			/*if (mainPlayer->bullets[i].isTimedOut == false)
+			if (mainPlayer->bullets[i]->isTimedOut == false)
 				indexesToDelete.push_back(i);
-				*/
+				
 		}
 		tempBool = m_pCollisionModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
 		{
 			renderColModel = false;
-			/*if (mainPlayer->bullets[i].isTimedOut == false)
+			if (mainPlayer->bullets[i]->isTimedOut == false)
 				indexesToDelete.push_back(i);
-				*/
+				
 		}
-		//if (mainPlayer->bullets[i].isTimedOut)
-			//indexesToDelete.push_back(i);
+		if (mainPlayer->bullets[i]->isTimedOut)
+			indexesToDelete.push_back(i);
 	}
 
-	/*for (size_t i = 0; i < indexesToDelete.size(); i++)
+	/*if (indexesToDelete.size() > 0)
 	{
-		SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
-		mainPlayer->bullets.erase(indexesToDelete[i]);
+		std::vector<Bullet*> tempVec;
+		for (size_t i = 0; i < indexesToDelete.size(); i++)
+		{
+			//SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
+
+			//mainPlayer->bullets.erase(mainPlayer->bullets.begin() + indexesToDelete[i]);
+			//mainPlayer->bullets[indexesToDelete[i]] = mainPlayer->bullets[mainPlayer->bullets.size() - 1];
+			//mainPlayer->bullets.pop_back();
+			for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
+			{
+				if (j = indexesToDelete[i])
+				{
+					SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
+				}
+				else
+				{
+					tempVec.push_back(mainPlayer->bullets[j]);
+				}
+			}
+		}
+
+		mainPlayer-> bullets = tempVec;
+		tempVec.clear();
+		//mainPlayer->bullets.shrink_to_fit();
+		indexesToDelete.clear();
 	}
-	indexesToDelete.clear();
 	*/
+	
 	bool bColliding = mainPlayer->playerRB->IsColliding(wallRBs["bottom"]);
 
 	m_pHogwarts->AddToRenderList();
