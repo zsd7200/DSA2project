@@ -30,13 +30,14 @@ Player::~Player()
 void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 {
 	//Loading in the model
-	Model* tempMod = new Model();
-	tempMod->Load("HarryPotter\\Blast.obj");
+	//Model* tempMod = new Model();
+	//tempMod->Load("HarryPotter\\Blast.obj");
+	MyEntity* tempEnt = new MyEntity("HarryPotter\\Blast.obj");
 	//Creating the rigid body
-	MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
+	//MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
 
 	//Creating the bullet
-	Bullet* tempBul = new Bullet(tempMod, tempRB, currentPos, tempForward);
+	Bullet* tempBul = new Bullet(tempEnt, currentPos, tempForward);
 
 	//Adding the bullet to the list of bullets
 	bullets.push_back(tempBul);

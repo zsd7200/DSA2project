@@ -186,10 +186,11 @@ void Application::Update(void)
 	{
 		//Adding to the render list
 		m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
-		mainPlayer->bullets[i]->bulletModel->AddToRenderList();
-		mainPlayer->bullets[i]->bulletRB->AddToRenderList();
+		//mainPlayer->bullets[i]->bulletModel->AddToRenderList();
+		//mainPlayer->bullets[i]->bulletRB->AddToRenderList();
+		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
 
-		bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
+		/*bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
 		{
 			renderModel = false;
@@ -207,6 +208,7 @@ void Application::Update(void)
 		}
 		if (mainPlayer->bullets[i]->isTimedOut)
 			indexesToDelete.push_back(i);
+			*/
 	}
 
 	m_pEntityMngr->Update();

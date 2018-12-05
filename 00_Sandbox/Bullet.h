@@ -1,17 +1,19 @@
 #pragma once
 #include "MyRigidBody.h"
 #include "Definitions.h"
-
+#include "MyEntity.h"
 using namespace Simplex;
 class Bullet
 {
 public:
 
 	//Constructor
-	Bullet(Model*, MyRigidBody*, vector3, vector3);
+	Bullet(MyEntity*, vector3, vector3);
 
 	//Destructor
 	~Bullet();
+
+	MyEntity* bulletEntity = nullptr;
 
 	//The model for the bullet
 	Model* bulletModel = nullptr;

@@ -1,10 +1,9 @@
 #include "Bullet.h"
 
 //Constructor which will create the bullet with all the information it needs
-Bullet::Bullet(Model* tempMod, MyRigidBody* tempRB, vector3 tempPos, vector3 tempForward)
+Bullet::Bullet(MyEntity* tempEnt, vector3 tempPos, vector3 tempForward)
 {
-	bulletModel = tempMod;
-	bulletRB = tempRB;
+	bulletEntity = tempEnt;
 	startVector = tempPos;
 	forward = tempForward;
 }
@@ -29,8 +28,9 @@ matrix4 Bullet::UpdatePosition()
 	matrix4 mBulletMatrix = glm::translate(vector3(tempForward.x, tempForward.y, tempForward.z)) * glm::scale(vector3(1.0f));
 
 	//Seting the model matrixes 
-	bulletModel->SetModelMatrix(mBulletMatrix);
-	bulletRB->SetModelMatrix(mBulletMatrix);
+	bulletEntity->SetModelMatrix(mBulletMatrix);
+	//bulletModel->SetModelMatrix(mBulletMatrix);
+	//bulletRB->SetModelMatrix(mBulletMatrix);
 
 	//Moving the position forward consecutievely
 	timesMoved += .1f;
