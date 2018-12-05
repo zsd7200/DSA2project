@@ -13,6 +13,7 @@ Date: 2017/06
 #include "MyEntityManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "MyOctant.h"
 
 
 namespace Simplex
@@ -47,6 +48,7 @@ class Application
 	std::vector<Enemy*> enemies;
 	std::vector<MyRigidBody*> m_vSceneRigidBodies;
 
+	MyOctant* m_pOctant = nullptr;
 
 private:
 	static ImGuiObject gui; //GUI object

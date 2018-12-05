@@ -21,7 +21,8 @@ MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 	// get entity list for size of loop and to get a rigidbody for max/min list
 	std::vector<MyEntity*> l_Entity_List = m_pEntityMngr->GetEntityList();
 	uint iEntityCount = l_Entity_List.size();
-
+	std::cout << "Count: " << m_pEntityMngr->GetEntityCount() << std::endl;
+	std::cout << "Entity Count : " << iEntityCount << std::endl;
 	std::vector<vector3> v3MaxMin_list;
 
 	// get max/min values to create temporary rigidbody
@@ -73,6 +74,12 @@ MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 
 	m_v3Min = m_v3Center - (vector3(m_fSize) / 2.0f);
 	m_v3Max = m_v3Center + (vector3(m_fSize) / 2.0f);
+
+	//std::vector<std::vector<vector3>> test;
+	//std::vector<vector3> test2;
+	//test2.push_back(m_v3Min);
+	//test2.push_back(m_v3Max);
+	//test.push_back(test2);
 
 	// increment count
 	m_uOctantCount++;
@@ -316,7 +323,17 @@ void MyOctant::Init(void)
 	m_v3Max = vector3(0);
 
 	m_pMeshMngr = MeshManager::GetInstance();
+	if (m_pMeshMngr != nullptr)
+		std::cout << "Ladies and gentlemen, we got him" << std::endl;
+	else
+		std::cout << "nope" << std::endl;
+
 	m_pEntityMngr = MyEntityManager::GetInstance();
+	if (m_pEntityMngr != nullptr)
+		std::cout << "Ladies and gentlemen, we got him" << std::endl;
+	else
+		std::cout << "nope" << std::endl;
+
 
 	MyOctant* m_pParent = nullptr;
 	for (uint i = 0; i < 8; i++)

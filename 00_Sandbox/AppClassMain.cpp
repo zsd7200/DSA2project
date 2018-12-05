@@ -240,6 +240,7 @@ void Application::Init(String a_sApplicationName, uint a_uWidth, uint a_uHeight,
 	
 	//Init Mesh Manager
 	m_pMeshMngr = MeshManager::GetInstance();
+	m_pEntityMngr = MyEntityManager::GetInstance();
 
 	//Init sizes
 	Reshape();

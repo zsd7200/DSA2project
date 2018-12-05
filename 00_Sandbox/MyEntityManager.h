@@ -16,17 +16,16 @@ namespace Simplex
 		typedef MyEntity* PEntity;
 
 		uint m_uEntityCount = 0; //number of elements in the list
-		static MyEntityManager* m_pInstance; // Singleton pointer
 		std::vector<MyEntity*> m_EntityList; //entities list
 		PEntity* m_mEntityArray = nullptr; //array of Entity pointers
 	public:
+		static MyEntityManager* m_pInstance; // Singleton pointer
+
 		/*
 Usage: constructor
 Arguments: ---
 Output: class object instance
 */
-		MyEntityManager(void);
-
 		std::vector<MyEntity*> GetEntityList(void);
 		/*
 		Usage: Gets the singleton pointer
@@ -253,6 +252,7 @@ Output: class object instance
 		uint GetEntityCount(void);
 
 	private:
+		MyEntityManager(void);
 		/*
 		Usage: copy constructor
 		Arguments: class object to copy

@@ -8,72 +8,7 @@ void Application::InitVariables(void)
 	//Music
 	String sRoute = m_pSystem->m_pFolder->GetFolderData();
 	sRoute += m_pSystem->m_pFolder->GetFolderAudio();
-
-	m_pEntityMngr = new MyEntityManager();
-
-#pragma region Make some meshes, add them to a group and add the group to a model
-	/*
-	Mesh* pMesh1 = new Mesh();
-	Mesh* pMesh2 = new Mesh();
-	Mesh* pMesh3 = new Mesh();
-	pMesh1->GenerateCone(1.0f, 1.0f, 10, C_RED);
-	pMesh2->GenerateTorus(1.0f, 0.7f, 10, 10, C_MAGENTA);
-	pMesh3->GenerateTube(1.0f, 0.7f, 1.0f, 10, C_BLUE);
-	int nMesh1 = m_pMngr->AddMesh(pMesh1);
-	int nMesh2 = m_pMngr->AddMesh(pMesh2);
-
-	Group* pGroup1 = new Group();
-	pGroup1->AddMesh(nMesh1, MeshOptions(glm::translate(AXIS_Y), WIRE));
-	pGroup1->AddMesh(nMesh2, MeshOptions(glm::translate(-AXIS_Y), SOLID));
-	Group* pGroup2 = new Group();
-	pGroup2->AddMesh(pMesh3, MeshOptions(IDENTITY_M4, SOLID | WIRE));
-
-	m_pModel1 = new Simplex::Model();
-	m_pModel1->AddGroup(pGroup1);
-	m_pModel1->AddGroup(pGroup2);
-	*/
-#pragma endregion
-#pragma region Load Model and change its rendering properties
-	/*
-	m_pModel1 = new Simplex::Model();
-	m_pModel1->Load("Macross\\YF19.BTO");
-	m_pModel1->ChangeMeshOptions(MeshOptions(IDENTITY_M4, SOLID | WIRE), -1, -1);
-	*/
-#pragma endregion
-#pragma region Load Model and change its materials
-	/*
-	m_pModel1 = new Simplex::Model();
-	m_pModel1->Load("Macross\\YF19.BTO");
-	//m_pModel1->ChangeMeshOptions(MeshOptions(IDENTITY_M4, SOLID | WIRE), -1, -1);
-	m_pMatMngr->AddMaterial("Cloud.png", "Cloud.png");
-	m_pModel1->ChangeMaterialOfGroup("Cloud.png", "ALL");
-	*/
-#pragma endregion
-#pragma region Load Model disconect and change its materials
-	/*
-	m_pModel1 = new Simplex::Model();
-	m_pModel1->Load("Macross\\YF19.BTO");
-	//m_pModel1->ChangeMeshOptions(MeshOptions(IDENTITY_M4, SOLID | WIRE), -1, -1);
-	m_pMatMngr->AddMaterial("Cloud.png", "Cloud.png");
-	m_pModel1->DuplicateMaterialsUnique(-1, "_copy"); //dupliocate existing materials
-	m_pModel1->CreateMaterials(); //duplicate one per mesh
-	m_pModel1->ChangeMaterialOfGroup("Cloud.png", "ALL");
-	*/
-#pragma endregion
-#pragma region Load Model and duplicate onto another one
-	/*
-	m_pModel3 = new Simplex::Model();
-	m_pModel3->Load("Macross\\YF19.BTO");
-	m_pModel1 = new Simplex::Model();
-	m_pModel1->Instance(m_pModel3, "_copy_");
-	*/
-#pragma endregion
-#pragma region Load Model
-	/*
-	m_pModel1 = new Simplex::Model();
-	m_pModel1->Load("Macross\\YF19.BTO");
-	*/
-#pragma endregion
+	
 #pragma region Sandbox
 	//Background music
 	m_soundBGM.openFromFile(sRoute + "elementary-wave-11.ogg");
@@ -120,11 +55,16 @@ void Application::InitVariables(void)
 
 	mainPlayer = new Player();
 	firstEnemy = new Enemy(vector3(10, 0, 0));
+	m_pEntityMngr->AddEntity(firstEnemy->enemy);
 
 	for (int i = 0; i < 30; i++) {
-		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 - 25, rand() % 50 - 25)));
+		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 + 5, rand() % 50 - 25)));
 		m_pEntityMngr->AddEntity(enemies[i]->enemy);
+		std::cout << " Count: " << m_pEntityMngr->GetEntityCount() << std::endl;
 	}
+
+	m_pOctant = new MyOctant(2, 5);
+	m_pEntityMngr->Update();
 
 	// load hogwarts bg
 	m_pHogwarts = new Model();
@@ -211,32 +151,32 @@ void Application::Update(void)
 	m_pMeshMngr->AddWireCubeToRenderList(topAxis, C_BLUE);
 	walls["top"]->SetModelMatrix(topAxis);
 	wallRBs["top"]->SetModelMatrix(topAxis);
-	walls["top"]->AddToRenderList();
+	//walls["top"]->AddToRenderList();
 
 	// walls
 	backAxis = glm::translate(vector3(0, 48, -76)) * glm::scale(vector3(100, 100, 2));
 	m_pMeshMngr->AddWireCubeToRenderList(backAxis, C_RED);
 	walls["back"]->SetModelMatrix(backAxis);
 	wallRBs["back"]->SetModelMatrix(backAxis);
-	walls["back"]->AddToRenderList();
+	//walls["back"]->AddToRenderList();
 
 	frontAxis = glm::translate(vector3(0, 48, 26)) * glm::scale(vector3(100, 100, 2));
 	m_pMeshMngr->AddWireCubeToRenderList(frontAxis, C_RED);
 	walls["front"]->SetModelMatrix(frontAxis);
 	wallRBs["front"]->SetModelMatrix(frontAxis);
-	walls["front"]->AddToRenderList();
+	//walls["front"]->AddToRenderList();
 
 	rightAxis = glm::translate(vector3(51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(rightAxis, C_PURPLE);
 	walls["right"]->SetModelMatrix(rightAxis);
 	wallRBs["right"]->SetModelMatrix(rightAxis);
-	walls["right"]->AddToRenderList();
+	//walls["right"]->AddToRenderList();
 
 	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
 	walls["left"]->SetModelMatrix(leftAxis);
 	wallRBs["left"]->SetModelMatrix(leftAxis);
-	walls["left"]->AddToRenderList();
+	//walls["left"]->AddToRenderList();
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
@@ -269,6 +209,7 @@ void Application::Update(void)
 			indexesToDelete.push_back(i);
 	}
 
+	m_pEntityMngr->Update();
 	/*if (indexesToDelete.size() > 0)
 	{
 		std::vector<Bullet*> tempVec;
@@ -349,6 +290,8 @@ void Application::Display(void)
 	
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
+
+	m_pOctant->Display();
 
 	//// set the model matrix of the model
 	//m_pModel->SetModelMatrix(ToMatrix4(m_qArcBall));

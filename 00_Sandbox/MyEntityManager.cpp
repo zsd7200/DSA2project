@@ -28,7 +28,9 @@ Simplex::MyEntityManager* Simplex::MyEntityManager::GetInstance()
 	if (m_pInstance == nullptr)
 	{
 		m_pInstance = new MyEntityManager();
+		std::cout << "Made new" << std::endl;
 	}
+	
 	return m_pInstance;
 }
 void Simplex::MyEntityManager::ReleaseInstance()
