@@ -181,8 +181,6 @@ void Application::Update(void)
 									mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
 									mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
 								}
-
-
 			// check y
 				//return false;
 				//return false;
@@ -291,8 +289,6 @@ void Application::Update(void)
 		m_pMeshMngr->PrintLine("YES!", C_RED);
 	else
 		m_pMeshMngr->PrintLine("no", C_YELLOW);
-
-	//std::cout << "Cam Position: " << m_pCameraMngr->GetPosition().x <<  " " << m_pCameraMngr->GetPosition().y <<  " " << m_pCameraMngr->GetPosition().z << std::endl;
 }
 void Application::Display(void)
 {
