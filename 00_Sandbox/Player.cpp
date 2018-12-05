@@ -5,7 +5,7 @@ Player::Player()
 	playerModel = new Model();
 
 	//Load it
-	playerModel->Load("Mario\\Bowser.obj");
+	playerModel->Load("HarryPotter\\Stick.obj");
 
 	//Set the player's rigidbody
 	playerRB = new MyRigidBody(playerModel->GetVertexList());
@@ -43,10 +43,14 @@ void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 }
 
 //Can add in more parameters to make movement better
-matrix4 Player::UpdatePosition(vector3 basePoint)
+matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 {
+
+	quaternion rotQuat = glm::angleAxis(glm::radians(3.0f), glm::cross(basePoint, glm::normalize(-forward)));
+	matrix4 rotMat = glm::toMat4(rotQuat);
+
 	//Setting the location of the player
-	matrix4 mPlayerMatrix = glm::translate(vector3(basePoint.x, basePoint.y - 3.0f,basePoint.z));
+	matrix4 mPlayerMatrix = glm::translate(vector3(basePoint.x, basePoint.y - 1.5f, basePoint.z)) * rotMat;
 
 	//Seting the model matrixes 
 	playerModel->SetModelMatrix(mPlayerMatrix);
