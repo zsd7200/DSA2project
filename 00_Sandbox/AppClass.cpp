@@ -280,7 +280,13 @@ void Application::Update(void)
 			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
 			
 			if (tempBool)
+			{
 				std::cout << "Real Collision" << std::endl;
+				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
+				m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
+				std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
+			}
+
 		}
 	}
 
