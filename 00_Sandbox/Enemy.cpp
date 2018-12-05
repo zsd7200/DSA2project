@@ -1,4 +1,6 @@
 #include "Enemy.h"
+
+
 Enemy::Enemy(vector3 curPos)
 {
 	enemy = new MyEntity("HarryPotter\\Boo.FBX");
@@ -10,7 +12,7 @@ Enemy::Enemy(vector3 curPos)
 	std::printf("%f, %f",curPos.x,curPos.y);
 
 	UpdatePosition(curPos);
-	time = GetCurrentTime();
+	time(&prevTime);
 }
 
 
@@ -21,25 +23,32 @@ Enemy::~Enemy()
 
 void Enemy::Update() 
 {
-	float deltaTime = GetCurrentTime() - time;
+	deltaTime = (clock()-begin_time)/(CLOCKS_PER_SEC*1.00000);
+	begin_time = clock();
 
 	if (glm::length(velocity) > maxVel) {
 		velocity = glm::normalize(velocity);
 		velocity *= maxVel;
 	}
 	
+	Wander();
+
+	std::printf("%f, %f \n", deltaTime, curPos.y);
+
 	UpdatePosition(curPos+velocity*deltaTime);
+	
 }
 
 void Enemy::Wander()
 {
+	if (wanderPos == ZERO_V3 || glm::length(wanderPos - curPos) < 1)
+		wanderPos = RandomUnitSphere()*(rand() % 25);
 
+	Approach(wanderPos);
 }
 
 void Enemy::Approach(vector3 target)
 {
-	float deltaTime = GetCurrentTime() - time;
-
 	vector3 desVel = target - curPos;
 	desVel = glm::normalize(desVel);
 	desVel *= maxVel;
@@ -68,15 +77,15 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	
 
 	mEnemyMatrix = IDENTITY_M4;
-	mEnemyMatrix *= glm::translate(basePoint);
-	mEnemyMatrix *= glm::scale(vector3(0.01f));
+	mEnemyMatrix *= glm::translate(curPos);
+	
 
 	//make enemies face direction theyre moving in
 
-	vector3 tLookDir = basePoint - curPos;
+	vector3 tLookDir = velocity;
 	curPos = basePoint;
 	
-	vector3 up = vector3(0, -1, 0);
+	vector3 up = vector3(0, 1, 0);
 
 	if (tLookDir!=ZERO_V3) 
 	{
@@ -85,9 +94,13 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 		if (tLookDir.x != 0 || tLookDir.z != 0)
 			this->lookDir = tLookDir;
 	}	
-	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
-	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
 	
+	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
+	mEnemyMatrix *= glm::lookAt(vector3(0), vector3(-1,0,0), vector3(0,0,1));
+	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
+	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
+
+	mEnemyMatrix *= glm::scale(vector3(0.01f));
 
 	enemy->SetModelMatrix(mEnemyMatrix);
 	//m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??

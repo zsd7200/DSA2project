@@ -45,7 +45,7 @@ void Application::InitVariables(void)
 	firstEnemy = new Enemy(vector3(10, 0, 0));
 	m_pEntityMngr->AddEntity(firstEnemy->enemy);
 
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 5; i++) {
 		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 + 5, rand() % 50 - 25)));
 		m_pEntityMngr->AddEntity(enemies[i]->enemy);
 	}

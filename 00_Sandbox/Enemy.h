@@ -3,6 +3,7 @@
 #include "MyEntity.h"
 #include "Definitions.h"
 #include <string>
+#include <ctime>
 using namespace Simplex;
 
 class Enemy
@@ -16,11 +17,14 @@ public:
 
 	float acceleration = 2.0f;
 	float maxVel = 4;
-	float time = 0;
+	double deltaTime=0;
+	time_t prevTime = 0;
+
+	clock_t begin_time = clock();
 
 	vector3 velocity = vector3();
 	vector3 curPos;
-	vector3 wanderPos;
+	vector3 wanderPos=ZERO_V3;
 	vector3 lookDir = vector3(1);
 
 	void Update();
