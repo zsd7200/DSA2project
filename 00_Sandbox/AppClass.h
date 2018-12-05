@@ -24,8 +24,7 @@ class Application
 	vector3 m_v3Model;
 	quaternion m_qModel;
 
-	std::map<std::string, Model*> walls;
-	std::map<std::string, MyRigidBody*> wallRBs;
+	std::vector<MyEntity*> walls;
 
 	MyEntityManager* m_pEntityMngr = nullptr;
 
