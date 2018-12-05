@@ -127,7 +127,7 @@ void Application::DrawGUI(void)
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("Press ");
 	m_pMeshMngr->Print("SpaceBar", C_BLUE);
-	m_pMeshMngr->PrintLine(" for sound!");
+	m_pMeshMngr->PrintLine(" to shoot!");
 
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top

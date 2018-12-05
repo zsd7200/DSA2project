@@ -271,7 +271,7 @@ void Application::Update(void)
 	}
 	indexesToDelete.clear();
 	*/
-	bool bColliding = m_pModelRB->IsColliding(m_pCollisionModelRB);
+	bool bColliding = mainPlayer->playerRB->IsColliding(wallRBs["bottom"]);
 
 	m_pHogwarts->AddToRenderList();
 
@@ -298,6 +298,13 @@ void Application::Update(void)
 		enemies[i]->enemyModel->AddToRenderList();
 		enemies[i]->enemyRB->AddToRenderList();
 	}
+
+	//bool bColliding;
+	//for (auto const& x : wallRBs)
+	//{
+	//	//std::cout << x.first << std::endl;
+	//	bColliding = mainPlayer->playerRB->IsColliding(x.second);
+	//}
 
 	//std::cout << "Forward: " << m_pCameraMngr->GetForward().x << " " << m_pCameraMngr->GetForward().y << " " << m_pCameraMngr->GetForward().z << std::endl;
 
