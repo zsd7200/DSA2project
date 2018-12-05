@@ -138,7 +138,7 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		}
 		break;
 		//Spawning in projectiles
-	case sf::Keyboard::Z:
+	case sf::Keyboard::Space:
 		mainPlayer->CreateProjectile(m_pCameraMngr->GetForward(), m_pCameraMngr->GetPosition());
 		break;
 	case sf::Keyboard::LShift:

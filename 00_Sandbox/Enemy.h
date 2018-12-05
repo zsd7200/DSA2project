@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MyRigidBody.h"
+#include "MyEntity.h"
 #include "Definitions.h"
 #include <string>
 using namespace Simplex;
@@ -11,8 +11,7 @@ public:
 	Enemy(vector3);
 	~Enemy();
 
-	Model* enemyModel = nullptr;
-	MyRigidBody* enemyRB = nullptr;
+	MyEntity* enemy = nullptr;
 	matrix4 mEnemyMatrix = IDENTITY_M4;
 
 	float acceleration = 2.0f;

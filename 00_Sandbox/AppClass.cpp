@@ -9,6 +9,8 @@ void Application::InitVariables(void)
 	String sRoute = m_pSystem->m_pFolder->GetFolderData();
 	sRoute += m_pSystem->m_pFolder->GetFolderAudio();
 
+	m_pEntityMngr = new MyEntityManager();
+
 #pragma region Make some meshes, add them to a group and add the group to a model
 	/*
 	Mesh* pMesh1 = new Mesh();
@@ -121,6 +123,7 @@ void Application::InitVariables(void)
 
 	for (int i = 0; i < 30; i++) {
 		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 - 25, rand() % 50 - 25)));
+		m_pEntityMngr->AddEntity(enemies[i]->enemy);
 	}
 
 	// load hogwarts bg
@@ -315,13 +318,11 @@ void Application::Update(void)
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
-	firstEnemy->enemyModel->AddToRenderList();
-	firstEnemy->enemyRB->AddToRenderList();
+	firstEnemy->enemy->AddToRenderList();
 
 	for (int i = 0; i < enemies.size(); i++) 
 	{
-		enemies[i]->enemyModel->AddToRenderList();
-		enemies[i]->enemyRB->AddToRenderList();
+		enemies[i]->enemy->AddToRenderList();
 	}
 
 	//bool bColliding;

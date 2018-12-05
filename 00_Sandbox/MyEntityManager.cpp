@@ -206,6 +206,23 @@ void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID)
 		m_mEntityArray[i] = m_EntityList[i];
 	}
 }
+
+void MyEntityManager::AddEntity(MyEntity* pTemp)
+{
+	if (pTemp->IsInitialized())
+	{
+		m_EntityList.push_back(pTemp);
+		m_uEntityCount = m_EntityList.size();
+	}
+
+	SafeDelete(m_mEntityArray);
+	m_mEntityArray = new PEntity[m_EntityList.size()];
+	for (uint i = 0; i < m_EntityList.size(); ++i)
+	{
+		m_mEntityArray[i] = m_EntityList[i];
+	}
+}
+
 void Simplex::MyEntityManager::RemoveEntity(uint a_uIndex)
 {
 	//if the list is empty return

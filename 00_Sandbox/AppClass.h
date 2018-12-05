@@ -10,7 +10,7 @@ Date: 2017/06
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
 
-#include "MyRigidBody.h"
+#include "MyEntityManager.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -25,6 +25,8 @@ class Application
 
 	std::map<std::string, Model*> walls;
 	std::map<std::string, MyRigidBody*> wallRBs;
+
+	MyEntityManager* m_pEntityMngr = nullptr;
 
 	Simplex::Model* m_pModel = nullptr; //Model to try
 	MyRigidBody* m_pModelRB = nullptr;

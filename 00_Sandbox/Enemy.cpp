@@ -1,9 +1,7 @@
 #include "Enemy.h"
 Enemy::Enemy(vector3 curPos)
 {
-	enemyModel = new Model();								//Create the enemy's model
-	enemyModel->Load("HarryPotter\\Boo.FBX");				//Load it
-	enemyRB = new MyRigidBody(enemyModel->GetVertexList());	//Set the enemy's rigidbody
+	enemy = new MyEntity("HarryPotter\\Boo.FBX");
 
 	mEnemyMatrix = IDENTITY_M4;	//initial enemy position/rotation/scale
 
@@ -18,8 +16,7 @@ Enemy::Enemy(vector3 curPos)
 
 Enemy::~Enemy()
 {
-	SafeDelete(enemyModel);
-	SafeDelete(enemyRB);
+	SafeDelete(enemy);
 }
 
 void Enemy::Update() 
@@ -92,8 +89,7 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
 	
 
-	enemyModel->SetModelMatrix(mEnemyMatrix);
-	enemyRB->SetModelMatrix(mEnemyMatrix);
+	enemy->SetModelMatrix(mEnemyMatrix);
 	//m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??
 	return mEnemyMatrix;
 }

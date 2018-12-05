@@ -20,6 +20,13 @@ namespace Simplex
 		std::vector<MyEntity*> m_EntityList; //entities list
 		PEntity* m_mEntityArray = nullptr; //array of Entity pointers
 	public:
+		/*
+Usage: constructor
+Arguments: ---
+Output: class object instance
+*/
+		MyEntityManager(void);
+
 		std::vector<MyEntity*> GetEntityList(void);
 		/*
 		Usage: Gets the singleton pointer
@@ -52,6 +59,10 @@ namespace Simplex
 		ARGUMENTS: uint a_uIndex -> index of the queried entry, if < 0 asks for the last one added
 		OUTPUT: ---
 		*/
+
+		void AddEntity(MyEntity* pTemp);
+
+
 		void RemoveEntity(uint a_uIndex);
 		/*
 		USAGE: Deletes the Entity Specified by unique ID and removes it from the list
@@ -242,12 +253,6 @@ namespace Simplex
 		uint GetEntityCount(void);
 
 	private:
-		/*
-		Usage: constructor
-		Arguments: ---
-		Output: class object instance
-		*/
-		MyEntityManager(void);
 		/*
 		Usage: copy constructor
 		Arguments: class object to copy
