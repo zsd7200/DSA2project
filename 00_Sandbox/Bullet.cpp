@@ -22,10 +22,11 @@ Bullet::~Bullet()
 matrix4 Bullet::UpdatePosition()
 {
 	//Getting the initial position for the object to start
-	vector3 tempForward = (glm::normalize(forward) * timesMoved) + startVector;
+	//vector3 tempForward = (glm::normalize(forward) * timesMoved) + startVector;
+	currentPosition = (glm::normalize(forward) * timesMoved) + startVector;
 
 	//Setting the location of the player
-	matrix4 mBulletMatrix = glm::translate(vector3(tempForward.x, tempForward.y, tempForward.z)) * glm::scale(vector3(1.0f));
+	matrix4 mBulletMatrix = glm::translate(vector3(currentPosition.x, currentPosition.y, currentPosition.z)) * glm::scale(vector3(1.0f));
 
 	//Seting the model matrixes 
 	bulletEntity->SetModelMatrix(mBulletMatrix);

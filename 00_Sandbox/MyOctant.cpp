@@ -21,8 +21,6 @@ MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 	// get entity list for size of loop and to get a rigidbody for max/min list
 	std::vector<MyEntity*> l_Entity_List = m_pEntityMngr->GetEntityList();
 	uint iEntityCount = l_Entity_List.size();
-	std::cout << "Count: " << m_pEntityMngr->GetEntityCount() << std::endl;
-	std::cout << "Entity Count : " << iEntityCount << std::endl;
 	std::vector<vector3> v3MaxMin_list;
 
 	// get max/min values to create temporary rigidbody
@@ -75,11 +73,9 @@ MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 	m_v3Min = m_v3Center - (vector3(m_fSize) / 2.0f);
 	m_v3Max = m_v3Center + (vector3(m_fSize) / 2.0f);
 
-	std::vector<vector3> minMax;
-	minMax.push_back(m_v3Min);
 	minMax.push_back(m_v3Max);
-	minMaxList.push_back(minMax);
-
+	minMax.push_back(m_v3Min);
+	
 	// increment count
 	m_uOctantCount++;
 }
@@ -134,6 +130,10 @@ void MyOctant::Swap(MyOctant& other)
 
 // accessors
 float MyOctant::GetSize(void) { return m_fSize; }
+std::vector<std::vector<vector3>> Simplex::MyOctant::GetMinMaxList()
+{
+	return minMaxList;
+}
 vector3 MyOctant::GetCenterGlobal(void) { return m_v3Center; }
 vector3 MyOctant::GetMinGlobal(void) { return m_v3Min; }
 vector3 MyOctant::GetMaxGlobal(void) { return m_v3Max; }
@@ -218,6 +218,11 @@ void MyOctant::Subdivide()
 	m_pChild[5] = new MyOctant(m_v3Center + vector3(-fQuartSize, fQuartSize, -fQuartSize), fHalfSize);
 	m_pChild[6] = new MyOctant(m_v3Center + vector3(-fQuartSize, -fQuartSize, -fQuartSize), fHalfSize);
 	m_pChild[7] = new MyOctant(m_v3Center + vector3(fQuartSize, -fQuartSize, -fQuartSize), fHalfSize);
+
+	for (size_t i = 0; i < 8; i++)
+	{
+		m_pRoot->minMaxList.push_back(m_pChild[i]->minMax);
+	}
 
 	// set up pChildren
 	for (uint i = 0; i < m_uChildren; i++)
@@ -322,16 +327,9 @@ void MyOctant::Init(void)
 	m_v3Max = vector3(0);
 
 	m_pMeshMngr = MeshManager::GetInstance();
-	if (m_pMeshMngr != nullptr)
-		std::cout << "Ladies and gentlemen, we got him" << std::endl;
-	else
-		std::cout << "nope" << std::endl;
+
 
 	m_pEntityMngr = MyEntityManager::GetInstance();
-	if (m_pEntityMngr != nullptr)
-		std::cout << "Ladies and gentlemen, we got him" << std::endl;
-	else
-		std::cout << "nope" << std::endl;
 
 
 	MyOctant* m_pParent = nullptr;

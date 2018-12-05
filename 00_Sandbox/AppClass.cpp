@@ -46,7 +46,6 @@ void Application::InitVariables(void)
 	for (int i = 0; i < 30; i++) {
 		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 + 5, rand() % 50 - 25)));
 		m_pEntityMngr->AddEntity(enemies[i]->enemy);
-		std::cout << " Count: " << m_pEntityMngr->GetEntityCount() << std::endl;
 	}
 
 	m_pOctant = new MyOctant(2, 5);
@@ -159,6 +158,8 @@ void Application::Update(void)
 	static bool renderModel = true;
 	static bool renderColModel = true;
 	static std::vector<int> indexesToDelete;
+	static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
+
 	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
@@ -167,6 +168,36 @@ void Application::Update(void)
 		//mainPlayer->bullets[i]->bulletModel->AddToRenderList();
 		//mainPlayer->bullets[i]->bulletRB->AddToRenderList();
 		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
+
+		for (size_t j = 0; j < localMinMax.size(); j++)
+		{
+			if (mainPlayer->bullets[i]->currentPosition.x < localMinMax[j][0].x)
+				if (mainPlayer->bullets[i]->currentPosition.x > localMinMax[j][1].x)
+					if (mainPlayer->bullets[i]->currentPosition.y < localMinMax[j][0].y)
+						if (mainPlayer->bullets[i]->currentPosition.y > localMinMax[j][1].y)
+							if (mainPlayer->bullets[i]->currentPosition.z < localMinMax[j][0].z)
+								if (mainPlayer->bullets[i]->currentPosition.z > localMinMax[j][1].z)
+								{
+									mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
+									mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
+								}
+
+
+			// check y
+				//return false;
+				//return false;
+
+			// check z
+				//return false;
+				//return false;
+			/*if (mainPlayer->bullets[i]->currentPosition.x < localMinMax[j][0].x && mainPlayer->bullets[i]->currentPosition.y < localMinMax[j][0].y && mainPlayer->bullets[i]->currentPosition.z < localMinMax[j][0].z)
+				if (mainPlayer->bullets[i]->currentPosition.x > localMinMax[j][1].x && mainPlayer->bullets[i]->currentPosition.y > localMinMax[j][1].y && mainPlayer->bullets[i]->currentPosition.z > localMinMax[j][1].z)
+				{
+					mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
+					mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
+				}
+				*/
+		}
 
 		/*bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
@@ -244,6 +275,15 @@ void Application::Update(void)
 	for (int i = 0; i < enemies.size(); i++) 
 	{
 		enemies[i]->enemy->AddToRenderList();
+
+		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
+		{
+			bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
+			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
+			
+			if (tempBool)
+				std::cout << "Real Collision" << std::endl;
+		}
 	}
 
 	m_pMeshMngr->Print("Colliding: ");

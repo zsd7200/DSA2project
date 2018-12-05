@@ -156,7 +156,6 @@ void Simplex::MyEntity::AddDimension(uint a_uDimension)
 	m_DimensionArray = pTemp;
 
 	++m_nDimensionCount;
-
 	SortDimensions();
 }
 void Simplex::MyEntity::RemoveDimension(uint a_uDimension)
@@ -237,13 +236,16 @@ bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 {
 	//if not in memory return
 	if (!m_bInMemory || !other->m_bInMemory)
+	{
 		return true;
+	}
 
 	//if the entities are not living in the same dimension
 	//they are not colliding
 	if (!SharesDimension(other))
+	{
 		return false;
-
+	}
 	return m_pRigidBody->IsColliding(other->GetRigidBody());
 }
 void Simplex::MyEntity::ClearCollisionList(void)

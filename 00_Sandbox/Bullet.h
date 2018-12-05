@@ -27,6 +27,7 @@ public:
 	//The starting position of the camera
 	vector3 startVector = vector3(0.0f);
 
+	vector3 currentPosition = vector3(0.0f);
 	//The number to multiply movement by
 	float timesMoved = 0.0f;
 

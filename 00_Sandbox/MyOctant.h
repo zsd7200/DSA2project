@@ -15,6 +15,7 @@ namespace Simplex
 	class MyOctant
 	{
 		std::vector<std::vector<vector3>> minMaxList;
+		std::vector<vector3> minMax;
 
 		static uint m_uOctantCount; //will store the number of octants instantiated
 		static uint m_uMaxLevel;//will store the maximum level an octant can go to
@@ -90,6 +91,10 @@ namespace Simplex
 		OUTPUT: size of octant
 		*/
 		float GetSize(void);
+
+
+		std::vector<std::vector<vector3>> GetMinMaxList();
+
 		/*
 		USAGE: Gets the center of the octant in global scape
 		ARGUMENTS: ---
