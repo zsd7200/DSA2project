@@ -182,7 +182,7 @@ void Application::Update(void)
 	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
 	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
 	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
-	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition()));	//player moves with camera
+	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward()));	//player moves with camera
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD

@@ -30,6 +30,6 @@ public:
 	std::vector<Bullet*> bullets;
 
 	//Updateing the position of the player
-	matrix4 UpdatePosition(vector3);
+	matrix4 UpdatePosition(vector3, vector3);
 };
 
