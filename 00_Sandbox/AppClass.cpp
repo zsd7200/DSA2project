@@ -18,7 +18,9 @@ void Application::InitVariables(void)
 	m_soundBGM.setLoop(true);
 
 	//sound effect
-	m_soundBuffer.loadFromFile(sRoute + "12C.wav");
+	//m_soundBuffer.loadFromFile(sRoute + "12C.wav");
+	m_soundBuffer.loadFromFile(sRoute + "Magic.ogg");
+
 	m_sound.setBuffer(m_soundBuffer);
 
 	//load model			//currently minecraft block
@@ -159,12 +161,15 @@ void Application::Update(void)
 	static bool renderColModel = true;
 	static std::vector<int> indexesToDelete;
 	static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
+	static int score = 0;
 
 	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
 		//Adding to the render list
-		m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
+		//m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
+		mainPlayer->bullets[i]->UpdatePosition();
+
 		//mainPlayer->bullets[i]->bulletModel->AddToRenderList();
 		//mainPlayer->bullets[i]->bulletRB->AddToRenderList();
 		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
@@ -285,16 +290,20 @@ void Application::Update(void)
 				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
 				m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
 				std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
+
+				score++;
 			}
 
 		}
 	}
 
-	m_pMeshMngr->Print("Colliding: ");
+	/*m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)
 		m_pMeshMngr->PrintLine("YES!", C_RED);
 	else
 		m_pMeshMngr->PrintLine("no", C_YELLOW);
+		*/
+	m_pMeshMngr->Printf(C_BLACK, "Current Score: %i", score);
 }
 void Application::Display(void)
 {
