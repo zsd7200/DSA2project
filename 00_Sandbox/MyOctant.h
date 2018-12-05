@@ -14,6 +14,8 @@ namespace Simplex
 	//System Class
 	class MyOctant
 	{
+		std::vector<std::vector<vector3>> minMaxList;
+
 		static uint m_uOctantCount; //will store the number of octants instantiated
 		static uint m_uMaxLevel;//will store the maximum level an octant can go to
 		static uint m_uIdealEntityCount; //will tell how many ideal Entities this object will contain

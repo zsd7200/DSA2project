@@ -75,11 +75,10 @@ MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 	m_v3Min = m_v3Center - (vector3(m_fSize) / 2.0f);
 	m_v3Max = m_v3Center + (vector3(m_fSize) / 2.0f);
 
-	//std::vector<std::vector<vector3>> test;
-	//std::vector<vector3> test2;
-	//test2.push_back(m_v3Min);
-	//test2.push_back(m_v3Max);
-	//test.push_back(test2);
+	std::vector<vector3> minMax;
+	minMax.push_back(m_v3Min);
+	minMax.push_back(m_v3Max);
+	minMaxList.push_back(minMax);
 
 	// increment count
 	m_uOctantCount++;
