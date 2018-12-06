@@ -41,13 +41,14 @@ class Application
 	Player* mainPlayer;
 
 	//Test enemy pointer
-	Enemy* firstEnemy;
+	//Enemy* firstEnemy;
 
 	std::vector<Model*> m_vSceneModels;
 	std::vector<Enemy*> enemies;
 	std::vector<MyRigidBody*> m_vSceneRigidBodies;
 
 	MyOctant* m_pOctant = nullptr;
+	int numOfEnemies = 0;
 
 private:
 	static ImGuiObject gui; //GUI object

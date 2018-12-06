@@ -47,6 +47,12 @@ void Enemy::Wander()
 	Approach(wanderPos);
 }
 
+void Enemy::ChasePlayer(vector3 playerPos) 
+{
+	Approach(playerPos);
+
+}
+
 void Enemy::Approach(vector3 target)
 {
 	vector3 desVel = target - curPos;
@@ -91,14 +97,19 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	{
 		tLookDir = glm::normalize(tLookDir);
 
-		if (tLookDir.x != 0 || tLookDir.z != 0)
+		//if (tLookDir.x != 0 || tLookDir.z != 0)
 			this->lookDir = tLookDir;
 	}	
 	
+	lookDir.x = -lookDir.x;
+	//float holder = lookDir.y;
+	//lookDir.y = lookDir.z;
+	//lookDir.z = holder;
+
 	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
-	mEnemyMatrix *= glm::lookAt(vector3(0), vector3(-1,0,0), vector3(0,0,1));
-	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
-	//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
+	//mEnemyMatrix *= glm::lookAt(vector3(0), vector3(-1,0,0), vector3(0,0,1));
+	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
+	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 
 	mEnemyMatrix *= glm::scale(vector3(0.01f));
 

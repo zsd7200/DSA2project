@@ -30,6 +30,7 @@ public:
 	void Update();
 
 	void Wander();
+	void ChasePlayer(vector3 playerPos);
 	void Approach(vector3);
 	static vector3 RandomUnitSphere();
 

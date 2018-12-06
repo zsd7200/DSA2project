@@ -5,21 +5,24 @@ void Application::InitVariables(void)
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
 
+	numOfEnemies = 10;
+
 	//Music
 	String sRoute = m_pSystem->m_pFolder->GetFolderData();
 	sRoute += m_pSystem->m_pFolder->GetFolderAudio();
 	
 #pragma region Sandbox
 	//Background music
-	m_soundBGM.openFromFile(sRoute + "elementary-wave-11.ogg");
+	m_soundBGM.openFromFile(sRoute + "bustin.ogg");
 	//m_soundBGM.openFromFile(sRoute + "Music.ogg");
 
 	m_soundBGM.play();
 	m_soundBGM.setLoop(true);
 
 	//sound effect
+	m_soundBuffer.loadFromFile(sRoute + "Expecto Patronum.ogg");
 	//m_soundBuffer.loadFromFile(sRoute + "12C.wav");
-	m_soundBuffer.loadFromFile(sRoute + "Magic.ogg");
+	//m_soundBuffer.loadFromFile(sRoute + "Magic.ogg");
 
 	m_sound.setBuffer(m_soundBuffer);
 
@@ -42,15 +45,15 @@ void Application::InitVariables(void)
 	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
 
 	mainPlayer = new Player();
-	firstEnemy = new Enemy(vector3(10, 0, 0));
-	m_pEntityMngr->AddEntity(firstEnemy->enemy);
+	//firstEnemy = new Enemy(vector3(10, 0, 0));
+	//m_pEntityMngr->AddEntity(firstEnemy->enemy);
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < numOfEnemies; i++) {
 		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 + 5, rand() % 50 - 25)));
 		m_pEntityMngr->AddEntity(enemies[i]->enemy);
 	}
 
-	m_pOctant = new MyOctant(2, 5);
+	m_pOctant = new MyOctant(2, numOfEnemies-1);
 	m_pEntityMngr->Update();
 
 	// load hogwarts bg
@@ -108,7 +111,7 @@ void Application::Update(void)
 	m_pCollisionModelRB->SetModelMatrix(mCollisionModel);
 	m_pMeshMngr->AddAxisToRenderList(mCollisionModel);
 
-	//Set model matrix to the model			//PLAYER (BOWSER)
+	//Set model matrix to the model			//PLAYER 
 	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
 	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
 	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
@@ -118,6 +121,7 @@ void Application::Update(void)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->Update();
+		enemies[i]->ChasePlayer(m_pCameraMngr->GetPosition());
 		m_pMeshMngr->AddAxisToRenderList(enemies[i]->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 	}
 
@@ -273,7 +277,7 @@ void Application::Update(void)
 	mainPlayer->playerModel->AddToRenderList();
 	mainPlayer->playerRB->AddToRenderList();
 
-	firstEnemy->enemy->AddToRenderList();
+	//firstEnemy->enemy->AddToRenderList();
 
 	for (int i = 0; i < enemies.size(); i++) 
 	{
@@ -351,5 +355,5 @@ void Application::Release(void)
 	SafeDelete(m_pCollisionModelRB);
 	SafeDelete(m_pHogwarts);
 	SafeDelete(mainPlayer);
-	SafeDelete(firstEnemy);
+	//SafeDelete(firstEnemy);
 }
