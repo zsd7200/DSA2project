@@ -7,11 +7,11 @@ void Application::InitVariables(void)
 
 	numOfEnemies = 10;
 
+#pragma region Music_and_Sounds
 	//Music
 	String sRoute = m_pSystem->m_pFolder->GetFolderData();
 	sRoute += m_pSystem->m_pFolder->GetFolderAudio();
 	
-#pragma region Sandbox
 	//Background music
 	m_soundBGM.openFromFile(sRoute + "bustin.ogg");
 	//m_soundBGM.openFromFile(sRoute + "Music.ogg");
@@ -25,6 +25,7 @@ void Application::InitVariables(void)
 	//m_soundBuffer.loadFromFile(sRoute + "Magic.ogg");
 
 	m_sound.setBuffer(m_soundBuffer);
+#pragma endregion
 
 	//load model			//currently minecraft block
 	m_pModel = new Simplex::Model();
@@ -67,7 +68,6 @@ void Application::InitVariables(void)
 
 	m_pPlayerRB = new MyRigidBody(m_pPlayerModel->GetVertexList());
 	*/
-#pragma endregion
 }
 void Application::Update(void)
 {
@@ -81,7 +81,7 @@ void Application::Update(void)
 	CameraRotation();
 
 	//Move light... just for fun...
-	static double dTimer = 0.0f; //create a variable to store time
+	/*static double dTimer = 0.0f; //create a variable to store time
 	static uint uClock = m_pSystem->GenClock(); //generate a clock to track time
 	dTimer += m_pSystem->GetDeltaTime(uClock); //get the time difference since last time called
 	double dAngle = MapValue(dTimer, 0.0, 5.0, 0.0, 360.0);//map the value so we do not need to wait 360 seconds, only 5
@@ -92,6 +92,7 @@ void Application::Update(void)
 	m_pLightMngr->SetIntensity(5.0f, 1); //set the intensity of first light
 	m_pLightMngr->SetColor(v3Color, 1); //set the color of first light
 	m_pMeshMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(0.15f)), v3Color, RENDER_SOLID); //add a sphere to "see" it
+	*/
 
 	matrix4 mHogwarts = glm::translate(vector3(0, 0, -25)) * glm::scale(vector3(0.1));
 	m_pHogwarts->SetModelMatrix(mHogwarts);
@@ -125,7 +126,7 @@ void Application::Update(void)
 		m_pMeshMngr->AddAxisToRenderList(enemies[i]->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 	}
 
-
+#pragma region Bounding_Walls
 	// grass and walls
 	matrix4 botAxis, topAxis, backAxis, frontAxis, rightAxis, leftAxis;
 
@@ -160,6 +161,7 @@ void Application::Update(void)
 	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
 	walls[5]->SetModelMatrix(leftAxis);
 	//walls["left"]->AddToRenderList();
+#pragma endregion
 
 	static bool renderModel = true;
 	static bool renderColModel = true;

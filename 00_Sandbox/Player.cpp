@@ -17,9 +17,9 @@ Player::~Player()
 {
 	//Deleting objects
 	SafeDelete(playerModel);
-	playerModel = nullptr;
+	//playerModel = nullptr;	//<< SafeDelete does this already
 	SafeDelete(playerRB);
-	playerRB = nullptr;
+	//playerRB = nullptr;
 
 	for (size_t i = 0; i < bullets.size(); i++)
 	{

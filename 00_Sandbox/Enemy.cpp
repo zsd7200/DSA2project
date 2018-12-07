@@ -101,6 +101,7 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 			this->lookDir = tLookDir;
 	}	
 	
+	//messing with some axes values since the boo model axes don't match the global axes
 	lookDir.x = -lookDir.x;
 	//float holder = lookDir.y;
 	//lookDir.y = lookDir.z;

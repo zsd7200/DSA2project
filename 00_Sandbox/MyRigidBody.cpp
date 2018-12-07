@@ -235,6 +235,8 @@ bool MyRigidBody::IsColliding(MyRigidBody* const a_pOther)
 		if(SAT(a_pOther) != eSATResults::SAT_NONE)
 			bColliding = false;// reset to false
 	}
+	
+	//maybe just a distance check against the bullet center here, instead of SAT
 
 	if (bColliding) //they are colliding
 	{
