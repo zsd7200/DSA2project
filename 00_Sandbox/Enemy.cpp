@@ -9,7 +9,7 @@ Enemy::Enemy(vector3 curPos)
 
 	this->curPos = curPos;
 
-	std::printf("%f, %f",curPos.x,curPos.y);
+	//std::printf("%f, %f",curPos.x,curPos.y);
 
 	UpdatePosition(curPos);
 	time(&prevTime);
@@ -33,7 +33,7 @@ void Enemy::Update()
 	
 	Wander();
 
-	std::printf("%f, %f \n", deltaTime, curPos.y);
+	//std::printf("%f, %f \n", deltaTime, curPos.y);
 
 	UpdatePosition(curPos+velocity*deltaTime);
 	

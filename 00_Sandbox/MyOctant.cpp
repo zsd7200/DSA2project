@@ -72,6 +72,8 @@ MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 
 	minMax.push_back(m_v3Max);
 	minMax.push_back(m_v3Min);
+
+	m_pRigidBody = new MyRigidBody(minMax);
 	
 	// increment count
 	m_uOctantCount++;

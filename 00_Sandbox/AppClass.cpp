@@ -281,21 +281,42 @@ void Application::Update(void)
 
 	//firstEnemy->enemy->AddToRenderList();
 
-	for (int i = 0; i < enemies.size(); i++) 
+	//for (int i = 0; i < enemies.size(); i++) 
+	//{
+	//	enemies[i]->enemy->AddToRenderList();
+
+	//	for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
+	//	{
+	//		bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
+	//		//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
+	//		
+	//		if (tempBool)
+	//		{
+	//			std::cout << "Real Collision" << std::endl;
+	//			std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
+	//			m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
+	//			std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
+
+	//			score++;
+	//		}
+
+	//	}
+	//}	
+	for (int i = 0; i < m_pOctant->GetOctantCount(); i++) 
 	{
-		enemies[i]->enemy->AddToRenderList();
+		MyOctant* temp = m_pOctant->GetChild(i);
 
 		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 		{
-			bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
+			bool tempBool = mainPlayer->bullets[j]->bulletRB->IsColliding(temp->GetRigidBody());
 			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
 			
-			if (tempBool)
+			if (false)
 			{
 				std::cout << "Real Collision" << std::endl;
-				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
-				m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
-				std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
+				std::cout << "octant[" << i << "] and bullets[" << j << "]" << std::endl;
+				//m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
+				//std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
 
 				score++;
 			}
