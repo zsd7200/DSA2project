@@ -42,6 +42,8 @@ namespace Simplex
 		MyOctant* m_pRoot = nullptr;//Root octant
 		std::vector<MyOctant*> m_lChild; //list of nodes that contain objects (this will be applied to root only)
 
+		MyRigidBody* m_pRigidBody = nullptr;
+
 	public:
 		/*
 		USAGE: Constructor, will create an octant containing all MagnaEntities Instances in the Mesh
@@ -172,6 +174,9 @@ namespace Simplex
 		ARGUMENTS: ---
 		OUTPUT: It contains no children
 		*/
+
+		MyRigidBody* GetRigidBody(void);
+
 		bool IsLeaf(void);
 		/*
 		USAGE: Asks the MyOctant if it contains more than this many Bounding Objects

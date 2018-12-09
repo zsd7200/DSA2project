@@ -33,7 +33,7 @@ MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 		v3MaxMin_list.push_back(v3Max);
 	}
 
-	MyRigidBody* m_pRigidBody = new MyRigidBody(v3MaxMin_list);
+	m_pRigidBody = new MyRigidBody(v3MaxMin_list);
 
 	vector3 v3HalfWidth = m_pRigidBody->GetHalfWidth();
 	float max = v3HalfWidth.x; //set max to x
@@ -49,9 +49,6 @@ MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 	m_v3Center = m_pRigidBody->GetCenterLocal();
 	m_v3Min = m_v3Center - vector3(max);
 	m_v3Max = m_v3Center + vector3(max);
-
-	// delete rigidbody to prevent memory leaks
-	SafeDelete(m_pRigidBody);
 
 	// increment count
 	m_uOctantCount++;
@@ -94,6 +91,7 @@ MyOctant::MyOctant(MyOctant const& other)
 	m_EntityList = other.m_EntityList;
 	m_pRoot = other.m_pRoot;
 	m_lChild = other.m_lChild;
+	m_pRigidBody = other.m_pRigidBody;
 
 	for (size_t i = 0; i < 8; i++)
 		m_pChild[i] = other.m_pChild[i];
@@ -238,6 +236,8 @@ void MyOctant::Subdivide()
 }
 MyOctant* MyOctant::GetChild(uint a_nChild) { return m_pChild[a_nChild]; }
 MyOctant* MyOctant::GetParent(void) { return m_pParent; }
+MyRigidBody* MyOctant::GetRigidBody(void) { return m_pRigidBody; }
+
 bool MyOctant::IsLeaf(void)
 {
 	// if no children, it is a leaf
@@ -317,6 +317,9 @@ void MyOctant::Release(void)
 	m_fSize = 0;
 	m_EntityList.clear();
 	m_lChild.clear();
+
+	// delete rigidbody to prevent memory leaks
+	SafeDelete(m_pRigidBody);
 }
 void MyOctant::Init(void)
 {
