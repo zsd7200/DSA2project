@@ -87,6 +87,10 @@ Simplex::MyEntity::MyEntity(MyEntity const& other)
 	m_DimensionArray = other.m_DimensionArray;
 
 }
+uint * Simplex::MyEntity::GetDimensionArray()
+{
+	return m_DimensionArray;
+}
 MyEntity& Simplex::MyEntity::operator=(MyEntity const& other)
 {
 	if(this != &other)
@@ -154,7 +158,7 @@ void Simplex::MyEntity::AddDimension(uint a_uDimension)
 	}
 	pTemp[m_nDimensionCount] = a_uDimension;
 	m_DimensionArray = pTemp;
-
+	std::cout << m_DimensionArray[0] << std::endl;
 	++m_nDimensionCount;
 	SortDimensions();
 }

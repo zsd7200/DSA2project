@@ -43,6 +43,8 @@ public:
 	Output: class object instance
 	*/
 	MyEntity(MyEntity const& other);
+
+	uint* GetDimensionArray();
 	/*
 	Usage: Copy Assignment Operator
 	Arguments: class object to copy

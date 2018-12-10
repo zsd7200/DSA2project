@@ -98,6 +98,10 @@ MyOctant::MyOctant(MyOctant const& other)
 	for (size_t i = 0; i < 8; i++)
 		m_pChild[i] = other.m_pChild[i];
 }
+std::vector<MyRigidBody*> Simplex::MyOctant::GetRigidBodies()
+{
+	return m_vChildRigidBodies;
+}
 MyOctant& MyOctant::operator=(MyOctant const& other)
 {
 	if (this != &other)
@@ -221,7 +225,8 @@ void MyOctant::Subdivide()
 
 	for (size_t i = 0; i < 8; i++)
 	{
-		m_pRoot->minMaxList.push_back(m_pChild[i]->minMax);
+		//m_pRoot->minMaxList.push_back(m_pChild[i]->minMax);
+		m_pRoot->m_vChildRigidBodies.push_back(m_pChild[i]->m_pRigidBody);
 	}
 
 	// set up pChildren

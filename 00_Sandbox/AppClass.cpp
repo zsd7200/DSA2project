@@ -166,11 +166,32 @@ void Application::Update(void)
 	static bool renderModel = true;
 	static bool renderColModel = true;
 	static std::vector<int> indexesToDelete;
-	static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
+	//static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
+	static std::vector<MyRigidBody*> octantBodies = m_pOctant->GetRigidBodies();
 	static int score = 0;
 
 	//Looping through each bullet in the field
+	//Messing with, pls no deletarino
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
+	{
+		mainPlayer->bullets[i]->UpdatePosition();
+		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
+
+		for (size_t j = 0; j < octantBodies.size(); j++)
+		{
+			if (octantBodies[i]->IsColliding(mainPlayer->bullets[i]->bulletEntity->GetRigidBody()))
+			{
+				mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
+				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
+			}
+		}
+
+		//uint* tempArray = mainPlayer->bullets[i]->bulletEntity->GetDimensionArray();
+		//std::cout << tempArray[i] << std::endl;
+	}
+
+
+	/*for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
 		//Adding to the render list
 		//m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
@@ -206,7 +227,8 @@ void Application::Update(void)
 					mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
 				}
 				*/
-		}
+		//}
+		
 
 		/*bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
 		if (tempBool)
@@ -227,7 +249,7 @@ void Application::Update(void)
 		if (mainPlayer->bullets[i]->isTimedOut)
 			indexesToDelete.push_back(i);
 			*/
-	}
+	//}
 
 	m_pEntityMngr->Update();
 	/*if (indexesToDelete.size() > 0)
@@ -308,7 +330,7 @@ void Application::Update(void)
 
 		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 		{
-			bool tempBool = mainPlayer->bullets[j]->bulletRB->IsColliding(temp->GetRigidBody());
+			//bool tempBool = mainPlayer->bullets[j]->bulletRB->IsColliding(temp->GetRigidBody());
 			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
 			
 			if (false)

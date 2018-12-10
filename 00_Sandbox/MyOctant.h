@@ -43,7 +43,7 @@ namespace Simplex
 		std::vector<MyOctant*> m_lChild; //list of nodes that contain objects (this will be applied to root only)
 
 		MyRigidBody* m_pRigidBody = nullptr;
-
+		std::vector<MyRigidBody*> m_vChildRigidBodies;
 	public:
 		/*
 		USAGE: Constructor, will create an octant containing all MagnaEntities Instances in the Mesh
@@ -68,6 +68,8 @@ namespace Simplex
 		OUTPUT: class object instance
 		*/
 		MyOctant(MyOctant const& other);
+
+		std::vector<MyRigidBody*> GetRigidBodies();
 		/*
 		USAGE: Copy Assignment Operator
 		ARGUMENTS: class object to copy
