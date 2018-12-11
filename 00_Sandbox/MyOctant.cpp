@@ -284,7 +284,7 @@ void MyOctant::ConstructTree(uint a_nMaxLevel)
 {
 	// set up variables
 	m_uMaxLevel = a_nMaxLevel;
-	m_uOctantCount = 1;
+	m_uOctantCount = 0;
 
 	// subdivide if containsmore returns true
 	if (ContainsMoreThan(m_uIdealEntityCount) == true)

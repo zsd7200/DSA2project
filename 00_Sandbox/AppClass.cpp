@@ -329,7 +329,7 @@ void Application::Update(void)
 
 		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 		{
-			bool tempBool = mainPlayer->bullets[j]->bulletRB->IsColliding(temp->GetRigidBody());
+			bool tempBool = mainPlayer->bullets[j]->bulletEntity->GetRigidBody()->IsColliding(temp->GetRigidBody());
 			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
 			
 			if (tempBool)
