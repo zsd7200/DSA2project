@@ -47,12 +47,13 @@ void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 //Can add in more parameters to make movement better
 matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 {
-
-	quaternion rotQuat = glm::angleAxis(glm::radians(3.0f), glm::cross(basePoint, glm::normalize(-forward)));
+	forward.z = -forward.z;
+	forward.y = -forward.y;
+	quaternion rotQuat = glm::lookAt(basePoint,basePoint-forward,vector3(0,1,0));
 	matrix4 rotMat = glm::toMat4(rotQuat);
 
 	//Setting the location of the player
-	matrix4 mPlayerMatrix = glm::translate(vector3(basePoint.x, basePoint.y - 1.5f, basePoint.z)) * rotMat;
+	matrix4 mPlayerMatrix = glm::translate(vector3(basePoint.x, basePoint.y - 1, basePoint.z))*rotMat;
 
 	//Seting the model matrixes 
 	playerModel->SetModelMatrix(mPlayerMatrix);
