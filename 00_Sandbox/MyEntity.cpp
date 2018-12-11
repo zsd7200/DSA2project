@@ -69,7 +69,7 @@ Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
 		GenUniqueID(a_sUniqueID);
 		m_sUniqueID = a_sUniqueID;
 		m_IDMap[a_sUniqueID] = this;
-		m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); //generate a rigid body
+		m_pRigidBody = new MyRigidBody(ShrinkRigidBody(m_pModel->GetVertexList())); //generate a rigid body
 		m_bInMemory = true; //mark this entity as viable
 	}
 }
@@ -78,7 +78,8 @@ Simplex::MyEntity::MyEntity(MyEntity const& other)
 	m_bInMemory = other.m_bInMemory;
 	m_pModel = other.m_pModel;
 	//generate a new rigid body we do not share the same rigid body as we do the model
-	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); 
+	std::vector<vector3> smallVertList = m_pModel->GetVertexList();
+	m_pRigidBody = new MyRigidBody(ShrinkRigidBody(m_pModel->GetVertexList()));
 	m_m4ToWorld = other.m_m4ToWorld;
 	m_pMeshMngr = other.m_pMeshMngr;
 	m_sUniqueID = other.m_sUniqueID;
@@ -259,4 +260,15 @@ void Simplex::MyEntity::ClearCollisionList(void)
 void Simplex::MyEntity::SortDimensions(void)
 {
 	std::sort(m_DimensionArray, m_DimensionArray + m_nDimensionCount);
+}
+
+// make entity rigidbodies smaller to make collisions seem a bit more accurate/eliminate white space
+std::vector<vector3> Simplex::MyEntity::ShrinkRigidBody(std::vector<vector3> vertList)
+{
+	std::vector<vector3> smallVertList = vertList;
+
+	for (size_t i = 0; i < smallVertList.size(); i++)
+		smallVertList[i] *= 0.75f;
+
+	return smallVertList;
 }

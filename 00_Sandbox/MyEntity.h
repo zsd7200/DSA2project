@@ -187,6 +187,9 @@ private:
 	Output: ---
 	*/
 	void Init(void);
+
+	std::vector<vector3> ShrinkRigidBody(std::vector<vector3>);
+
 };//class
 
   //EXPIMP_TEMPLATE template class SimplexDLL std::vector<MyEntity>;
