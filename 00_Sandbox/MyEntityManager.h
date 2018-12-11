@@ -26,6 +26,9 @@ Usage: constructor
 Arguments: ---
 Output: class object instance
 */
+
+		void SetEntityList(std::vector<MyEntity*>);
+
 		std::vector<MyEntity*> GetEntityList(void);
 		/*
 		Usage: Gets the singleton pointer

@@ -256,7 +256,6 @@ void Application::Update(void)
 			*/
 	//}
 
-	m_pEntityMngr->Update();
 	/*if (indexesToDelete.size() > 0)
 	{
 		std::vector<Bullet*> tempVec;
@@ -286,8 +285,6 @@ void Application::Update(void)
 		indexesToDelete.clear();
 	}
 	*/
-	
-	bool bColliding = mainPlayer->playerRB->IsColliding(walls[0]->GetRigidBody());
 	
 	//Rendering the player in the world
 	mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());	//player moves with camera
@@ -321,6 +318,14 @@ void Application::Update(void)
 
 	if (enemyIndexToDelete != -1)
 	{
+		for (size_t i = 0; i < m_pEntityMngr->GetEntityCount() - 1; i++)
+			if (enemies[enemyIndexToDelete]->enemy == m_pEntityMngr->GetEntityList()[i])
+			{
+				std::vector<MyEntity*> temp = m_pEntityMngr->GetEntityList();
+				temp.erase(temp.begin() + i);
+				m_pEntityMngr->SetEntityList(temp);
+			}
+
 		SafeDelete(enemies[enemyIndexToDelete]);
 		enemies.erase(enemies.begin() + enemyIndexToDelete);
 		enemyIndexToDelete = -1;

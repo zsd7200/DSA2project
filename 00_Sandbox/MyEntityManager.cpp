@@ -19,6 +19,21 @@ void Simplex::MyEntityManager::Release(void)
 	m_EntityList.clear();
 	m_mEntityArray = nullptr;
 }
+
+void Simplex::MyEntityManager::SetEntityList(std::vector<MyEntity*> entList)
+{
+	m_EntityList = entList;
+	m_uEntityCount = entList.size();
+
+	SafeDelete(m_mEntityArray);
+	m_mEntityArray = new PEntity[entList.size()];
+
+	for (uint i = 0; i < entList.size(); ++i)
+	{
+		m_mEntityArray[i] = entList[i];
+	}
+}
+
 std::vector<MyEntity*> Simplex::MyEntityManager::GetEntityList(void)
 {
 	return m_EntityList;
