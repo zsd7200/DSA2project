@@ -45,7 +45,7 @@ void Enemy::Update(vector3 playerPos)
 	}
 	//std::printf("%f, %f \n", deltaTime, curPos.y);
 
-	UpdatePosition(curPos+velocity*deltaTime);
+	//UpdatePosition(curPos+velocity*deltaTime);
 	
 }
 

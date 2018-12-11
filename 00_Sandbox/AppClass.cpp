@@ -166,7 +166,7 @@ void Application::Update(void)
 	static bool renderColModel = true;
 	static std::vector<int> indexesToDelete;
 	//static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
-	static std::vector<MyRigidBody*> octantBodies = m_pOctant->GetRigidBodies();
+	//static std::vector<MyRigidBody*> octantBodies = m_pOctant->GetRigidBodies();
 	static int score = 0;
 
 	//Looping through each bullet in the field
@@ -176,7 +176,21 @@ void Application::Update(void)
 		mainPlayer->bullets[i]->UpdatePosition();
 		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
 
-		for (size_t j = 0; j < octantBodies.size(); j++)
+		for (int j = 0; j < m_pOctant->GetOctantCount(); j++)
+		{
+			MyOctant* temp = m_pOctant->GetChild(j);
+
+			//for (size_t k = 0; k < mainPlayer->bullets.size(); k++)
+			
+			bool tempBool = mainPlayer->bullets[i]->bulletEntity->GetRigidBody()->IsColliding(temp->GetRigidBody());
+			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
+			if (tempBool)
+			{
+				mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
+				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
+			}
+		}
+		/*for (size_t j = 0; j < octantBodies.size(); j++)
 		{
 			if (octantBodies[i]->IsColliding(mainPlayer->bullets[i]->bulletEntity->GetRigidBody()))
 			{
@@ -185,6 +199,7 @@ void Application::Update(void)
 			}
 		}
 
+		*/
 		//uint* tempArray = mainPlayer->bullets[i]->bulletEntity->GetDimensionArray();
 		//std::cout << tempArray[i] << std::endl;
 	}
@@ -316,14 +331,14 @@ void Application::Update(void)
 				std::cout << "Real Collision" << std::endl;
 				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
 				m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
-				std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
+				//std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
 
 				score++;
 			}
 
 		}
 	}	
-	for (int i = 0; i < m_pOctant->GetOctantCount(); i++) 
+	/*for (int i = 0; i < m_pOctant->GetOctantCount(); i++) 
 	{
 		MyOctant* temp = m_pOctant->GetChild(i);
 
@@ -344,7 +359,7 @@ void Application::Update(void)
 
 		}
 	}
-
+	*/
 	/*m_pMeshMngr->Print("Colliding: ");
 	if (bColliding)
 		m_pMeshMngr->PrintLine("YES!", C_RED);
