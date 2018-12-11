@@ -188,8 +188,12 @@ void Application::Update(void)
 			{
 				mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
 				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
+				//SafeDelete(mainPlayer->bullets[i]);
+				//mainPlayer->bullets[i] = nullptr;
+				mainPlayer->bullets[i]->isTimedOut = true;
 			}
 		}
+
 		/*for (size_t j = 0; j < octantBodies.size(); j++)
 		{
 			if (octantBodies[i]->IsColliding(mainPlayer->bullets[i]->bulletEntity->GetRigidBody()))
@@ -203,8 +207,37 @@ void Application::Update(void)
 		//uint* tempArray = mainPlayer->bullets[i]->bulletEntity->GetDimensionArray();
 		//std::cout << tempArray[i] << std::endl;
 	}
+	/*if (mainPlayer->bullets.size() > 0)
+	{
+		int tempSize = mainPlayer->bullets.size();
+		for (size_t i = tempSize; i > 0; i--)
+		{
+			if (tempSize == 1)
+			{
+				if (mainPlayer->bullets[0]->isTimedOut)
+				{
+					mainPlayer->bullets.erase(mainPlayer->bullets.end() - (tempSize - i));
+				}
+			}
+			else
+			{
+				if (mainPlayer->bullets[i]->isTimedOut)
+				{
+					mainPlayer->bullets.erase(mainPlayer->bullets.end() - (tempSize - i));
+				}
+			}
+		}
+		/*std::vector<Bullet*> tempBullets;
+		for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
+		{
+			if (mainPlayer->bullets[i] != nullptr)
+				tempBullets.push_back(mainPlayer->bullets[i]);
+		}
 
-
+		mainPlayer->bullets = tempBullets;
+		
+	}
+	*/
 	/*for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
 		//Adding to the render list
