@@ -175,6 +175,7 @@ void Application::Update(void)
 	{
 		mainPlayer->bullets[i]->UpdatePosition();
 		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
+		mainPlayer->bullets[i]->bulletEntity->GetRigidBody()->AddToRenderList();
 
 		for (int j = 0; j < m_pOctant->GetOctantCount(); j++)
 		{
@@ -320,6 +321,7 @@ void Application::Update(void)
 	for (int i = 0; i < enemies.size(); i++) 
 	{
 		enemies[i]->enemy->AddToRenderList();
+		enemies[i]->enemy->GetRigidBody()->AddToRenderList();
 
 		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 		{
@@ -330,7 +332,6 @@ void Application::Update(void)
 			{
 				std::cout << "Real Collision" << std::endl;
 				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
-				m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
 				//std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
 
 				score++;

@@ -158,7 +158,7 @@ void Simplex::MyEntity::AddDimension(uint a_uDimension)
 	}
 	pTemp[m_nDimensionCount] = a_uDimension;
 	m_DimensionArray = pTemp;
-	std::cout << m_DimensionArray[0] << std::endl;
+	//std::cout << m_DimensionArray[0] << std::endl;
 	++m_nDimensionCount;
 	SortDimensions();
 }
