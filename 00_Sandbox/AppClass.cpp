@@ -27,16 +27,6 @@ void Application::InitVariables(void)
 	m_sound.setBuffer(m_soundBuffer);
 #pragma endregion
 
-	//load model			//currently minecraft block
-	m_pModel = new Simplex::Model();
-	m_pModel->Load("Minecraft\\Cube.obj");
-	m_pModelRB = new MyRigidBody(m_pModel->GetVertexList());
-
-	//load collision model	//currently warp pipe
-	m_pCollisionModel = new Model();
-	m_pCollisionModel->Load("Mario\\WarpPipe.obj");
-	m_pCollisionModelRB = new MyRigidBody(m_pCollisionModel->GetVertexList());
-
 	// instantiate entities for walls
 	walls.push_back(new MyEntity("HarryPotter\\Cube.obj"));
 	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
@@ -58,8 +48,7 @@ void Application::InitVariables(void)
 	m_pEntityMngr->Update();
 
 	// load hogwarts bg
-	m_pHogwarts = new Model();
-	m_pHogwarts->Load("HarryPotter\\hog_color.fbx");
+	m_pHogwarts = new MyEntity("HarryPotter\\hog_color.fbx");
 
 	//mainPlayer->CreatePlayer();
 	/*m_pPlayerModel = new Model();
@@ -80,43 +69,9 @@ void Application::Update(void)
 	//Is the first person camera active?
 	CameraRotation();
 
-	//Move light... just for fun...
-	/*static double dTimer = 0.0f; //create a variable to store time
-	static uint uClock = m_pSystem->GenClock(); //generate a clock to track time
-	dTimer += m_pSystem->GetDeltaTime(uClock); //get the time difference since last time called
-	double dAngle = MapValue(dTimer, 0.0, 5.0, 0.0, 360.0);//map the value so we do not need to wait 360 seconds, only 5
-	
-	static vector3 v3Color(C_WHITE); //color of the light
-	vector3 v3Position(glm::sin(glm::radians(dAngle)) * 5.0f, 2.5f, glm::cos(glm::radians(dAngle)) * 5.0f);//holds position of light
-	m_pLightMngr->SetPosition(v3Position, 1); //set the position of first light(0 is reserved for global light)
-	m_pLightMngr->SetIntensity(5.0f, 1); //set the intensity of first light
-	m_pLightMngr->SetColor(v3Color, 1); //set the color of first light
-	m_pMeshMngr->AddSphereToRenderList(glm::translate(v3Position) * glm::scale(vector3(0.15f)), v3Color, RENDER_SOLID); //add a sphere to "see" it
-	*/
-
 	matrix4 mHogwarts = glm::translate(vector3(0, 0, -25)) * glm::scale(vector3(0.1));
 	m_pHogwarts->SetModelMatrix(mHogwarts);
-	m_pMeshMngr->AddAxisToRenderList(mHogwarts);
-
-	// disable drawing the cube in the center of view
-
-	////Set model matrix to the model			//minecraft block
-	//matrix4 mModel = glm::translate(m_v3Model) * ToMatrix4(m_qModel) * ToMatrix4(m_qArcBall);	//WHERE ARE THESE VALUES BEING SET?
-	//m_pModel->SetModelMatrix(mModel);
-	//m_pModelRB->SetModelMatrix(mModel);
-	//m_pMeshMngr->AddAxisToRenderList(mModel);
-
-	//Set model matrix to CollisionModel	//WARP PIPE
-	matrix4 mCollisionModel = glm::translate(vector3(2.25f, 0.0f, 0.0f)) * glm::rotate(IDENTITY_M4, glm::radians(-55.0f), AXIS_Z);
-	m_pCollisionModel->SetModelMatrix(mCollisionModel);
-	m_pCollisionModelRB->SetModelMatrix(mCollisionModel);
-	m_pMeshMngr->AddAxisToRenderList(mCollisionModel);
-
-	//Set model matrix to the model			//PLAYER 
-	//matrix4 mPlayerMatrix = glm::translate(vector3( m_pCameraMngr->GetPosition().x, m_pCameraMngr->GetPosition().y - 3.0f, m_pCameraMngr->GetPosition().z));
-	//m_pPlayerModel->SetModelMatrix(mPlayerMatrix);
-	//m_pPlayerRB->SetModelMatrix(mPlayerMatrix);
-	m_pMeshMngr->AddAxisToRenderList(mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward()));	//player moves with camera
+	m_pHogwarts->AddToRenderList();
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
@@ -331,23 +286,10 @@ void Application::Update(void)
 	*/
 	
 	bool bColliding = mainPlayer->playerRB->IsColliding(walls[0]->GetRigidBody());
-
-	m_pHogwarts->AddToRenderList();
-
-	if (renderModel)
-	{
-		m_pModel->AddToRenderList();
-		m_pModelRB->AddToRenderList();
-	}
-
-	if (renderColModel)
-	{
-		m_pCollisionModel->AddToRenderList();
-		m_pCollisionModelRB->AddToRenderList();
-	}
+	
 	//Rendering the player in the world
+	mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());	//player moves with camera
 	mainPlayer->playerModel->AddToRenderList();
-	mainPlayer->playerRB->AddToRenderList();
 
 	//firstEnemy->enemy->AddToRenderList();
 

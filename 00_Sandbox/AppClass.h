@@ -32,8 +32,9 @@ class Application
 	MyRigidBody* m_pModelRB = nullptr;
 	Model* m_pCollisionModel = nullptr;
 	MyRigidBody* m_pCollisionModelRB = nullptr;
-	Model* m_pHogwarts = nullptr;
+	MyEntity* m_pHogwarts = nullptr;
 
+	MyEntity* m_pPlayer = nullptr;
 	Model* m_pPlayerModel = nullptr;
 	MyRigidBody* m_pPlayerRB = nullptr;
 	

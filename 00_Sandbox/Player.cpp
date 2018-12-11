@@ -48,7 +48,7 @@ void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 {
 	forward.z = -forward.z;
-	forward.y = -forward.y;
+	forward.y += 0.1f;
 	quaternion rotQuat = glm::lookAt(basePoint,basePoint-forward,vector3(0,1,0));
 	matrix4 rotMat = glm::toMat4(rotQuat);
 
