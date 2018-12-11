@@ -125,7 +125,7 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 
-	//mEnemyMatrix *= glm::scale(vector3(sizeMulti));
+	mEnemyMatrix *= glm::scale(vector3(sizeMulti));
 
 	enemy->SetModelMatrix(mEnemyMatrix);
 	//m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??

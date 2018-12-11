@@ -19,7 +19,7 @@ public:
 	float maxVel = 4;
 	double deltaTime=0;
 	double shrinkTimer = 0;
-	float sizeMulti = 0.01f;
+	float sizeMulti = 1;
 	float chaseDis = 25;
 	bool shrinking = false;
 

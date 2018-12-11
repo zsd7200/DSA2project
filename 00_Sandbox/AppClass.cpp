@@ -325,7 +325,7 @@ void Application::Update(void)
 				temp.erase(temp.begin() + i);
 				m_pEntityMngr->SetEntityList(temp);
 			}
-
+		enemies[enemyIndexToDelete]->Shrink();
 		SafeDelete(enemies[enemyIndexToDelete]);
 		enemies.erase(enemies.begin() + enemyIndexToDelete);
 		enemyIndexToDelete = -1;
