@@ -19,6 +19,7 @@ Enemy::Enemy(vector3 curPos)
 Enemy::~Enemy()
 {
 	SafeDelete(enemy);
+	enemy = nullptr;
 }
 
 void Enemy::Update(vector3 playerPos) 

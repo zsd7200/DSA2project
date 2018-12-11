@@ -119,7 +119,7 @@ void Application::Update(void)
 
 	static bool renderModel = true;
 	static bool renderColModel = true;
-	static std::vector<int> indexesToDelete;
+	uint bulletIndexToDelete = -1;
 	//static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
 	//static std::vector<MyRigidBody*> octantBodies = m_pOctant->GetRigidBodies();
 	static int score = 0;
@@ -146,7 +146,8 @@ void Application::Update(void)
 				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
 				//SafeDelete(mainPlayer->bullets[i]);
 				//mainPlayer->bullets[i] = nullptr;
-				mainPlayer->bullets[i]->isTimedOut = true;
+				//mainPlayer->bullets[i]->isTimedOut = true;
+				
 			}
 		}
 
@@ -163,6 +164,7 @@ void Application::Update(void)
 		//uint* tempArray = mainPlayer->bullets[i]->bulletEntity->GetDimensionArray();
 		//std::cout << tempArray[i] << std::endl;
 	}
+	
 	/*if (mainPlayer->bullets.size() > 0)
 	{
 		int tempSize = mainPlayer->bullets.size();
@@ -293,6 +295,7 @@ void Application::Update(void)
 
 	//firstEnemy->enemy->AddToRenderList();
 
+	uint enemyIndexToDelete = -1;
 	for (int i = 0; i < enemies.size(); i++) 
 	{
 		enemies[i]->enemy->AddToRenderList();
@@ -306,14 +309,44 @@ void Application::Update(void)
 			if (tempBool)
 			{
 				std::cout << "Real Collision" << std::endl;
-				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
+				//std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
 				//std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
-
+				bulletIndexToDelete = j;
+				enemyIndexToDelete = i;
 				score++;
 			}
 
 		}
 	}	
+
+	if (enemyIndexToDelete != -1)
+	{
+		SafeDelete(enemies[enemyIndexToDelete]);
+		enemies.erase(enemies.begin() + enemyIndexToDelete);
+		enemyIndexToDelete = -1;
+	}
+	
+	if (bulletIndexToDelete != -1)
+	{
+		SafeDelete(mainPlayer->bullets[bulletIndexToDelete]);
+		mainPlayer->bullets.erase(mainPlayer->bullets.begin() + bulletIndexToDelete);
+		bulletIndexToDelete = -1;
+		/*for (size_t i = indexesToDelete.size(); i >= 0; i--)
+		{
+			if (indexesToDelete[i] == 0)
+			{
+				SafeDelete(mainPlayer->bullets[0]);
+				mainPlayer->bullets.erase(mainPlayer->bullets.begin());
+			}
+			else
+			{
+				SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
+				mainPlayer->bullets.erase(mainPlayer->bullets.begin() + (indexesToDelete[i] - 1));
+			}
+		}
+		*/
+	}
+
 	/*for (int i = 0; i < m_pOctant->GetOctantCount(); i++) 
 	{
 		MyOctant* temp = m_pOctant->GetChild(i);

@@ -15,6 +15,9 @@ Bullet::~Bullet()
 	SafeDelete(bulletRB);
 	bulletRB = nullptr;
 
+	SafeDelete(bulletEntity);
+	bulletEntity = nullptr;
+
 	startVector = vector3(0.0f);
 	forward = vector3(0.0f);
 }
