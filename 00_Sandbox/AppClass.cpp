@@ -121,8 +121,7 @@ void Application::Update(void)
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
 	for (int i = 0; i < enemies.size(); i++) {
-		enemies[i]->Update();
-		enemies[i]->ChasePlayer(m_pCameraMngr->GetPosition());
+		enemies[i]->Update(m_pCameraMngr->GetPosition());
 		m_pMeshMngr->AddAxisToRenderList(enemies[i]->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 	}
 
@@ -303,37 +302,37 @@ void Application::Update(void)
 
 	//firstEnemy->enemy->AddToRenderList();
 
-	//for (int i = 0; i < enemies.size(); i++) 
-	//{
-	//	enemies[i]->enemy->AddToRenderList();
+	for (int i = 0; i < enemies.size(); i++) 
+	{
+		enemies[i]->enemy->AddToRenderList();
 
-	//	for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
-	//	{
-	//		bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
-	//		//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
-	//		
-	//		if (tempBool)
-	//		{
-	//			std::cout << "Real Collision" << std::endl;
-	//			std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
-	//			m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
-	//			std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
+		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
+		{
+			bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
+			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
+			
+			if (tempBool)
+			{
+				std::cout << "Real Collision" << std::endl;
+				std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
+				m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
+				std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
 
-	//			score++;
-	//		}
+				score++;
+			}
 
-	//	}
-	//}	
+		}
+	}	
 	for (int i = 0; i < m_pOctant->GetOctantCount(); i++) 
 	{
 		MyOctant* temp = m_pOctant->GetChild(i);
 
 		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 		{
-			//bool tempBool = mainPlayer->bullets[j]->bulletRB->IsColliding(temp->GetRigidBody());
+			bool tempBool = mainPlayer->bullets[j]->bulletRB->IsColliding(temp->GetRigidBody());
 			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
 			
-			if (false)
+			if (tempBool)
 			{
 				std::cout << "Real Collision" << std::endl;
 				std::cout << "octant[" << i << "] and bullets[" << j << "]" << std::endl;

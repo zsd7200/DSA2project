@@ -129,6 +129,10 @@ void Application::DrawGUI(void)
 	m_pMeshMngr->Print("SpaceBar", C_BLUE);
 	m_pMeshMngr->PrintLine(" to shoot!");
 
+	m_pMeshMngr->Print("Press ");
+	m_pMeshMngr->Print("E", C_BLUE);
+	m_pMeshMngr->PrintLine(" to spawn more dementors!");
+
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
 	m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);

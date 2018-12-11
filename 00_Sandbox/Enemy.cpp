@@ -21,7 +21,7 @@ Enemy::~Enemy()
 	SafeDelete(enemy);
 }
 
-void Enemy::Update() 
+void Enemy::Update(vector3 playerPos) 
 {
 	deltaTime = (clock()-begin_time)/(CLOCKS_PER_SEC*1.00000);
 	begin_time = clock();
@@ -30,9 +30,19 @@ void Enemy::Update()
 		velocity = glm::normalize(velocity);
 		velocity *= maxVel;
 	}
-	
-	Wander();
 
+
+	if (!shrinking) {
+		if (glm::length(curPos - playerPos) < chaseDis)
+			ChasePlayer(playerPos);
+		else
+			Wander();
+	}
+	else {
+		shrinkTimer -= deltaTime;
+		sizeMulti=glm::lerp(0.0f,0.01f,(float)(shrinkTimer/3.000));
+		velocity *= 0.25f;
+	}
 	//std::printf("%f, %f \n", deltaTime, curPos.y);
 
 	UpdatePosition(curPos+velocity*deltaTime);
@@ -41,8 +51,10 @@ void Enemy::Update()
 
 void Enemy::Wander()
 {
-	if (wanderPos == ZERO_V3 || glm::length(wanderPos - curPos) < 1)
-		wanderPos = RandomUnitSphere()*(rand() % 25);
+	if (wanderPos == ZERO_V3 || glm::length(wanderPos - curPos) < 1) {
+		wanderPos = RandomUnitSphere()*(rand() % 50);
+		wanderPos.z = wanderPos.z - 25;
+	}
 
 	Approach(wanderPos);
 }
@@ -112,11 +124,16 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 
-	mEnemyMatrix *= glm::scale(vector3(0.01f));
+	mEnemyMatrix *= glm::scale(vector3(sizeMulti));
 
 	enemy->SetModelMatrix(mEnemyMatrix);
 	//m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??
 	return mEnemyMatrix;
+}
+
+void Enemy::Shrink() {
+	shrinking = true;
+	shrinkTimer = 3;
 }
 
 

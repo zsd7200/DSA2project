@@ -141,6 +141,11 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 	case sf::Keyboard::Space:
 		mainPlayer->CreateProjectile(m_pCameraMngr->GetForward(), m_pCameraMngr->GetPosition());
 		break;
+	case sf::Keyboard::Z:
+		for (int i = 0; i < 10; i++) {
+			enemies.push_back(new Enemy(vector3(rand() % 50 - 25, rand() % 50 + 5, rand() % 50 - 25)));
+		}
+		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
 		m_bModifier = false;

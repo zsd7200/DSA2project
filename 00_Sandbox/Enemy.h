@@ -18,6 +18,11 @@ public:
 	float acceleration = 2.0f;
 	float maxVel = 4;
 	double deltaTime=0;
+	double shrinkTimer = 0;
+	float sizeMulti = 0.01f;
+	float chaseDis = 25;
+	bool shrinking = false;
+
 	time_t prevTime = 0;
 
 	clock_t begin_time = clock();
@@ -27,7 +32,7 @@ public:
 	vector3 wanderPos=ZERO_V3;
 	vector3 lookDir = vector3(1);
 
-	void Update();
+	void Update(vector3);
 
 	void Wander();
 	void ChasePlayer(vector3 playerPos);
@@ -35,5 +40,6 @@ public:
 	static vector3 RandomUnitSphere();
 
 	matrix4 UpdatePosition(vector3);
+	void Shrink();
 };
 
