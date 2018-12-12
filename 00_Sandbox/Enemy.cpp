@@ -3,13 +3,12 @@
 
 Enemy::Enemy(vector3 curPos)
 {
+	//Creating the entity 
 	enemy = new MyEntity("HarryPotter\\boo2.FBX");
 
 	mEnemyMatrix = IDENTITY_M4;	//initial enemy position/rotation/scale
 
 	this->curPos = curPos;
-
-	//std::printf("%f, %f",curPos.x,curPos.y);
 
 	UpdatePosition(curPos);
 	time(&prevTime);
@@ -18,31 +17,42 @@ Enemy::Enemy(vector3 curPos)
 
 Enemy::~Enemy()
 {
+	//Deleting the entity
 	SafeDelete(enemy);
 	enemy = nullptr;
 }
 
 void Enemy::Update(vector3 playerPos) 
 {
+	//Getting the time since last frame
 	deltaTime = (clock()-begin_time)/(CLOCKS_PER_SEC*1.00000);
+
+	//Getting a new initial time
 	begin_time = clock();
 
+	//If the ghost is moving faster than max velocity, slow it down
 	if (glm::length(velocity) > maxVel) {
 		velocity = glm::normalize(velocity);
 		velocity *= maxVel;
 	}
 
-
+	//If the enemy is not shrinking, follow the player around
 	if (!shrinking) {
+		//If the player is within range, chace it, else, wander aimlessly
 		if (glm::length(curPos - playerPos) < chaseDis)
 			ChasePlayer(playerPos);
 		else
 			Wander();
 	}
+
+	//If the enemy is shrinking
 	else {
+		//Reduce the amount of time left to shrink
 		shrinkTimer -= deltaTime;
 		sizeMulti=glm::lerp(0.0f,0.01f,(float)(shrinkTimer/3.000));
 		velocity *= 0.25f;
+		if (shrinkTimer <= .1f)
+			isDead = true;
 	}
 	//std::printf("%f, %f \n", deltaTime, curPos.y);
 
@@ -52,6 +62,7 @@ void Enemy::Update(vector3 playerPos)
 
 void Enemy::Wander()
 {
+	//If the wander position is zero, or is too small, generate a new position to wander to 
 	if (wanderPos == ZERO_V3 || glm::length(wanderPos - curPos) < 1) {
 		wanderPos = RandomUnitSphere()*(rand() % 50);
 		wanderPos.z = wanderPos.z - 25;
@@ -62,16 +73,20 @@ void Enemy::Wander()
 
 void Enemy::ChasePlayer(vector3 playerPos) 
 {
+	//Following the player
 	Approach(playerPos);
-
 }
 
 void Enemy::Approach(vector3 target)
 {
+	//Getting the distance between the target and the enemy
 	vector3 desVel = target - curPos;
+
+	//Normalizing the vector before increasing it to the maximum velocity
 	desVel = glm::normalize(desVel);
 	desVel *= maxVel;
 
+	//
 	vector3 changeNeeded = (desVel - velocity);
 	if (glm::length(changeNeeded) > acceleration)
 	{
@@ -116,9 +131,6 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	
 	//messing with some axes values since the boo model axes don't match the global axes
 	lookDir.x = -lookDir.x;
-	//float holder = lookDir.y;
-	//lookDir.y = lookDir.z;
-	//lookDir.z = holder;
 
 	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
 	//mEnemyMatrix *= glm::lookAt(vector3(0), vector3(-1,0,0), vector3(0,0,1));
@@ -132,7 +144,8 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 	return mEnemyMatrix;
 }
 
-void Enemy::Shrink() {
+void Enemy::Shrink() 
+{
 	shrinking = true;
 	shrinkTimer = 3;
 }

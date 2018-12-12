@@ -1,4 +1,5 @@
 #include "AppClass.h"
+
 using namespace Simplex;
 void Application::InitVariables(void)
 {
@@ -14,16 +15,11 @@ void Application::InitVariables(void)
 	
 	//Background music
 	m_soundBGM.openFromFile(sRoute + "bustin.ogg");
-	//m_soundBGM.openFromFile(sRoute + "Music.ogg");
-
 	m_soundBGM.play();
 	m_soundBGM.setLoop(true);
 
 	//sound effect
 	m_soundBuffer.loadFromFile(sRoute + "Expecto Patronum.ogg");
-	//m_soundBuffer.loadFromFile(sRoute + "12C.wav");
-	//m_soundBuffer.loadFromFile(sRoute + "Magic.ogg");
-
 	m_sound.setBuffer(m_soundBuffer);
 #pragma endregion
 
@@ -35,28 +31,21 @@ void Application::InitVariables(void)
 	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
 	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
 
+	//Create the player object
 	mainPlayer = new Player();
-	//firstEnemy = new Enemy(vector3(10, 0, 0));
-	//m_pEntityMngr->AddEntity(firstEnemy->enemy);
 
+	//Spawning in boos randomly
 	for (int i = 0; i < numOfEnemies; i++) {
 		enemies.push_back(new Enemy(vector3(rand()%50-25, rand() % 50 + 5, rand() % 50 - 25)));
 		m_pEntityMngr->AddEntity(enemies[i]->enemy);
 	}
 
+	//Create the ooctant
 	m_pOctant = new MyOctant(2, numOfEnemies-1);
 	m_pEntityMngr->Update();
 
 	// load hogwarts bg
 	m_pHogwarts = new MyEntity("HarryPotter\\hog_color.fbx");
-
-	//mainPlayer->CreatePlayer();
-	/*m_pPlayerModel = new Model();
-	//m_pPlayerModel->Load("HarryPotter\\Br	oom.obj");
-	m_pPlayerModel->Load("Mario\\Bowser.obj");
-
-	m_pPlayerRB = new MyRigidBody(m_pPlayerModel->GetVertexList());
-	*/
 }
 void Application::Update(void)
 {
@@ -93,231 +82,139 @@ void Application::Update(void)
 	topAxis = glm::translate(vector3(0, 97, -25)) * glm::scale(vector3(100, 2, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(topAxis, C_BLUE);
 	walls[1]->SetModelMatrix(topAxis);
-	//walls["top"]->AddToRenderList();
 
 	// walls
 	backAxis = glm::translate(vector3(0, 48, -76)) * glm::scale(vector3(100, 100, 2));
 	m_pMeshMngr->AddWireCubeToRenderList(backAxis, C_RED);
 	walls[2]->SetModelMatrix(backAxis);
-	//walls["back"]->AddToRenderList();
 
 	frontAxis = glm::translate(vector3(0, 48, 26)) * glm::scale(vector3(100, 100, 2));
 	m_pMeshMngr->AddWireCubeToRenderList(frontAxis, C_RED);
 	walls[3]->SetModelMatrix(frontAxis);
-	//walls["front"]->AddToRenderList();
 
 	rightAxis = glm::translate(vector3(51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(rightAxis, C_PURPLE);
 	walls[4]->SetModelMatrix(rightAxis);
-	//walls["right"]->AddToRenderList();
 
 	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
 	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
 	walls[5]->SetModelMatrix(leftAxis);
-	//walls["left"]->AddToRenderList();
 #pragma endregion
 
-	static bool renderModel = true;
-	static bool renderColModel = true;
+	//Storing the index of a bullet to be destroyed (if applicable)
 	uint bulletIndexToDelete = -1;
-	//static std::vector<std::vector<vector3>> localMinMax = m_pOctant->GetMinMaxList();
-	//static std::vector<MyRigidBody*> octantBodies = m_pOctant->GetRigidBodies();
+
+	//Score for the player
 	static int score = 0;
 
 	//Looping through each bullet in the field
-	//Messing with, pls no deletarino
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
+		//Updating the position of the bullet so it moves forward
 		mainPlayer->bullets[i]->UpdatePosition();
+
+		//Drawing the bullet
 		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
 		mainPlayer->bullets[i]->bulletEntity->GetRigidBody()->AddToRenderList();
 
+		//Clearing out the dimensions of the bullet
+		mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
+
+		//Checking which octant the bullet is in
 		for (int j = 0; j < m_pOctant->GetOctantCount(); j++)
 		{
+			//Getting a temporary octant
 			MyOctant* temp = m_pOctant->GetChild(j);
 
-			//for (size_t k = 0; k < mainPlayer->bullets.size(); k++)
-			
+			//Checking if the bullet is colliding with an octant's rigid body
 			bool tempBool = mainPlayer->bullets[i]->bulletEntity->GetRigidBody()->IsColliding(temp->GetRigidBody());
-			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
+
+			//If colliding, add its dimension to the bullet, used in collision later
 			if (tempBool)
 			{
-				mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
-				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
-				//SafeDelete(mainPlayer->bullets[i]);
-				//mainPlayer->bullets[i] = nullptr;
-				//mainPlayer->bullets[i]->isTimedOut = true;
-				
-			}
-		}
-
-		/*for (size_t j = 0; j < octantBodies.size(); j++)
-		{
-			if (octantBodies[i]->IsColliding(mainPlayer->bullets[i]->bulletEntity->GetRigidBody()))
-			{
-				mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
 				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
 			}
 		}
-
-		*/
-		//uint* tempArray = mainPlayer->bullets[i]->bulletEntity->GetDimensionArray();
-		//std::cout << tempArray[i] << std::endl;
-	}
-	
-	/*if (mainPlayer->bullets.size() > 0)
-	{
-		int tempSize = mainPlayer->bullets.size();
-		for (size_t i = tempSize; i > 0; i--)
+		if (bulletIndexToDelete == -1)
 		{
-			if (tempSize == 1)
+			if (mainPlayer->bullets[i]->isTimedOut)
 			{
-				if (mainPlayer->bullets[0]->isTimedOut)
-				{
-					mainPlayer->bullets.erase(mainPlayer->bullets.end() - (tempSize - i));
-				}
-			}
-			else
-			{
-				if (mainPlayer->bullets[i]->isTimedOut)
-				{
-					mainPlayer->bullets.erase(mainPlayer->bullets.end() - (tempSize - i));
-				}
+				bulletIndexToDelete = i;
 			}
 		}
-		/*std::vector<Bullet*> tempBullets;
-		for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
-		{
-			if (mainPlayer->bullets[i] != nullptr)
-				tempBullets.push_back(mainPlayer->bullets[i]);
-		}
-
-		mainPlayer->bullets = tempBullets;
-		
 	}
-	*/
-	/*for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
+
+	//If a bullet should be deleted
+	if (bulletIndexToDelete != -1)
 	{
-		//Adding to the render list
-		//m_pMeshMngr->AddAxisToRenderList(mainPlayer->bullets[i]->UpdatePosition());
-		mainPlayer->bullets[i]->UpdatePosition();
+		//Deleting the object
+		SafeDelete(mainPlayer->bullets[bulletIndexToDelete]);
 
-		//mainPlayer->bullets[i]->bulletModel->AddToRenderList();
-		//mainPlayer->bullets[i]->bulletRB->AddToRenderList();
-		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
+		//Removing the bullet from the list
+		mainPlayer->bullets.erase(mainPlayer->bullets.begin() + bulletIndexToDelete);
 
-		for (size_t j = 0; j < localMinMax.size(); j++)
-		{
-			if (mainPlayer->bullets[i]->currentPosition.x < localMinMax[j][0].x)
-				if (mainPlayer->bullets[i]->currentPosition.x > localMinMax[j][1].x)
-					if (mainPlayer->bullets[i]->currentPosition.y < localMinMax[j][0].y)
-						if (mainPlayer->bullets[i]->currentPosition.y > localMinMax[j][1].y)
-							if (mainPlayer->bullets[i]->currentPosition.z < localMinMax[j][0].z)
-								if (mainPlayer->bullets[i]->currentPosition.z > localMinMax[j][1].z)
-								{
-									mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
-									mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
-								}
-			// check y
-				//return false;
-				//return false;
-
-			// check z
-				//return false;
-				//return false;
-			/*if (mainPlayer->bullets[i]->currentPosition.x < localMinMax[j][0].x && mainPlayer->bullets[i]->currentPosition.y < localMinMax[j][0].y && mainPlayer->bullets[i]->currentPosition.z < localMinMax[j][0].z)
-				if (mainPlayer->bullets[i]->currentPosition.x > localMinMax[j][1].x && mainPlayer->bullets[i]->currentPosition.y > localMinMax[j][1].y && mainPlayer->bullets[i]->currentPosition.z > localMinMax[j][1].z)
-				{
-					mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
-					mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
-				}
-				*/
-		//}
-		
-
-		/*bool tempBool = m_pModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
-		if (tempBool)
-		{
-			renderModel = false;
-			if (mainPlayer->bullets[i]->isTimedOut == false)
-				indexesToDelete.push_back(i);
-				
-		}
-		tempBool = m_pCollisionModelRB->IsColliding(mainPlayer->bullets[i]->bulletRB);
-		if (tempBool)
-		{
-			renderColModel = false;
-			if (mainPlayer->bullets[i]->isTimedOut == false)
-				indexesToDelete.push_back(i);
-				
-		}
-		if (mainPlayer->bullets[i]->isTimedOut)
-			indexesToDelete.push_back(i);
-			*/
-	//}
-
-	/*if (indexesToDelete.size() > 0)
-	{
-		std::vector<Bullet*> tempVec;
-		for (size_t i = 0; i < indexesToDelete.size(); i++)
-		{
-			//SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
-
-			//mainPlayer->bullets.erase(mainPlayer->bullets.begin() + indexesToDelete[i]);
-			//mainPlayer->bullets[indexesToDelete[i]] = mainPlayer->bullets[mainPlayer->bullets.size() - 1];
-			//mainPlayer->bullets.pop_back();
-			for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
-			{
-				if (j = indexesToDelete[i])
-				{
-					SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
-				}
-				else
-				{
-					tempVec.push_back(mainPlayer->bullets[j]);
-				}
-			}
-		}
-
-		mainPlayer-> bullets = tempVec;
-		tempVec.clear();
-		//mainPlayer->bullets.shrink_to_fit();
-		indexesToDelete.clear();
+		//Resetting the index
+		bulletIndexToDelete = -1;
 	}
-	*/
 	
 	//Rendering the player in the world
 	mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());	//player moves with camera
 	mainPlayer->playerModel->AddToRenderList();
 
-	//firstEnemy->enemy->AddToRenderList();
-
+	//A temporary int which will store the index of an enemy to be deleted (if applicable)
 	uint enemyIndexToDelete = -1;
+
+	//Vector to hold the index of enemies which are about to be deleted
+	std::vector<int> shrinkingEnemies;
+
+	//Looping through the list of enemies and checking for collisions with the bullets
 	for (int i = 0; i < enemies.size(); i++) 
 	{
+		//Rendering the enemies and their rigid bodies
 		enemies[i]->enemy->AddToRenderList();
 		enemies[i]->enemy->GetRigidBody()->AddToRenderList();
-
-		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
+		if (enemies[i]->shrinking == false)
 		{
-			bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
-			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
-			
-			if (tempBool)
+			//Checking collision between the bullets
+			for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 			{
-				std::cout << "Real Collision" << std::endl;
-				//std::cout << "enemy[" << i << "] and bullets[" << j << "]" << std::endl;
-				//std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
-				bulletIndexToDelete = j;
-				enemyIndexToDelete = i;
-				score++;
-			}
+				//Using the MyEntity collision check which uses dimension
+				bool tempBool = mainPlayer->bullets[j]->bulletEntity->IsColliding(enemies[i]->enemy);
 
+				//If there is collision
+				if (tempBool)
+				{
+					//Setting a specific bullet to be deleted
+					bulletIndexToDelete = j;
+
+					//Setting the enemy to start shrinking
+					enemies[i]->Shrink();
+
+					//Incrementing score
+					score++;
+				}
+			}
+		}
+		//If the enemies are shrinking, add them to the list of currently shrinking enemies
+		if (enemies[i]->shrinking)
+		{
+			shrinkingEnemies.push_back(i);
 		}
 	}	
 
+	//Looping through the list of enemies which are shrinking and seeing if any have finished shrinking
+	for (size_t i = 0; i < shrinkingEnemies.size(); i++)
+	{
+		if (enemies[shrinkingEnemies[i]]->isDead)
+			enemyIndexToDelete = shrinkingEnemies[i];
+	}
+
+	shrinkingEnemies.clear();
+
+	//Checking if an enemy should be deleted
 	if (enemyIndexToDelete != -1)
 	{
+		//Looping through the entity manager to remove the enemy from the list of entities
 		for (size_t i = 0; i < m_pEntityMngr->GetEntityCount() - 1; i++)
 			if (enemies[enemyIndexToDelete]->enemy == m_pEntityMngr->GetEntityList()[i])
 			{
@@ -325,61 +222,31 @@ void Application::Update(void)
 				temp.erase(temp.begin() + i);
 				m_pEntityMngr->SetEntityList(temp);
 			}
-		enemies[enemyIndexToDelete]->Shrink();
+
+		//Deleting the enemy
 		SafeDelete(enemies[enemyIndexToDelete]);
+
+		//Removing it from the list of eneies
 		enemies.erase(enemies.begin() + enemyIndexToDelete);
+
+		//Resetting the index
 		enemyIndexToDelete = -1;
 	}
 	
+	//If a bullet should be deleted
 	if (bulletIndexToDelete != -1)
 	{
+		//Deleting the object
 		SafeDelete(mainPlayer->bullets[bulletIndexToDelete]);
+
+		//Removing the bullet from the list
 		mainPlayer->bullets.erase(mainPlayer->bullets.begin() + bulletIndexToDelete);
+
+		//Resetting the index
 		bulletIndexToDelete = -1;
-		/*for (size_t i = indexesToDelete.size(); i >= 0; i--)
-		{
-			if (indexesToDelete[i] == 0)
-			{
-				SafeDelete(mainPlayer->bullets[0]);
-				mainPlayer->bullets.erase(mainPlayer->bullets.begin());
-			}
-			else
-			{
-				SafeDelete(mainPlayer->bullets[indexesToDelete[i]]);
-				mainPlayer->bullets.erase(mainPlayer->bullets.begin() + (indexesToDelete[i] - 1));
-			}
-		}
-		*/
 	}
 
-	/*for (int i = 0; i < m_pOctant->GetOctantCount(); i++) 
-	{
-		MyOctant* temp = m_pOctant->GetChild(i);
-
-		for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
-		{
-			bool tempBool = mainPlayer->bullets[j]->bulletEntity->GetRigidBody()->IsColliding(temp->GetRigidBody());
-			//bool tempBool = enemies[i]->enemy->IsColliding(mainPlayer->bullets[j]->bulletEntity);
-			
-			if (tempBool)
-			{
-				std::cout << "Real Collision" << std::endl;
-				std::cout << "octant[" << i << "] and bullets[" << j << "]" << std::endl;
-				//m_pMeshMngr->AddWireCubeToRenderList(enemies[i]->enemy->GetModelMatrix(), C_RED);
-				//std::cout << glm::to_string(enemies[i]->enemy->GetModelMatrix()) << std::endl;
-
-				score++;
-			}
-
-		}
-	}
-	*/
-	/*m_pMeshMngr->Print("Colliding: ");
-	if (bColliding)
-		m_pMeshMngr->PrintLine("YES!", C_RED);
-	else
-		m_pMeshMngr->PrintLine("no", C_YELLOW);
-		*/
+	//Print out the player's current score
 	m_pMeshMngr->Printf(C_BLACK, "Current Score: %i", score);
 }
 void Application::Display(void)

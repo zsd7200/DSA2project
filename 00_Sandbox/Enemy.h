@@ -22,6 +22,7 @@ public:
 	float sizeMulti = 1;
 	float chaseDis = 25;
 	bool shrinking = false;
+	bool isDead = false;
 
 	time_t prevTime = 0;
 

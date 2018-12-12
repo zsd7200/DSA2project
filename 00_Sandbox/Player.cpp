@@ -47,8 +47,13 @@ void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 //Can add in more parameters to make movement better
 matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 {
+	//Needed to reverse the forward
 	forward.z = -forward.z;
+
+	//Increasing the upwards position of the forward vector
 	forward.y += 0.1f;
+
+	//Rotation by looking at a specific position
 	quaternion rotQuat = glm::lookAt(basePoint,basePoint-forward,vector3(0,1,0));
 	matrix4 rotMat = glm::toMat4(rotQuat);
 
@@ -58,5 +63,7 @@ matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 	//Seting the model matrixes 
 	playerModel->SetModelMatrix(mPlayerMatrix);
 	playerRB->SetModelMatrix(mPlayerMatrix);
+
+
 	return mPlayerMatrix;
 }
