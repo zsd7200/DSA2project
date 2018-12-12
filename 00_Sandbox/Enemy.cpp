@@ -4,7 +4,7 @@
 Enemy::Enemy(vector3 curPos)
 {
 	//Creating the entity 
-	enemy = new MyEntity("HarryPotter\\boo2.FBX");
+	enemy = new MyEntity("HarryPotter\\Boo.fbx");
 
 	mEnemyMatrix = IDENTITY_M4;	//initial enemy position/rotation/scale
 
@@ -41,7 +41,7 @@ void Enemy::Update(vector3 playerPos)
 	{
 		////If the player is within range, chace it, else, wander aimlessly
 		//if (glm::length(curPos - playerPos) < chaseDis)
-		//	ChasePlayer(playerPos);
+		//	Approach(playerPos);
 		//else
 		//	Wander();
 
@@ -89,12 +89,6 @@ void Enemy::Wander()
 	}
 
 	Approach(wanderPos);
-}
-
-void Enemy::ChasePlayer(vector3 playerPos) 
-{
-	//Following the player
-	Approach(playerPos);
 }
 
 void Enemy::Approach(vector3 target)

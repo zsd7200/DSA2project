@@ -15,12 +15,12 @@ void Application::InitVariables(void)
 	sRoute += m_pSystem->m_pFolder->GetFolderAudio();
 	
 	//Background music
-	m_soundBGM.openFromFile(sRoute + "bustin.ogg");
+	m_soundBGM.openFromFile(sRoute + "hedwig.ogg");
 	m_soundBGM.play();
 	m_soundBGM.setLoop(true);
 
 	//sound effect
-	m_soundBuffer.loadFromFile(sRoute + "Expecto Patronum.ogg");
+	m_soundBuffer.loadFromFile(sRoute + "Magic.ogg");
 	m_sound.setBuffer(m_soundBuffer);
 #pragma endregion
 
