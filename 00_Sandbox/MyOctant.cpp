@@ -316,6 +316,7 @@ void MyOctant::AssignIDtoEntity(void)
 
 }
 uint MyOctant::GetOctantCount(void) { return m_uOctantCount; }
+uint MyOctant::GetOctantID(void) { return m_uID; }
 
 // private methods
 void MyOctant::Release(void)

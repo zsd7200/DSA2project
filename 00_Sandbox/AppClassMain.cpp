@@ -76,20 +76,13 @@ void Simplex::Application::CheckCollision(MyEntity* tempEnt, MyOctant* tempOct)
 {
 	if (tempOct->GetNumberChildren() == 0)
 	{
-		//Checking which octant the bullet is in
-		for (int j = 0; j < 8; j++)
+		//Checking if the bullet is colliding with an octant's rigid body
+		bool tempBool = tempEnt->GetRigidBody()->IsColliding(tempOct->GetRigidBody());
+
+		//If colliding, add its dimension to the bullet, used in collision later
+		if (tempBool)
 		{
-			//Getting a temporary octant
-			MyOctant* temp = tempOct->GetChild(j);
-
-			//Checking if the bullet is colliding with an octant's rigid body
-			bool tempBool = tempEnt->GetRigidBody()->IsColliding(temp->GetRigidBody());
-
-			//If colliding, add its dimension to the bullet, used in collision later
-			if (tempBool)
-			{
-				tempEnt->AddDimension(j);
-			}
+			tempEnt->AddDimension(tempOct->GetOctantID());
 		}
 	}
 	else

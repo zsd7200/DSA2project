@@ -123,9 +123,7 @@ void Application::Update(void)
 		
 		for (size_t j = 0; j < 8; j++)
 		{
-			MyOctant* temp = m_pOctant->GetChild(j);
-
-			CheckCollision(mainPlayer->bullets[i]->bulletEntity, temp);
+			CheckCollision(mainPlayer->bullets[i]->bulletEntity, m_pOctant->GetChild(j));
 		}
 		/*if (m_uOctantLevels != 0)
 		{
