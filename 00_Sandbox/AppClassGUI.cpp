@@ -165,16 +165,22 @@ void Application::DrawGUI(void)
 	if (m_bGUI_Main)
 	{
 		static float f = 0.0f;
-		ImGui::SetNextWindowPos(ImVec2(1, 44), ImGuiSetCond_FirstUseEver);
-		ImGui::SetNextWindowSize(ImVec2(315, 107), ImGuiSetCond_FirstUseEver);
-		ImGui::SetNextWindowCollapsed(false, ImGuiSetCond_FirstUseEver);
-		String sWindowName = m_pSystem->GetAppName() + " - Main";
+		ImGui::SetNextWindowPos(ImVec2(5, 5));
+		ImGui::SetNextWindowSize(ImVec2(315, 205));
+		ImGui::SetNextWindowCollapsed(false);
+		String sWindowName = m_pSystem->GetAppName();
 		ImGui::Begin(sWindowName.c_str());
 		{
-			ImGui::Text("Current Score: %i", score);
-			ImGui::Text("Press Spacebar to shoot");
-			ImGui::Text("Press V to spawn in more Enemies");
+			ImGui::Text("Current Score: %i", score * 100);
+			ImGui::Text("Press Spacebar to shoot.");
+			ImGui::Text("Press V to spawn in more Enemies.");
+			ImGui::Text("Press WASDQE to move.");
+			ImGui::Text("");
+			ImGui::Text("Use up/down arrows to increase/decrease");
+			ImGui::Text("octant levels.");
 			ImGui::Text("Current octant levels: %i", m_uOctantLevels);
+			ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
+			ImGui::Text("Brought to you by Large Patronus Energy");
 			/*ImGui::Text("FrameRate: %.2f [FPS] -> %.3f [ms/frame] ",
 				ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
 			ImGui::Text("RenderCalls: %d", m_uRenderCallCount);

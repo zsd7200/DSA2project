@@ -26,16 +26,9 @@ class Application
 	vector3 m_v3Model;
 	quaternion m_qModel;
 
-	std::vector<MyEntity*> walls;
-
+	MyEntity* grass;
 	MyEntityManager* m_pEntityMngr = nullptr;
-
-	Simplex::Model* m_pModel = nullptr; //Model to try
-	MyRigidBody* m_pModelRB = nullptr;
-	Model* m_pCollisionModel = nullptr;
-	MyRigidBody* m_pCollisionModelRB = nullptr;
 	MyEntity* m_pHogwarts = nullptr;
-
 	MyEntity* m_pPlayer = nullptr;
 	Model* m_pPlayerModel = nullptr;
 	MyRigidBody* m_pPlayerRB = nullptr;

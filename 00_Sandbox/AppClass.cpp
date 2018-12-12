@@ -23,14 +23,6 @@ void Application::InitVariables(void)
 	m_sound.setBuffer(m_soundBuffer);
 #pragma endregion
 
-	// instantiate entities for walls
-	walls.push_back(new MyEntity("HarryPotter\\Cube.obj"));
-	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
-	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
-	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
-	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
-	walls.push_back(new MyEntity("HarryPotter\\TransCube.obj"));
-
 	//Create the player object
 	mainPlayer = new Player();
 
@@ -47,6 +39,9 @@ void Application::InitVariables(void)
 
 	// load hogwarts bg
 	m_pHogwarts = new MyEntity("HarryPotter\\hog_color.fbx");
+
+	// load grass
+	grass = new MyEntity("HarryPotter\\Cube.obj");
 }
 void Application::Update(void)
 {
@@ -70,37 +65,11 @@ void Application::Update(void)
 		m_pMeshMngr->AddAxisToRenderList(enemies[i]->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
 	}
 
-#pragma region Bounding_Walls
-	// grass and walls
-	matrix4 botAxis, topAxis, backAxis, frontAxis, rightAxis, leftAxis;
-
 	// grass
-	botAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
-	walls[0]->SetModelMatrix(botAxis);
-	walls[0]->AddToRenderList();
+	matrix4 grassAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));
+	grass->SetModelMatrix(grassAxis);
+	grass->AddToRenderList();
 
-	// ceiling
-	topAxis = glm::translate(vector3(0, 97, -25)) * glm::scale(vector3(100, 2, 100));
-	m_pMeshMngr->AddWireCubeToRenderList(topAxis, C_BLUE);
-	walls[1]->SetModelMatrix(topAxis);
-
-	// walls
-	backAxis = glm::translate(vector3(0, 48, -76)) * glm::scale(vector3(100, 100, 2));
-	m_pMeshMngr->AddWireCubeToRenderList(backAxis, C_RED);
-	walls[2]->SetModelMatrix(backAxis);
-
-	frontAxis = glm::translate(vector3(0, 48, 26)) * glm::scale(vector3(100, 100, 2));
-	m_pMeshMngr->AddWireCubeToRenderList(frontAxis, C_RED);
-	walls[3]->SetModelMatrix(frontAxis);
-
-	rightAxis = glm::translate(vector3(51, 48, -25)) * glm::scale(vector3(2, 100, 100));
-	m_pMeshMngr->AddWireCubeToRenderList(rightAxis, C_PURPLE);
-	walls[4]->SetModelMatrix(rightAxis);
-
-	leftAxis = glm::translate(vector3(-51, 48, -25)) * glm::scale(vector3(2, 100, 100));
-	m_pMeshMngr->AddWireCubeToRenderList(leftAxis, C_PURPLE);
-	walls[5]->SetModelMatrix(leftAxis);
-#pragma endregion
 
 	//Storing the index of a bullet to be destroyed (if applicable)
 	uint bulletIndexToDelete = -1;
@@ -299,16 +268,10 @@ void Application::Release(void)
 
 	//release variables
 
-	for (size_t i = 0; i < walls.size(); i++)
-		SafeDelete(walls[i]);
-
 	for (auto & x : enemies)
 		SafeDelete(x);
 
-	SafeDelete(m_pModel);
-	SafeDelete(m_pModelRB);
-	SafeDelete(m_pCollisionModel);
-	SafeDelete(m_pCollisionModelRB);
+	SafeDelete(grass);
 	SafeDelete(m_pHogwarts);
 	SafeDelete(mainPlayer);
 }
