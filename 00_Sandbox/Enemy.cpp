@@ -49,8 +49,12 @@ void Enemy::Update(vector3 playerPos)
 	else {
 		//Reduce the amount of time left to shrink
 		shrinkTimer -= deltaTime;
-		sizeMulti=glm::lerp(0.0f,0.01f,(float)(shrinkTimer/3.000));
+		sizeMulti = 0.975f;
 		velocity *= 0.25f;
+
+		mEnemyMatrix *= glm::scale(vector3(sizeMulti));
+		enemy->SetModelMatrix(mEnemyMatrix);
+
 		if (shrinkTimer <= .1f)
 			isDead = true;
 	}
