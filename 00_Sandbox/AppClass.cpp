@@ -231,9 +231,6 @@ void Application::Update(void)
 			if (enemies[enemyIndexToDelete]->enemy == m_pEntityMngr->GetEntityList()[i])
 				m_pEntityMngr->RemoveEntity(i);
 
-		//Deleting the enemy
-		SafeDelete(enemies[enemyIndexToDelete]);
-
 		//Removing it from the list of eneies
 		enemies.erase(enemies.begin() + enemyIndexToDelete);
 
