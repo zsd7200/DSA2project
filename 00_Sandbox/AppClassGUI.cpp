@@ -148,7 +148,7 @@ void Application::DrawGUI(void)
 		{
 			ImGui::Text("Current Score: %i", score * 100);
 			ImGui::Text("Press Spacebar to shoot.");
-			ImGui::Text("Press V to spawn in more Enemies.");
+			ImGui::Text("Press V to spawn in more \"Dementors\".");
 			ImGui::Text("Press WASDQE to move.");
 			ImGui::Text("");
 			ImGui::Text("Use up/down arrows to increase/decrease");
