@@ -186,6 +186,7 @@ void Application::Update(void)
 		//Rendering the enemies and their rigid bodies
 		enemies[i]->enemy->AddToRenderList();
 		enemies[i]->enemy->GetRigidBody()->AddToRenderList();
+
 		if (enemies[i]->shrinking == false)
 		{
 			//Checking collision between the bullets
@@ -228,11 +229,7 @@ void Application::Update(void)
 		//Looping through the entity manager to remove the enemy from the list of entities
 		for (size_t i = 0; i < m_pEntityMngr->GetEntityCount(); i++)
 			if (enemies[enemyIndexToDelete]->enemy == m_pEntityMngr->GetEntityList()[i])
-			{
-				std::vector<MyEntity*> temp = m_pEntityMngr->GetEntityList();
-				temp.erase(temp.begin() + i);
-				m_pEntityMngr->SetEntityList(temp);
-			}
+				m_pEntityMngr->RemoveEntity(i);
 
 		//Deleting the enemy
 		SafeDelete(enemies[enemyIndexToDelete]);
