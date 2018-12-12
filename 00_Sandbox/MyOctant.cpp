@@ -20,7 +20,7 @@ MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 
 	// get entity list for size of loop and to get a rigidbody for max/min list
 	std::vector<MyEntity*> l_Entity_List = m_pEntityMngr->GetEntityList();
-	uint iEntityCount = l_Entity_List.size();
+	uint iEntityCount = m_pEntityMngr->GetEntityCount();
 	std::vector<vector3> v3MaxMin_list;
 
 	// get max/min values to create temporary rigidbody
@@ -31,6 +31,7 @@ MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 		vector3 v3Max = pRG->GetMaxGlobal();
 		v3MaxMin_list.push_back(v3Min);
 		v3MaxMin_list.push_back(v3Max);
+
 	}
 
 	m_pRigidBody = new MyRigidBody(v3MaxMin_list);

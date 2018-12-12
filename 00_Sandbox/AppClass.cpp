@@ -122,7 +122,7 @@ void Application::Update(void)
 		mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
 
 		//Checking which octant the bullet is in
-		for (int j = 0; j < m_pOctant->GetOctantCount(); j++)
+		for (int j = 0; j < 8; j++)
 		{
 			//Getting a temporary octant
 			MyOctant* temp = m_pOctant->GetChild(j);
@@ -134,6 +134,7 @@ void Application::Update(void)
 			if (tempBool)
 			{
 				mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
+				temp->GetRigidBody();
 			}
 		}
 		if (bulletIndexToDelete == -1)

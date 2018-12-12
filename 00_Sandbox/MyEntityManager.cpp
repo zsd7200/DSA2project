@@ -22,6 +22,8 @@ void Simplex::MyEntityManager::Release(void)
 
 void Simplex::MyEntityManager::SetEntityList(std::vector<MyEntity*> entList)
 {
+	Init();
+
 	m_EntityList = entList;
 	m_uEntityCount = entList.size();
 
