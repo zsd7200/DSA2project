@@ -42,7 +42,7 @@ void Application::InitVariables(void)
 
 	//Create the ooctant
 	m_uOctantLevels = 2;
-	m_pOctant = new MyOctant(m_uOctantLevels, numOfEnemies-1);
+	m_pOctant = new MyOctant(m_uOctantLevels, 3);
 	m_pEntityMngr->Update();
 
 	// load hogwarts bg
