@@ -457,7 +457,7 @@ void Application::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
 	{
-		for (int i = 0; i < 3; i++) 
+		for (int i = 0; i < 4; i++) 
 		{
 			enemies.push_back(new Enemy(vector3(rand() % 50 - 25, rand() % 50 + 5, rand() % 50 - 25)));
 			m_pEntityMngr->AddEntity(enemies[enemies.size() - 1]->enemy);
