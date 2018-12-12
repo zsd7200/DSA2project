@@ -135,6 +135,10 @@ void MyOctant::Swap(MyOctant& other)
 
 // accessors
 float MyOctant::GetSize(void) { return m_fSize; }
+uint Simplex::MyOctant::GetNumberChildren()
+{
+	return m_uChildren;
+}
 std::vector<std::vector<vector3>> Simplex::MyOctant::GetMinMaxList()
 {
 	return minMaxList;

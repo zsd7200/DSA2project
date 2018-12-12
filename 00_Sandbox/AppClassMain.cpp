@@ -72,6 +72,36 @@ void Application::ReleaseControllers(void)
 	}
 	m_uControllerCount = 0;
 }
+void Simplex::Application::CheckCollision(MyEntity* tempEnt, MyOctant* tempOct)
+{
+	if (tempOct->GetNumberChildren() == 0)
+	{
+		//Checking which octant the bullet is in
+		for (int j = 0; j < 8; j++)
+		{
+			//Getting a temporary octant
+			MyOctant* temp = tempOct->GetChild(j);
+
+			//Checking if the bullet is colliding with an octant's rigid body
+			bool tempBool = tempEnt->GetRigidBody()->IsColliding(temp->GetRigidBody());
+
+			//If colliding, add its dimension to the bullet, used in collision later
+			if (tempBool)
+			{
+				tempEnt->AddDimension(j);
+			}
+		}
+	}
+	else
+	{
+		for (size_t i = 0; i < 8; i++)
+		{
+			MyOctant* temp = tempOct->GetChild(i);
+
+			CheckCollision(tempEnt, temp);
+		}
+	}
+}
 void Application::Run(void)
 {
 	//Initialize the system with default values it was not done in the Main.cpp

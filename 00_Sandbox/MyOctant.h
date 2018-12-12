@@ -96,7 +96,7 @@ namespace Simplex
 		*/
 		float GetSize(void);
 
-
+		uint GetNumberChildren();
 		std::vector<std::vector<vector3>> GetMinMaxList();
 
 		/*

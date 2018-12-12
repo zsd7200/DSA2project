@@ -43,9 +43,6 @@ class Application
 	//Player pointer
 	Player* mainPlayer;
 
-	//Test enemy pointer
-	//Enemy* firstEnemy;
-
 	std::vector<Model*> m_vSceneModels;
 	std::vector<Enemy*> enemies;
 	std::vector<MyRigidBody*> m_vSceneRigidBodies;
@@ -200,6 +197,8 @@ private:
 	void ReleaseControllers(void);
 #pragma endregion
 
+
+	void CheckCollision(MyEntity*, MyOctant*);
 #pragma region Application Controls
 	/*
 	USAGE: Manage constant keyboard state

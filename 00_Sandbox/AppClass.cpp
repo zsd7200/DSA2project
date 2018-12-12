@@ -121,8 +121,16 @@ void Application::Update(void)
 		//Clearing out the dimensions of the bullet
 		mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
 		
-		if (m_uOctantLevels != 0)
+		for (size_t j = 0; j < 8; j++)
 		{
+			MyOctant* temp = m_pOctant->GetChild(j);
+
+			CheckCollision(mainPlayer->bullets[i]->bulletEntity, temp);
+		}
+		/*if (m_uOctantLevels != 0)
+		{
+			//Check
+			
 			//Checking which octant the bullet is in
 			for (int j = 0; j < 8; j++)
 			{
@@ -135,11 +143,12 @@ void Application::Update(void)
 				//If colliding, add its dimension to the bullet, used in collision later
 				if (tempBool)
 				{
-					mainPlayer->bullets[i]->bulletEntity->AddDimension(j);
-					temp->GetRigidBody();
+					mainPlayer->bullets[i]->bulletEntity->AddDimension(j)
 				}
 			}
+			
 		}
+		*/
 
 		if (bulletIndexToDelete == -1)
 		{
