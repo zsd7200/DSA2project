@@ -123,7 +123,7 @@ void Application::DrawGUI(void)
 	for (uint i = 0; i < nEmptyLines; ++i)
 		m_pMeshMngr->PrintLine("");//Add a line on top
 	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
+	/*m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("Press ");
 	m_pMeshMngr->Print("SpaceBar", C_BLUE);
@@ -140,6 +140,7 @@ void Application::DrawGUI(void)
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(m_pSystem->GetFPS()), C_RED);
+	*/
 #pragma endregion
 
 	//Calculate the window size to know how to draw
@@ -152,11 +153,12 @@ void Application::DrawGUI(void)
 		ImGui::SetNextWindowPos(ImVec2(1, 1), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(315, 42), ImGuiSetCond_FirstUseEver);
 		String sAbout = m_pSystem->GetAppName() + " - About";
-		ImGui::Begin(sAbout.c_str(), (bool*)0, window_flags);
+		/*ImGui::Begin(sAbout.c_str(), (bool*)0, window_flags);
 		{
 			ImGui::TextColored(v4Color, "Programmers: \nLarge Patronus Energy");
 		}
 		ImGui::End();
+		*/
 	}
 
 	//Main Window
@@ -169,7 +171,11 @@ void Application::DrawGUI(void)
 		String sWindowName = m_pSystem->GetAppName() + " - Main";
 		ImGui::Begin(sWindowName.c_str());
 		{
-			ImGui::Text("FrameRate: %.2f [FPS] -> %.3f [ms/frame] ",
+			ImGui::Text("Current Score: %i", score);
+			ImGui::Text("Press Spacebar to shoot");
+			ImGui::Text("Press V to spawn in more Enemies");
+			ImGui::Text("Current octant levels: %i", m_uOctantLevels);
+			/*ImGui::Text("FrameRate: %.2f [FPS] -> %.3f [ms/frame] ",
 				ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
 			ImGui::Text("RenderCalls: %d", m_uRenderCallCount);
 			ImGui::Text("Controllers: %d", m_uControllerCount);
@@ -182,6 +188,7 @@ void Application::DrawGUI(void)
 			ImGui::SameLine();
 			if (ImGui::Button("ImGui - Test Window"))
 				m_bGUI_Test ^= 1;
+				*/
 			//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 			//ImGui::ColorEdit3("color", (float*)&v4ClearColor);
 		}
@@ -191,7 +198,7 @@ void Application::DrawGUI(void)
 	//Credits
 	if (m_bGUI_Console)
 	{
-		static ConsoleAndLog ConsoleLog;
+		/*static ConsoleAndLog ConsoleLog;
 		ImGui::SetNextWindowPos(ImVec2(1, 152), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(315, 452), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowCollapsed(false, ImGuiSetCond_FirstUseEver);
@@ -204,6 +211,7 @@ void Application::DrawGUI(void)
 			if (output == "PLAY")
 				m_sound.play();
 		}
+		*/
 	}
 
 	//Controller Debugger

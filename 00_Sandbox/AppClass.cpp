@@ -106,7 +106,7 @@ void Application::Update(void)
 	uint bulletIndexToDelete = -1;
 
 	//Score for the player
-	static int score = 0;
+	//static int score = 0;
 
 	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
@@ -263,7 +263,7 @@ void Application::Update(void)
 	}
 
 	//Print out the player's current score
-	m_pMeshMngr->Printf(C_BLACK, "Current Score: %i", score);
+	//m_pMeshMngr->Printf(C_BLACK, "Current Score: %i", score);
 }
 void Application::Display(void)
 {

@@ -50,6 +50,8 @@ class Application
 	MyOctant* m_pOctant = nullptr;
 	int numOfEnemies = 0;
 
+	int score = 0;
+
 private:
 	static ImGuiObject gui; //GUI object
 	bool m_bGUI_Main = true; //show Main GUI window?
