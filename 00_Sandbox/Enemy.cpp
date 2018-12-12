@@ -54,6 +54,8 @@ void Enemy::Update(vector3 playerPos)
 		//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 		//enemy->SetModelMatrix(mEnemyMatrix);
 
+		mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(spinDir), AXIS_Z);
+		spinDir = 0;
 	}
 
 	//If the enemy is shrinking
@@ -155,6 +157,13 @@ void Enemy::Shrink()
 {
 	shrinking = true;
 	shrinkTimer = 3;
+}
+
+void Enemy::Spin()
+{
+
+	spinDir = -7;
+
 }
 
 

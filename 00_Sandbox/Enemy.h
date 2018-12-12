@@ -23,6 +23,7 @@ public:
 	double shrinkTimer = 0;
 	float sizeMulti = 1;
 	float chaseDis = 25;
+	float spinDir = 0;
 
 	//Bools
 	bool shrinking = false;
@@ -46,5 +47,6 @@ public:
 
 	void UpdatePosition(vector3);
 	void Shrink();
+	void Spin();
 };
 

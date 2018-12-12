@@ -136,6 +136,7 @@ void Application::Update(void)
 		//If the enemy is not in the process of shrinking after it's been hit, check for collisions
 		if (enemies[i]->shrinking == false)
 		{
+
 			//Checking collision between the bullets
 			for (size_t j = 0; j < mainPlayer->bullets.size(); j++)
 			{
@@ -150,6 +151,24 @@ void Application::Update(void)
 
 					//Setting the enemy to start shrinking
 					enemies[i]->Shrink();
+
+					//Incrementing score
+					score++;
+				}
+			}
+			for (size_t j = i+1; j < enemies.size(); j++)
+			{
+
+				//Using the MyEntity collision check which uses dimension
+				bool tempBool = enemies[j]->enemy->IsColliding(enemies[i]->enemy);
+
+				//If there is collision
+				if (tempBool)
+				{
+
+					//Setting the enemy to start shrinking
+					enemies[i]->Spin();
+					enemies[j]->Spin();
 
 					//Incrementing score
 					score++;
