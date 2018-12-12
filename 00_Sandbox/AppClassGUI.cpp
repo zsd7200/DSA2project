@@ -144,17 +144,19 @@ void Application::DrawGUI(void)
 
 		static float f = 0.0f;
 		ImGui::SetNextWindowPos(ImVec2(5, 5));
-		ImGui::SetNextWindowSize(ImVec2(315, 205));
+		ImGui::SetNextWindowSize(ImVec2(315, 235));
 		String sWindowName = "             " + m_pSystem->GetAppName(); // bunch of spaces here to center the text manually
 		ImGui::Begin(sWindowName.c_str(), (bool*)0, mainFlags);
 		{
 			ImGui::Text("Current Score: %i", score * 100);
 			ImGui::Text("Press Spacebar to shoot.");
-			ImGui::Text("Press V to spawn in more \"Dementors\".");
 			ImGui::Text("Press WASDQE to move.");
 			ImGui::Text("");
+			ImGui::Text("Press V to spawn in more \"Dementors\".");
 			ImGui::Text("Use up/down arrows to increase/decrease");
 			ImGui::Text("octant levels.");
+			ImGui::Text("");
+			ImGui::Text("Number of Enemies: %i", numOfEnemies);
 			ImGui::Text("Current octant levels: %i", m_uOctantLevels);
 			ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
 			ImGui::Text("Brought to you by Large Patronus Energy");

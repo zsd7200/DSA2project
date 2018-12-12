@@ -459,7 +459,7 @@ void Application::ProcessKeyboard(void)
 	{
 		for (int i = 0; i < 4; i++) 
 		{
-			enemies.push_back(new Enemy(vector3(rand() % 50 - 25, rand() % 50 + 5, rand() % 50 - 25)));
+			enemies.push_back(new Enemy(vector3(rand() % 80 - 40, rand() % 75 + 5, rand() % 80 - 50)));
 			m_pEntityMngr->AddEntity(enemies[enemies.size() - 1]->enemy);
 			numOfEnemies++;
 		}
