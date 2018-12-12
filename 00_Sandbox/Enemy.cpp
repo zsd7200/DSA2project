@@ -37,12 +37,23 @@ void Enemy::Update(vector3 playerPos)
 	}
 
 	//If the enemy is not shrinking, follow the player around
-	if (!shrinking) {
-		//If the player is within range, chace it, else, wander aimlessly
-		if (glm::length(curPos - playerPos) < chaseDis)
-			ChasePlayer(playerPos);
-		else
-			Wander();
+	if (!shrinking) 
+	{
+		////If the player is within range, chace it, else, wander aimlessly
+		//if (glm::length(curPos - playerPos) < chaseDis)
+		//	ChasePlayer(playerPos);
+		//else
+		//	Wander();
+
+		//vector3 look = glm::normalize(velocity);
+		//look.x = -look.x;
+		//mEnemyMatrix = IDENTITY_M4;
+		//mEnemyMatrix *= glm::translate(curPos);
+		////mEnemyMatrix *= glm::lookAt(vector3(0), look, vector3(0, 1, 0));
+		//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
+		//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
+		//enemy->SetModelMatrix(mEnemyMatrix);
+
 	}
 
 	//If the enemy is shrinking
@@ -53,6 +64,7 @@ void Enemy::Update(vector3 playerPos)
 		velocity *= 0.25f;
 
 		// shrink
+		mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(7.0f), AXIS_Z);
 		mEnemyMatrix *= glm::scale(vector3(sizeMulti));
 		enemy->SetModelMatrix(mEnemyMatrix);
 

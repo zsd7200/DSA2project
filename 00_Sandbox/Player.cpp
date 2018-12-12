@@ -3,23 +3,14 @@
 Player::Player()
 {
 	//Create the player's model
-	playerModel = new Model();
-
-	//Load it
-	playerModel->Load("HarryPotter\\Stick.obj");
-
-	//Set the player's rigidbody
-	playerRB = new MyRigidBody(playerModel->GetVertexList());
+	playerEntity = new MyEntity("HarryPotter\\Stick.obj");
 }
 
 
 Player::~Player()
 {
 	//Deleting objects
-	SafeDelete(playerModel);
-	//playerModel = nullptr;	//<< SafeDelete does this already
-	SafeDelete(playerRB);
-	//playerRB = nullptr;
+	SafeDelete(playerEntity);
 
 	for (size_t i = 0; i < bullets.size(); i++)
 	{
@@ -50,20 +41,20 @@ matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 	//Needed to reverse the forward
 	forward.z = -forward.z;
 
+	vector3 pos = vector3(basePoint.x, basePoint.y - 0.75f, basePoint.z);
+
 	//Increasing the upwards position of the forward vector
-	forward.y += 0.1f;
+	//forward.y += 1;
 
 	//Rotation by looking at a specific position
-	quaternion rotQuat = glm::lookAt(basePoint,basePoint-forward,vector3(0,1,0));
+	quaternion rotQuat = glm::lookAt(pos, pos - forward, vector3(0, 1, 0));
 	matrix4 rotMat = glm::toMat4(rotQuat);
 
 	//Setting the location of the player
-	matrix4 mPlayerMatrix = glm::translate(vector3(basePoint.x, basePoint.y - 1, basePoint.z))*rotMat;
+	matrix4 mPlayerMatrix = glm::translate(pos) * rotMat;
 
 	//Seting the model matrixes 
-	playerModel->SetModelMatrix(mPlayerMatrix);
-	playerRB->SetModelMatrix(mPlayerMatrix);
-
+	playerEntity->SetModelMatrix(mPlayerMatrix);
 
 	return mPlayerMatrix;
 }

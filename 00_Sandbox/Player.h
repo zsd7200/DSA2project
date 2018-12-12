@@ -13,11 +13,9 @@ public:
 	Player();
 	~Player();
 
-	//Player's model
-	Model* playerModel = nullptr;
+	// player entity
+	MyEntity* playerEntity = nullptr;
 
-	//Player's Rigid body
-	MyRigidBody* playerRB = nullptr;
 	//void CreatePlayer();
 
 	//Spawing in a projectile

@@ -30,8 +30,6 @@ class Application
 	MyEntityManager* m_pEntityMngr = nullptr;
 	MyEntity* m_pHogwarts = nullptr;
 	MyEntity* m_pPlayer = nullptr;
-	Model* m_pPlayerModel = nullptr;
-	MyRigidBody* m_pPlayerRB = nullptr;
 	
 	//Player pointer
 	Player* mainPlayer;

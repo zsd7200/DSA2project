@@ -121,7 +121,7 @@ void Application::Update(void)
 	
 	//Rendering the player in the world
 	mainPlayer->UpdatePosition(m_pCameraMngr->GetPosition(), m_pCameraMngr->GetForward());	//player moves with camera
-	mainPlayer->playerModel->AddToRenderList();
+	mainPlayer->playerEntity->AddToRenderList();
 
 	//A temporary int which will store the index of an enemy to be deleted (if applicable)
 	uint enemyIndexToDelete = -1;
