@@ -94,7 +94,6 @@ void Enemy::Approach(vector3 target)
 	desVel = glm::normalize(desVel);
 	desVel *= maxVel;
 
-	//
 	vector3 changeNeeded = (desVel - velocity);
 	if (glm::length(changeNeeded) > acceleration)
 	{
@@ -111,22 +110,16 @@ vector3 Enemy::RandomUnitSphere()
 	return glm::normalize(vector3(rand(),rand(),rand()));
 }
 
-matrix4 Enemy::UpdatePosition(vector3 basePoint)
+void Enemy::UpdatePosition(vector3 basePoint)
 {
-	//set model matrix to the enemy model
-	//mEnemyMatrix = glm::translate(vector3(basePoint.x, basePoint.y, basePoint.z)) * glm::rotate(IDENTITY_M4, glm::radians(10.0f), AXIS_Z);
-	//mEnemyMatrix = glm::normalize(mEnemyMatrix);
-	
-
+	//Creating a matrix to manipulate
 	mEnemyMatrix = IDENTITY_M4;
 	mEnemyMatrix *= glm::translate(curPos);
 	
 
 	//make enemies face direction theyre moving in
-
 	vector3 tLookDir = velocity;
 	curPos = basePoint;
-	
 	vector3 up = vector3(0, 1, 0);
 
 	if (tLookDir!=ZERO_V3) 
@@ -137,19 +130,19 @@ matrix4 Enemy::UpdatePosition(vector3 basePoint)
 			this->lookDir = tLookDir;
 	}	
 	
-	//messing with some axes values since the boo model axes don't match the global axes
+	//Choosing the direction of the boos to move
 	lookDir.x = -lookDir.x;
-
 	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
-	//mEnemyMatrix *= glm::lookAt(vector3(0), vector3(-1,0,0), vector3(0,0,1));
+
+	//Rotating the enemy
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 
+	//Scaling it down
 	mEnemyMatrix *= glm::scale(vector3(sizeMulti));
 
+	//Setting the entity's matrix
 	enemy->SetModelMatrix(mEnemyMatrix);
-	//m_pMeshMngr->AddAxisToRenderList(enemyModel); //<<??
-	return mEnemyMatrix;
 }
 
 void Enemy::Shrink() 

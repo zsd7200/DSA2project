@@ -122,25 +122,6 @@ void Application::DrawGUI(void)
 	uint nEmptyLines = 20;
 	for (uint i = 0; i < nEmptyLines; ++i)
 		m_pMeshMngr->PrintLine("");//Add a line on top
-	//m_pMeshMngr->Print("						");
-	/*m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
-	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("Press ");
-	m_pMeshMngr->Print("SpaceBar", C_BLUE);
-	m_pMeshMngr->PrintLine(" to shoot!");
-
-	m_pMeshMngr->Print("Press ");
-	m_pMeshMngr->Print("V", C_BLUE);
-	m_pMeshMngr->PrintLine(" to spawn more dementors!");
-
-	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("Octant Levels: ");//Add a line on top
-	m_pMeshMngr->PrintLine(std::to_string(m_uOctantLevels), C_YELLOW);
-
-	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->Print(std::to_string(m_pSystem->GetFPS()), C_RED);
-	*/
 #pragma endregion
 
 	//Calculate the window size to know how to draw
@@ -153,12 +134,6 @@ void Application::DrawGUI(void)
 		ImGui::SetNextWindowPos(ImVec2(1, 1), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(315, 42), ImGuiSetCond_FirstUseEver);
 		String sAbout = m_pSystem->GetAppName() + " - About";
-		/*ImGui::Begin(sAbout.c_str(), (bool*)0, window_flags);
-		{
-			ImGui::TextColored(v4Color, "Programmers: \nLarge Patronus Energy");
-		}
-		ImGui::End();
-		*/
 	}
 
 	//Main Window
@@ -181,43 +156,8 @@ void Application::DrawGUI(void)
 			ImGui::Text("Current octant levels: %i", m_uOctantLevels);
 			ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
 			ImGui::Text("Brought to you by Large Patronus Energy");
-			/*ImGui::Text("FrameRate: %.2f [FPS] -> %.3f [ms/frame] ",
-				ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
-			ImGui::Text("RenderCalls: %d", m_uRenderCallCount);
-			ImGui::Text("Controllers: %d", m_uControllerCount);
-			ImGui::Separator();
-			if (ImGui::Button("Console"))
-				m_bGUI_Console ^= 1;
-			ImGui::SameLine();
-			if (ImGui::Button("Controller"))
-				m_bGUI_Controller ^= 1;
-			ImGui::SameLine();
-			if (ImGui::Button("ImGui - Test Window"))
-				m_bGUI_Test ^= 1;
-				*/
-			//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-			//ImGui::ColorEdit3("color", (float*)&v4ClearColor);
 		}
 		ImGui::End();
-	}
-	
-	//Credits
-	if (m_bGUI_Console)
-	{
-		/*static ConsoleAndLog ConsoleLog;
-		ImGui::SetNextWindowPos(ImVec2(1, 152), ImGuiSetCond_FirstUseEver);
-		ImGui::SetNextWindowSize(ImVec2(315, 452), ImGuiSetCond_FirstUseEver);
-		ImGui::SetNextWindowCollapsed(false, ImGuiSetCond_FirstUseEver);
-		String sLogWindow = m_pSystem->GetAppName() + " - Command";
-		String output = ConsoleLog.Draw(sLogWindow.c_str());
-		if (output != "")
-		{
-			std::cout << output << std::endl;
-			output = ToUpperCase(output);
-			if (output == "PLAY")
-				m_sound.play();
-		}
-		*/
 	}
 
 	//Controller Debugger

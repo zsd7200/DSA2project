@@ -13,13 +13,8 @@ public:
 	//Destructor
 	~Bullet();
 
+	//Entity for the bullet
 	MyEntity* bulletEntity = nullptr;
-
-	//The model for the bullet
-	Model* bulletModel = nullptr;
-	
-	//The bullet's Rigid body
-	MyRigidBody* bulletRB = nullptr;
 
 	//The forward vector of the camera at the time the bullet is created
 	vector3 forward = vector3(0.0f);
@@ -32,8 +27,9 @@ public:
 	float timesMoved = 0.0f;
 
 	//Used for moving the bullet
-	matrix4 UpdatePosition();
+	void UpdatePosition();
 
+	//Used to flag if the bullet should be deleted 
 	bool isTimedOut;
 };
 

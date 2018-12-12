@@ -12,15 +12,19 @@ public:
 	Enemy(vector3);
 	~Enemy();
 
+	//Entity for the enemy
 	MyEntity* enemy = nullptr;
 	matrix4 mEnemyMatrix = IDENTITY_M4;
 
+	//Numbers
 	float acceleration = 2.0f;
 	float maxVel = 4;
 	double deltaTime=0;
 	double shrinkTimer = 0;
 	float sizeMulti = 1;
 	float chaseDis = 25;
+
+	//Bools
 	bool shrinking = false;
 	bool isDead = false;
 
@@ -40,7 +44,7 @@ public:
 	void Approach(vector3);
 	static vector3 RandomUnitSphere();
 
-	matrix4 UpdatePosition(vector3);
+	void UpdatePosition(vector3);
 	void Shrink();
 };
 

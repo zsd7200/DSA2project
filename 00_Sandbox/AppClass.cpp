@@ -6,6 +6,7 @@ void Application::InitVariables(void)
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
 
+	//Setting the number of enemies to spawn initally
 	numOfEnemies = 20;
 
 #pragma region Music_and_Sounds
@@ -85,38 +86,17 @@ void Application::Update(void)
 
 		//Drawing the bullet
 		mainPlayer->bullets[i]->bulletEntity->AddToRenderList();
-		mainPlayer->bullets[i]->bulletEntity->GetRigidBody()->AddToRenderList();
 
 		//Clearing out the dimensions of the bullet
 		mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
-		
-		for (size_t j = 0; j < 8; j++)
+		if (m_uOctantLevels != 0)
 		{
-			CheckCollision(mainPlayer->bullets[i]->bulletEntity, m_pOctant->GetChild(j));
-		}
-		/*if (m_uOctantLevels != 0)
-		{
-			//Check
-			
-			//Checking which octant the bullet is in
-			for (int j = 0; j < 8; j++)
+			for (size_t j = 0; j < 8; j++)
 			{
-				//Getting a temporary octant
-				MyOctant* temp = m_pOctant->GetChild(j);
-
-				//Checking if the bullet is colliding with an octant's rigid body
-				bool tempBool = mainPlayer->bullets[i]->bulletEntity->GetRigidBody()->IsColliding(temp->GetRigidBody());
-
-				//If colliding, add its dimension to the bullet, used in collision later
-				if (tempBool)
-				{
-					mainPlayer->bullets[i]->bulletEntity->AddDimension(j)
-				}
+				CheckCollision(mainPlayer->bullets[i]->bulletEntity, m_pOctant->GetChild(j));
 			}
-			
 		}
-		*/
-
+		//If there is no bullet that has been set to delete yet, check if a bullet has timed out of bounds
 		if (bulletIndexToDelete == -1)
 		{
 			if (mainPlayer->bullets[i]->isTimedOut)
@@ -152,10 +132,10 @@ void Application::Update(void)
 	//Looping through the list of enemies and checking for collisions with the bullets
 	for (int i = 0; i < enemies.size(); i++) 
 	{
-		//Rendering the enemies and their rigid bodies
+		//Rendering the enemies 
 		enemies[i]->enemy->AddToRenderList();
-		enemies[i]->enemy->GetRigidBody()->AddToRenderList();
 
+		//If the enemy is not in the process of shrinking after it's been hit, check for collisions
 		if (enemies[i]->shrinking == false)
 		{
 			//Checking collision between the bullets
@@ -190,6 +170,7 @@ void Application::Update(void)
 		if (enemies[shrinkingEnemies[i]]->isDead)
 			enemyIndexToDelete = shrinkingEnemies[i];
 
+	//Clear the list of shrinking enemies to be checked next update
 	shrinkingEnemies.clear();
 
 	//Checking if an enemy should be deleted
@@ -203,19 +184,11 @@ void Application::Update(void)
 		//Removing it from the list of eneies
 		enemies.erase(enemies.begin() + enemyIndexToDelete);
 
-		std::cout << "Enemy Number: " << enemyIndexToDelete << std::endl;
-
 		//Resetting the index
 		enemyIndexToDelete = -1;
 
 		// decrement num of enemies
 		numOfEnemies--;
-
-		std::cout << "Number of Enemies (numOfEnemies): " << numOfEnemies << std::endl;
-		std::cout << "Number of Enemies (enemies.size): " << enemies.size() << std::endl;
-		std::cout << "Number of Entites (from list)   : " << m_pEntityMngr->GetEntityList().size() << std::endl;
-		std::cout << "Number of Entites (from count)  : " << m_pEntityMngr->GetEntityCount() << std::endl;
-
 	}
 	
 	//If a bullet should be deleted
@@ -230,9 +203,6 @@ void Application::Update(void)
 		//Resetting the index
 		bulletIndexToDelete = -1;
 	}
-
-	//Print out the player's current score
-	//m_pMeshMngr->Printf(C_BLACK, "Current Score: %i", score);
 }
 void Application::Display(void)
 {

@@ -11,19 +11,16 @@ Bullet::Bullet(MyEntity* tempEnt, vector3 tempPos, vector3 tempForward)
 
 Bullet::~Bullet()
 {
-	SafeDelete(bulletModel);
-	bulletModel = nullptr;
-	SafeDelete(bulletRB);
-	bulletRB = nullptr;
-
+	//Deleting the bullet entity
 	SafeDelete(bulletEntity);
 	bulletEntity = nullptr;
 
+	//Resetting the vectors
 	startVector = vector3(0.0f);
 	forward = vector3(0.0f);
 }
 
-matrix4 Bullet::UpdatePosition()
+void Bullet::UpdatePosition()
 {
 	//Getting the current position of the bullet
 	currentPosition = (glm::normalize(forward) * timesMoved) + startVector;
@@ -37,8 +34,7 @@ matrix4 Bullet::UpdatePosition()
 	//Moving the position forward consecutievely
 	timesMoved += .1f;
 	
+	//If the bullet has moved far enough, time it out and delete it form the scene
 	if (timesMoved > 40.0f)
 		isTimedOut = true;
-
-	return mBulletMatrix;
 }

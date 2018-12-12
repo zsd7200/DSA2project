@@ -71,9 +71,9 @@ MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 	m_v3Min = m_v3Center - (vector3(m_fSize) / 2.0f);
 	m_v3Max = m_v3Center + (vector3(m_fSize) / 2.0f);
 
+	//Storying the min and max of the octant to be used to make its rigid body
 	minMax.push_back(m_v3Max);
 	minMax.push_back(m_v3Min);
-
 	m_pRigidBody = new MyRigidBody(minMax);
 	
 	// increment count
@@ -99,10 +99,7 @@ MyOctant::MyOctant(MyOctant const& other)
 	for (size_t i = 0; i < 8; i++)
 		m_pChild[i] = other.m_pChild[i];
 }
-std::vector<MyRigidBody*> Simplex::MyOctant::GetRigidBodies()
-{
-	return m_vChildRigidBodies;
-}
+
 MyOctant& MyOctant::operator=(MyOctant const& other)
 {
 	if (this != &other)
@@ -139,10 +136,7 @@ uint Simplex::MyOctant::GetNumberChildren()
 {
 	return m_uChildren;
 }
-std::vector<std::vector<vector3>> Simplex::MyOctant::GetMinMaxList()
-{
-	return minMaxList;
-}
+
 vector3 MyOctant::GetCenterGlobal(void) { return m_v3Center; }
 vector3 MyOctant::GetMinGlobal(void) { return m_v3Min; }
 vector3 MyOctant::GetMaxGlobal(void) { return m_v3Max; }
@@ -227,12 +221,6 @@ void MyOctant::Subdivide()
 	m_pChild[5] = new MyOctant(m_v3Center + vector3(-fQuartSize, fQuartSize, -fQuartSize), fHalfSize);
 	m_pChild[6] = new MyOctant(m_v3Center + vector3(-fQuartSize, -fQuartSize, -fQuartSize), fHalfSize);
 	m_pChild[7] = new MyOctant(m_v3Center + vector3(fQuartSize, -fQuartSize, -fQuartSize), fHalfSize);
-
-	for (size_t i = 0; i < 8; i++)
-	{
-		//m_pRoot->minMaxList.push_back(m_pChild[i]->minMax);
-		m_pRoot->m_vChildRigidBodies.push_back(m_pChild[i]->m_pRigidBody);
-	}
 
 	// set up pChildren
 	for (uint i = 0; i < m_uChildren; i++)
