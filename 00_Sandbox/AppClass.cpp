@@ -35,7 +35,7 @@ void Application::InitVariables(void)
 
 	//Create the ooctant
 	m_uOctantLevels = 2;
-	m_pOctant = new MyOctant(m_uOctantLevels, 3);
+	m_pOctant = new MyOctant(m_uOctantLevels, 5);
 	m_pEntityMngr->Update();
 
 	// load hogwarts bg
@@ -61,10 +61,8 @@ void Application::Update(void)
 	
 	//Set model matrix to the model			//ENEMY (BOO)
 	//MODEL MATRIX SET IN ENEMY'S UpdatePosition METHOD
-	for (int i = 0; i < enemies.size(); i++) {
+	for (int i = 0; i < enemies.size(); i++)
 		enemies[i]->Update(m_pCameraMngr->GetPosition());
-		m_pMeshMngr->AddAxisToRenderList(enemies[i]->mEnemyMatrix);	//accesses enemy's model matrix, which is based off of m_v3Model (which isnt set anywhere how does this even work)
-	}
 
 	// grass
 	matrix4 grassAxis = glm::translate(vector3(0, -1, -25)) * glm::scale(vector3(100, 2, 100));

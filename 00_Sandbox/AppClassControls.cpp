@@ -119,7 +119,7 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 			m_pEntityMngr->ClearDimensionSetAll();
 			++m_uOctantLevels;
 			SafeDelete(m_pOctant);
-			m_pOctant = new MyOctant(m_uOctantLevels, 3);
+			m_pOctant = new MyOctant(m_uOctantLevels, 5);
 		}
 		break;
 
@@ -130,7 +130,7 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 			m_pEntityMngr->ClearDimensionSetAll();
 			--m_uOctantLevels;
 			SafeDelete(m_pOctant);
-			m_pOctant = new MyOctant(m_uOctantLevels, 3);
+			m_pOctant = new MyOctant(m_uOctantLevels, 5);
 		}
 		break;
 
@@ -466,7 +466,7 @@ void Application::ProcessKeyboard(void)
 
 		m_pEntityMngr->ClearDimensionSetAll();
 		SafeDelete(m_pOctant);
-		m_pOctant = new MyOctant(m_uOctantLevels, 3);
+		m_pOctant = new MyOctant(m_uOctantLevels, 5);
 	}
 #pragma endregion
 
