@@ -139,12 +139,14 @@ void Application::DrawGUI(void)
 	//Main Window
 	if (m_bGUI_Main)
 	{
+		// set flags for this window
+		ImGuiWindowFlags mainFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+
 		static float f = 0.0f;
 		ImGui::SetNextWindowPos(ImVec2(5, 5));
 		ImGui::SetNextWindowSize(ImVec2(315, 205));
-		ImGui::SetNextWindowCollapsed(false);
-		String sWindowName = m_pSystem->GetAppName();
-		ImGui::Begin(sWindowName.c_str());
+		String sWindowName = "             " + m_pSystem->GetAppName(); // bunch of spaces here to center the text manually
+		ImGui::Begin(sWindowName.c_str(), (bool*)0, mainFlags);
 		{
 			ImGui::Text("Current Score: %i", score * 100);
 			ImGui::Text("Press Spacebar to shoot.");
