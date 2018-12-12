@@ -24,15 +24,21 @@ void Simplex::MyEntityManager::SetEntityList(std::vector<MyEntity*> entList)
 {
 	Init();
 
-	m_EntityList = entList;
-	m_uEntityCount = entList.size();
+	for (size_t i = 0; i < entList.size(); i++)
+	{
+		if (entList[i] != nullptr)
+		{
+			m_EntityList.push_back(entList[i]);
+			m_uEntityCount++;
+		}
+	}
 
 	SafeDelete(m_mEntityArray);
-	m_mEntityArray = new PEntity[entList.size()];
+	m_mEntityArray = new PEntity[m_uEntityCount];
 
-	for (uint i = 0; i < entList.size(); ++i)
+	for (uint i = 0; i < m_uEntityCount; ++i)
 	{
-		m_mEntityArray[i] = entList[i];
+		m_mEntityArray[i] = m_EntityList[i];
 	}
 }
 
@@ -70,6 +76,9 @@ int Simplex::MyEntityManager::GetEntityIndex(String a_sUniqueID)
 }
 //Accessors
 Simplex::uint Simplex::MyEntityManager::GetEntityCount(void) { return m_uEntityCount; }
+void Simplex::MyEntityManager::SetEntityCount(void) { m_uEntityCount = m_EntityList.size(); }
+void Simplex::MyEntityManager::SetEntityCount(uint num) { m_uEntityCount = num; }
+
 Simplex::Model* Simplex::MyEntityManager::GetModel(uint a_uIndex)
 {
 	//if the list is empty return
@@ -374,6 +383,8 @@ void Simplex::MyEntityManager::RemoveDimension(String a_sUniqueID, uint a_uDimen
 }
 void Simplex::MyEntityManager::ClearDimensionSetAll(void)
 {
+	//m_uEntityCount = m_EntityList.size();
+
 	for (uint i = 0; i < m_uEntityCount; ++i)
 	{
 		ClearDimensionSet(i);

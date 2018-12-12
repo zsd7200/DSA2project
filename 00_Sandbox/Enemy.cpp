@@ -57,7 +57,10 @@ void Enemy::Update(vector3 playerPos)
 		enemy->SetModelMatrix(mEnemyMatrix);
 
 		if (shrinkTimer <= .1f)
+		{
 			isDead = true;
+		}
+
 	}
 	//std::printf("%f, %f \n", deltaTime, curPos.y);
 

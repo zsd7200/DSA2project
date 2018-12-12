@@ -28,6 +28,9 @@ Output: class object instance
 */
 
 		void SetEntityList(std::vector<MyEntity*>);
+		void SetEntityCount(void);
+		void SetEntityCount(uint);
+
 
 		std::vector<MyEntity*> GetEntityList(void);
 		/*

@@ -115,6 +115,7 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 	case sf::Keyboard::Up:
 		if (m_uOctantLevels < 4)
 		{
+			m_pEntityMngr->SetEntityCount();
 			m_pEntityMngr->ClearDimensionSetAll();
 			++m_uOctantLevels;
 			SafeDelete(m_pOctant);
@@ -125,6 +126,7 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 	case sf::Keyboard::Down:
 		if (m_uOctantLevels > 0)
 		{
+			m_pEntityMngr->SetEntityCount();
 			m_pEntityMngr->ClearDimensionSetAll();
 			--m_uOctantLevels;
 			SafeDelete(m_pOctant);

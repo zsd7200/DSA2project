@@ -226,7 +226,7 @@ void Application::Update(void)
 	if (enemyIndexToDelete != -1)
 	{
 		//Looping through the entity manager to remove the enemy from the list of entities
-		for (size_t i = 0; i < m_pEntityMngr->GetEntityCount() - 1; i++)
+		for (size_t i = 0; i < m_pEntityMngr->GetEntityCount(); i++)
 			if (enemies[enemyIndexToDelete]->enemy == m_pEntityMngr->GetEntityList()[i])
 			{
 				std::vector<MyEntity*> temp = m_pEntityMngr->GetEntityList();
@@ -240,11 +240,19 @@ void Application::Update(void)
 		//Removing it from the list of eneies
 		enemies.erase(enemies.begin() + enemyIndexToDelete);
 
+		std::cout << "Enemy Number: " << enemyIndexToDelete << std::endl;
+
 		//Resetting the index
 		enemyIndexToDelete = -1;
 
 		// decrement num of enemies
 		numOfEnemies--;
+
+		std::cout << "Number of Enemies (numOfEnemies): " << numOfEnemies << std::endl;
+		std::cout << "Number of Enemies (enemies.size): " << enemies.size() << std::endl;
+		std::cout << "Number of Entites (from list)   : " << m_pEntityMngr->GetEntityList().size() << std::endl;
+		std::cout << "Number of Entites (from count)  : " << m_pEntityMngr->GetEntityCount() << std::endl;
+
 	}
 	
 	//If a bullet should be deleted
