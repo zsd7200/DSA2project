@@ -457,6 +457,7 @@ void Application::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
 	{
+		// add in more enemies
 		for (int i = 0; i < 4; i++) 
 		{
 			enemies.push_back(new Enemy(vector3(rand() % 80 - 40, rand() % 75 + 5, rand() % 80 - 50)));
@@ -464,10 +465,38 @@ void Application::ProcessKeyboard(void)
 			numOfEnemies++;
 		}
 
+		// reconstruct octree
 		m_pEntityMngr->ClearDimensionSetAll();
 		SafeDelete(m_pOctant);
 		m_pOctant = new MyOctant(m_uOctantLevels, 5);
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+	{
+		// delete current octree
+		m_pEntityMngr->ClearDimensionSetAll();
+		SafeDelete(m_pOctant);
+
+		// clear list and remove entities
+		enemies.clear();
+
+		for (size_t i = 0; i < m_pEntityMngr->GetEntityCount(); i++)
+			m_pEntityMngr->RemoveEntity(i);
+
+		// reset num of enemies to 20
+		numOfEnemies = 20;
+
+		// recreate enemies list and fill entity manager
+		for (int i = 0; i < numOfEnemies; i++)
+		{
+			enemies.push_back(new Enemy(vector3(rand() % 80 - 40, rand() % 75 + 5, rand() % 80 - 50)));
+			m_pEntityMngr->AddEntity(enemies[i]->enemy);
+		}
+
+		// restart octree
+		m_pOctant = new MyOctant(m_uOctantLevels, 5);
+	}
+
 #pragma endregion
 
 	

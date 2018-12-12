@@ -144,7 +144,7 @@ void Application::DrawGUI(void)
 
 		static float f = 0.0f;
 		ImGui::SetNextWindowPos(ImVec2(5, 5));
-		ImGui::SetNextWindowSize(ImVec2(315, 235));
+		ImGui::SetNextWindowSize(ImVec2(315, 250));
 		String sWindowName = "             " + m_pSystem->GetAppName(); // bunch of spaces here to center the text manually
 		ImGui::Begin(sWindowName.c_str(), (bool*)0, mainFlags);
 		{
@@ -153,6 +153,7 @@ void Application::DrawGUI(void)
 			ImGui::Text("Press WASDQE to move.");
 			ImGui::Text("");
 			ImGui::Text("Press V to spawn in more \"Dementors\".");
+			ImGui::Text("Press B to go back to just 20 \"Dementors\".");
 			ImGui::Text("Use up/down arrows to increase/decrease");
 			ImGui::Text("octant levels.");
 			ImGui::Text("");
