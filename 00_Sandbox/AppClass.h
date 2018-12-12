@@ -21,6 +21,8 @@ namespace Simplex
 	//Adding Application to the Simplex namespace
 class Application
 {
+	uint m_uOctantLevels = 0;
+
 	vector3 m_v3Model;
 	quaternion m_qModel;
 

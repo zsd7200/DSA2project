@@ -52,6 +52,7 @@ void Enemy::Update(vector3 playerPos)
 		sizeMulti = 0.975f;
 		velocity *= 0.25f;
 
+		// shrink
 		mEnemyMatrix *= glm::scale(vector3(sizeMulti));
 		enemy->SetModelMatrix(mEnemyMatrix);
 

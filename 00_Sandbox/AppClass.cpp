@@ -6,7 +6,7 @@ void Application::InitVariables(void)
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
 
-	numOfEnemies = 10;
+	numOfEnemies = 20;
 
 #pragma region Music_and_Sounds
 	//Music
@@ -41,7 +41,8 @@ void Application::InitVariables(void)
 	}
 
 	//Create the ooctant
-	m_pOctant = new MyOctant(2, numOfEnemies-1);
+	m_uOctantLevels = 2;
+	m_pOctant = new MyOctant(m_uOctantLevels, numOfEnemies-1);
 	m_pEntityMngr->Update();
 
 	// load hogwarts bg
@@ -204,10 +205,8 @@ void Application::Update(void)
 
 	//Looping through the list of enemies which are shrinking and seeing if any have finished shrinking
 	for (size_t i = 0; i < shrinkingEnemies.size(); i++)
-	{
 		if (enemies[shrinkingEnemies[i]]->isDead)
 			enemyIndexToDelete = shrinkingEnemies[i];
-	}
 
 	shrinkingEnemies.clear();
 
@@ -231,6 +230,9 @@ void Application::Update(void)
 
 		//Resetting the index
 		enemyIndexToDelete = -1;
+
+		// decrement num of enemies
+		numOfEnemies--;
 	}
 	
 	//If a bullet should be deleted
@@ -295,5 +297,4 @@ void Application::Release(void)
 	SafeDelete(m_pCollisionModelRB);
 	SafeDelete(m_pHogwarts);
 	SafeDelete(mainPlayer);
-	//SafeDelete(firstEnemy);
 }

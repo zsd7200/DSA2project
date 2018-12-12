@@ -130,12 +130,12 @@ void Application::DrawGUI(void)
 	m_pMeshMngr->PrintLine(" to shoot!");
 
 	m_pMeshMngr->Print("Press ");
-	m_pMeshMngr->Print("E", C_BLUE);
+	m_pMeshMngr->Print("V", C_BLUE);
 	m_pMeshMngr->PrintLine(" to spawn more dementors!");
 
 	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
-	m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);
+	m_pMeshMngr->Print("Octant Levels: ");//Add a line on top
+	m_pMeshMngr->PrintLine(std::to_string(m_uOctantLevels), C_YELLOW);
 
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("FPS:");
@@ -154,7 +154,7 @@ void Application::DrawGUI(void)
 		String sAbout = m_pSystem->GetAppName() + " - About";
 		ImGui::Begin(sAbout.c_str(), (bool*)0, window_flags);
 		{
-			ImGui::TextColored(v4Color, "Programmer: \nAlberto Bobadilla - labigm@rit.edu");
+			ImGui::TextColored(v4Color, "Programmers: \nLarge Patronus Energy");
 		}
 		ImGui::End();
 	}

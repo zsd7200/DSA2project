@@ -111,6 +111,27 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		bFPSControl = !bFPSControl;
 		m_pCameraMngr->SetFPS(bFPSControl);
 		break;
+
+	case sf::Keyboard::Up:
+		if (m_uOctantLevels < 4)
+		{
+			m_pEntityMngr->ClearDimensionSetAll();
+			++m_uOctantLevels;
+			SafeDelete(m_pOctant);
+			m_pOctant = new MyOctant(m_uOctantLevels, numOfEnemies - 1);
+		}
+		break;
+
+	case sf::Keyboard::Down:
+		if (m_uOctantLevels > 0)
+		{
+			m_pEntityMngr->ClearDimensionSetAll();
+			--m_uOctantLevels;
+			SafeDelete(m_pOctant);
+			m_pOctant = new MyOctant(m_uOctantLevels, numOfEnemies - 1);
+		}
+		break;
+
 	case sf::Keyboard::Add:
 		++m_uActCont;
 		m_uActCont %= 8;
@@ -436,6 +457,16 @@ void Application::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+	{
+		for (int i = 0; i < 3; i++) 
+		{
+			enemies.push_back(new Enemy(vector3(rand() % 50 - 25, rand() % 50 + 5, rand() % 50 - 25)));
+			m_pEntityMngr->AddEntity(enemies[i]->enemy);
+			numOfEnemies++;
+		}
+	}
 #pragma endregion
 
 	
