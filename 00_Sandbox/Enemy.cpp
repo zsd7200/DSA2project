@@ -1,6 +1,5 @@
 #include "Enemy.h"
 
-
 Enemy::Enemy(vector3 curPos)
 {
 	//Creating the entity 
@@ -44,15 +43,6 @@ void Enemy::Update(vector3 playerPos)
 			Approach(playerPos);
 		else
 			Wander();
-
-		//vector3 look = glm::normalize(velocity);
-		//look.x = -look.x;
-		//mEnemyMatrix = IDENTITY_M4;
-		//mEnemyMatrix *= glm::translate(curPos);
-		////mEnemyMatrix *= glm::lookAt(vector3(0), look, vector3(0, 1, 0));
-		//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
-		//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
-		//enemy->SetModelMatrix(mEnemyMatrix);
 
 		//mEnemyMatrix *= glm::rotate( glm::radians(spinDir), AXIS_Z);
 		spinDir = 0;
@@ -163,8 +153,6 @@ void Enemy::Shrink()
 
 void Enemy::PushAway(vector3 target, boolean half)
 {
-
-
 	float radius = 1.8;
 	float multiplier = radius * 2 - glm::length(curPos - target);
 

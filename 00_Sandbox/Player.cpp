@@ -13,20 +13,15 @@ Player::~Player()
 	SafeDelete(playerEntity);
 
 	for (size_t i = 0; i < bullets.size(); i++)
-	{
 		SafeDelete(bullets[i]);
-	}
+
 	bullets.clear();
 }
 
 void Player::CreateProjectile(vector3 tempForward, vector3 currentPos)
 {
 	//Loading in the model
-	Model* tempMod = new Model();
-	tempMod->Load("HarryPotter\\Blast.obj");
 	MyEntity* tempEnt = new MyEntity("HarryPotter\\Blast.obj");
-	//Creating the rigid body
-	MyRigidBody* tempRB = new MyRigidBody(tempMod->GetVertexList());
 
 	//Creating the bullet
 	Bullet* tempBul = new Bullet(tempEnt, currentPos, tempForward);
@@ -42,9 +37,6 @@ matrix4 Player::UpdatePosition(vector3 basePoint, vector3 forward)
 	forward.z = -forward.z;
 
 	vector3 pos = vector3(basePoint.x, basePoint.y - 0.75f, basePoint.z);
-
-	//Increasing the upwards position of the forward vector
-	//forward.y += 1;
 
 	//Rotation by looking at a specific position
 	quaternion rotQuat = glm::lookAt(pos, pos - forward, vector3(0, 1, 0));

@@ -72,34 +72,6 @@ void Application::ReleaseControllers(void)
 	}
 	m_uControllerCount = 0;
 }
-
-//Used to recursively check collisions between a specific entity and an octant's rigid body
-void Simplex::Application::CheckCollision(MyEntity* tempEnt, MyOctant* tempOct)
-{
-	//If there are no children of the octant, check collisions
-	if (tempOct->GetNumberChildren() == 0)
-	{
-		//Checking if the bullet is colliding with an octant's rigid body
-		bool tempBool = tempEnt->GetRigidBody()->IsColliding(tempOct->GetRigidBody());
-
-		//If colliding, add its dimension to the bullet, used in collision later
-		if (tempBool)
-		{
-			tempEnt->AddDimension(tempOct->GetOctantID());
-		}
-	}
-
-	//If there are children, check collisions with all the children
-	else
-	{
-		for (size_t i = 0; i < 8; i++)
-		{
-			MyOctant* temp = tempOct->GetChild(i);
-
-			CheckCollision(tempEnt, temp);
-		}
-	}
-}
 void Application::Run(void)
 {
 	//Initialize the system with default values it was not done in the Main.cpp

@@ -115,22 +115,38 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 	case sf::Keyboard::Up:
 		if (m_uOctantLevels < 4)
 		{
+			// increase oct level
 			m_pEntityMngr->SetEntityCount();
 			m_pEntityMngr->ClearDimensionSetAll();
 			++m_uOctantLevels;
 			SafeDelete(m_pOctant);
-			m_pOctant = new MyOctant(m_uOctantLevels, 5);
+
+			// change idealcount to accomodate for number of enemies
+			if (numOfEnemies > 5)
+				m_pOctant = new MyOctant(m_uOctantLevels, 5);
+			else if (numOfEnemies <= 1)
+				m_pOctant = new MyOctant(m_uOctantLevels, 0);
+			else
+				m_pOctant = new MyOctant(m_uOctantLevels, 1);
 		}
 		break;
 
 	case sf::Keyboard::Down:
 		if (m_uOctantLevels > 0)
 		{
+			// decrease oct level
 			m_pEntityMngr->SetEntityCount();
 			m_pEntityMngr->ClearDimensionSetAll();
 			--m_uOctantLevels;
 			SafeDelete(m_pOctant);
-			m_pOctant = new MyOctant(m_uOctantLevels, 5);
+
+			// change idealcount to accomodate for number of enemies
+			if (numOfEnemies > 5)
+				m_pOctant = new MyOctant(m_uOctantLevels, 5);
+			else if (numOfEnemies <= 1)
+				m_pOctant = new MyOctant(m_uOctantLevels, 0);
+			else
+				m_pOctant = new MyOctant(m_uOctantLevels, 1);
 		}
 		break;
 
@@ -468,7 +484,11 @@ void Application::ProcessKeyboard(void)
 		// reconstruct octree
 		m_pEntityMngr->ClearDimensionSetAll();
 		SafeDelete(m_pOctant);
-		m_pOctant = new MyOctant(m_uOctantLevels, 5);
+
+		if (numOfEnemies > 5)
+			m_pOctant = new MyOctant(m_uOctantLevels, 5);
+		else
+			m_pOctant = new MyOctant(m_uOctantLevels, 1);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))

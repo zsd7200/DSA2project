@@ -12,11 +12,13 @@ void Simplex::MyEntity::SetModelMatrix(matrix4 a_m4ToWorld)
 	m_pModel->SetModelMatrix(m_m4ToWorld);
 	m_pRigidBody->SetModelMatrix(m_m4ToWorld);
 }
+
 Model* Simplex::MyEntity::GetModel(void){return m_pModel;}
 MyRigidBody* Simplex::MyEntity::GetRigidBody(void){	return m_pRigidBody; }
 bool Simplex::MyEntity::IsInitialized(void){ return m_bInMemory; }
 String Simplex::MyEntity::GetUniqueID(void) { return m_sUniqueID; }
 void Simplex::MyEntity::SetAxisVisible(bool a_bSetAxis) { m_bSetAxis = a_bSetAxis; }
+
 //  MyEntity
 void Simplex::MyEntity::Init(void)
 {
@@ -30,6 +32,7 @@ void Simplex::MyEntity::Init(void)
 	m_sUniqueID = "";
 	m_nDimensionCount = 0;
 }
+
 void Simplex::MyEntity::Swap(MyEntity& other)
 {
 	m_bInMemory = false;
@@ -43,6 +46,7 @@ void Simplex::MyEntity::Swap(MyEntity& other)
 	std::swap(m_nDimensionCount, other.m_nDimensionCount);
 	std::swap(m_DimensionArray, other.m_DimensionArray);
 }
+
 void Simplex::MyEntity::Release(void)
 {
 	m_pMeshMngr = nullptr;
@@ -57,6 +61,7 @@ void Simplex::MyEntity::Release(void)
 	SafeDelete(m_pRigidBody);
 	m_IDMap.erase(m_sUniqueID);
 }
+
 //The big 3
 Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
 {
@@ -73,6 +78,7 @@ Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
 		m_bInMemory = true; //mark this entity as viable
 	}
 }
+
 Simplex::MyEntity::MyEntity(MyEntity const& other)
 {
 	m_bInMemory = other.m_bInMemory;
@@ -88,10 +94,12 @@ Simplex::MyEntity::MyEntity(MyEntity const& other)
 	m_DimensionArray = other.m_DimensionArray;
 
 }
+
 uint * Simplex::MyEntity::GetDimensionArray()
 {
 	return m_DimensionArray;
 }
+
 MyEntity& Simplex::MyEntity::operator=(MyEntity const& other)
 {
 	if(this != &other)
@@ -103,7 +111,9 @@ MyEntity& Simplex::MyEntity::operator=(MyEntity const& other)
 	}
 	return *this;
 }
+
 MyEntity::~MyEntity(){Release();}
+
 //--- Methods
 void Simplex::MyEntity::AddToRenderList(bool a_bDrawRigidBody)
 {
@@ -121,6 +131,7 @@ void Simplex::MyEntity::AddToRenderList(bool a_bDrawRigidBody)
 	if (m_bSetAxis)
 		m_pMeshMngr->AddAxisToRenderList(m_m4ToWorld);
 }
+
 MyEntity* Simplex::MyEntity::GetEntity(String a_sUniqueID)
 {
 	//look the entity based on the unique id
@@ -128,6 +139,7 @@ MyEntity* Simplex::MyEntity::GetEntity(String a_sUniqueID)
 	//if not found return nullptr, if found return it
 	return entity == m_IDMap.end() ? nullptr : entity->second;
 }
+
 void Simplex::MyEntity::GenUniqueID(String& a_sUniqueID)
 {
 	static uint index = 0;
@@ -142,6 +154,7 @@ void Simplex::MyEntity::GenUniqueID(String& a_sUniqueID)
 	}
 	return;
 }
+
 void Simplex::MyEntity::AddDimension(uint a_uDimension)
 {
 	//we need to check that this dimension is not already allocated in the list
@@ -163,6 +176,7 @@ void Simplex::MyEntity::AddDimension(uint a_uDimension)
 	++m_nDimensionCount;
 	SortDimensions();
 }
+
 void Simplex::MyEntity::RemoveDimension(uint a_uDimension)
 {
 	//if there are no dimensions return
@@ -192,6 +206,7 @@ void Simplex::MyEntity::RemoveDimension(uint a_uDimension)
 		}
 	}
 }
+
 void Simplex::MyEntity::ClearDimensionSet(void)
 {
 	if (m_DimensionArray)
@@ -201,6 +216,7 @@ void Simplex::MyEntity::ClearDimensionSet(void)
 	}
 	m_nDimensionCount = 0;
 }
+
 bool Simplex::MyEntity::IsInDimension(uint a_uDimension)
 {
 	//see if the entry is in the set
@@ -211,6 +227,7 @@ bool Simplex::MyEntity::IsInDimension(uint a_uDimension)
 	}
 	return false;
 }
+
 bool Simplex::MyEntity::SharesDimension(MyEntity* const a_pOther)
 {
 	
@@ -237,6 +254,7 @@ bool Simplex::MyEntity::SharesDimension(MyEntity* const a_pOther)
 	//could not find a common dimension
 	return false;
 }
+
 bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 {
 	//if not in memory return
@@ -253,10 +271,12 @@ bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 	}
 	return m_pRigidBody->IsColliding(other->GetRigidBody());
 }
+
 void Simplex::MyEntity::ClearCollisionList(void)
 {
 	m_pRigidBody->ClearCollidingList();
 }
+
 void Simplex::MyEntity::SortDimensions(void)
 {
 	std::sort(m_DimensionArray, m_DimensionArray + m_nDimensionCount);

@@ -73,15 +73,18 @@ void Application::Update(void)
 	//Storing the index of a bullet to be destroyed (if applicable)
 	uint bulletIndexToDelete = -1;
 
-	//Score for the player
-	//static int score = 0;
-
-	//Looping through each bullet in the field
-
 	m_pEntityMngr->ClearDimensionSetAll();
 	SafeDelete(m_pOctant);
-	m_pOctant = new MyOctant(m_uOctantLevels, 5);
 
+	// change idealcount to accomodate for number of enemies
+	if (numOfEnemies > 5)
+		m_pOctant = new MyOctant(m_uOctantLevels, 5);
+	else if (numOfEnemies <= 1)
+		m_pOctant = new MyOctant(m_uOctantLevels, 0);
+	else
+		m_pOctant = new MyOctant(m_uOctantLevels, 1);
+
+	//Looping through each bullet in the field
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
 		//Updating the position of the bullet so it moves forward
@@ -92,7 +95,7 @@ void Application::Update(void)
 
 		//Clearing out the dimensions of the bullet
 		mainPlayer->bullets[i]->bulletEntity->ClearDimensionSet();
-		if (m_uOctantLevels != 0)
+		if (m_uOctantLevels != 0 && numOfEnemies != 0)
 		{
 			for (size_t j = 0; j < 8; j++)
 			{
@@ -170,16 +173,13 @@ void Application::Update(void)
 				//If there is collision
 				if (tempBool)
 				{
-
 					//Setting the enemy to start shrinking
 					enemies[i]->PushAway(enemies[j]->curPos, true);
 					enemies[j]->PushAway(enemies[i]->curPos, false);
-
-					//Incrementing score
-					score++;
 				}
 			}
 		}
+
 		//If the enemies are shrinking, add them to the list of currently shrinking enemies
 		if (enemies[i]->shrinking)
 		{
@@ -234,12 +234,9 @@ void Application::Display(void)
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
 
-	m_pOctant->Display();
-
-	//// set the model matrix of the model
-	//m_pModel->SetModelMatrix(ToMatrix4(m_qArcBall));
-	////play the default sequence of the model
-	//m_pModel->PlaySequence();
+	// only display if number of enemies is nonzero
+	if (numOfEnemies > 0)
+		m_pOctant->Display();
 	
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();
@@ -251,6 +248,34 @@ void Application::Display(void)
 	
 	//end the current frame (internally swaps the front and back buffers)
 	m_pWindow->display();
+}
+
+//Used to recursively check collisions between a specific entity and an octant's rigid body
+void Simplex::Application::CheckCollision(MyEntity* tempEnt, MyOctant* tempOct)
+{
+	//If there are no children of the octant, check collisions
+	if (tempOct->GetNumberChildren() == 0)
+	{
+		//Checking if the bullet is colliding with an octant's rigid body
+		bool tempBool = tempEnt->GetRigidBody()->IsColliding(tempOct->GetRigidBody());
+
+		//If colliding, add its dimension to the bullet, used in collision later
+		if (tempBool)
+		{
+			tempEnt->AddDimension(tempOct->GetOctantID());
+		}
+	}
+
+	//If there are children, check collisions with all the children
+	else
+	{
+		for (size_t i = 0; i < 8; i++)
+		{
+			MyOctant* temp = tempOct->GetChild(i);
+
+			CheckCollision(tempEnt, temp);
+		}
+	}
 }
 
 void Application::Release(void)

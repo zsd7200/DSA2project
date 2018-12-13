@@ -132,14 +132,15 @@ void MyOctant::Swap(MyOctant& other)
 
 // accessors
 float MyOctant::GetSize(void) { return m_fSize; }
-uint Simplex::MyOctant::GetNumberChildren()
-{
-	return m_uChildren;
-}
-
+uint Simplex::MyOctant::GetNumberChildren() { return m_uChildren; }
 vector3 MyOctant::GetCenterGlobal(void) { return m_v3Center; }
 vector3 MyOctant::GetMinGlobal(void) { return m_v3Min; }
 vector3 MyOctant::GetMaxGlobal(void) { return m_v3Max; }
+MyOctant* MyOctant::GetChild(uint a_nChild) { return m_pChild[a_nChild]; }
+MyOctant* MyOctant::GetParent(void) { return m_pParent; }
+MyRigidBody* MyOctant::GetRigidBody(void) { return m_pRigidBody; }
+uint MyOctant::GetOctantCount(void) { return m_uOctantCount; }
+uint MyOctant::GetOctantID(void) { return m_uID; }
 
 bool Simplex::MyOctant::IsColliding(uint a_uRBIndex)
 {
@@ -234,9 +235,6 @@ void MyOctant::Subdivide()
 			m_pChild[i]->Subdivide();
 	}
 }
-MyOctant* MyOctant::GetChild(uint a_nChild) { return m_pChild[a_nChild]; }
-MyOctant* MyOctant::GetParent(void) { return m_pParent; }
-MyRigidBody* MyOctant::GetRigidBody(void) { return m_pRigidBody; }
 
 bool MyOctant::IsLeaf(void)
 {
@@ -303,8 +301,6 @@ void MyOctant::AssignIDtoEntity(void)
 			}
 
 }
-uint MyOctant::GetOctantCount(void) { return m_uOctantCount; }
-uint MyOctant::GetOctantID(void) { return m_uID; }
 
 // private methods
 void MyOctant::Release(void)
