@@ -40,10 +40,10 @@ void Enemy::Update(vector3 playerPos)
 	if (!shrinking) 
 	{
 		////If the player is within range, chace it, else, wander aimlessly
-		//if (glm::length(curPos - playerPos) < chaseDis)
-		//	Approach(playerPos);
-		//else
-		//	Wander();
+		if (glm::length(curPos - playerPos) < chaseDis)
+			Approach(playerPos);
+		else
+			Wander();
 
 		//vector3 look = glm::normalize(velocity);
 		//look.x = -look.x;
@@ -54,8 +54,10 @@ void Enemy::Update(vector3 playerPos)
 		//mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 		//enemy->SetModelMatrix(mEnemyMatrix);
 
-		mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(spinDir), AXIS_Z);
+		//mEnemyMatrix *= glm::rotate( glm::radians(spinDir), AXIS_Z);
 		spinDir = 0;
+		//enemy->SetModelMatrix(mEnemyMatrix);
+		UpdatePosition(curPos + velocity*deltaTime);
 	}
 
 	//If the enemy is shrinking
@@ -78,7 +80,7 @@ void Enemy::Update(vector3 playerPos)
 	}
 	//std::printf("%f, %f \n", deltaTime, curPos.y);
 
-	//UpdatePosition(curPos+velocity*deltaTime);
+	
 	
 }
 
@@ -86,8 +88,8 @@ void Enemy::Wander()
 {
 	//If the wander position is zero, or is too small, generate a new position to wander to 
 	if (wanderPos == ZERO_V3 || glm::length(wanderPos - curPos) < 1) {
-		wanderPos = RandomUnitSphere()*(rand() % 50);
-		wanderPos.z = wanderPos.z - 25;
+		wanderPos = RandomUnitSphere()*(rand() % 100);
+		wanderPos.z = wanderPos.z - 100;
 	}
 
 	Approach(wanderPos);
@@ -143,7 +145,7 @@ void Enemy::UpdatePosition(vector3 basePoint)
 	mEnemyMatrix *= glm::lookAt(vector3(0), lookDir, up);
 
 	//Rotating the enemy
-	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(90.0f), AXIS_X);
+	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(0.0f), AXIS_X);
 	mEnemyMatrix *= glm::rotate(IDENTITY_M4, glm::radians(180.0f), AXIS_Y);
 
 	//Scaling it down
@@ -159,10 +161,20 @@ void Enemy::Shrink()
 	shrinkTimer = 3;
 }
 
-void Enemy::Spin()
+void Enemy::PushAway(vector3 target, boolean half)
 {
 
-	spinDir = -7;
+
+	float radius = 1.8;
+	float multiplier = radius * 2 - glm::length(curPos - target);
+
+	if (half)
+	{
+		curPos += glm::normalize(curPos - target)*multiplier/2;
+	}
+	else {
+		curPos += glm::normalize(curPos - target) *multiplier;
+	}
 
 }
 

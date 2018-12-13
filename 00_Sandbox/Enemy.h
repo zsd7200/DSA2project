@@ -22,7 +22,7 @@ public:
 	double deltaTime=0;
 	double shrinkTimer = 0;
 	float sizeMulti = 1;
-	float chaseDis = 25;
+	float chaseDis = 0;
 	float spinDir = 0;
 
 	//Bools
@@ -47,6 +47,6 @@ public:
 
 	void UpdatePosition(vector3);
 	void Shrink();
-	void Spin();
+	void PushAway(vector3,boolean);
 };
 

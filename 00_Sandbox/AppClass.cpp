@@ -77,6 +77,11 @@ void Application::Update(void)
 	//static int score = 0;
 
 	//Looping through each bullet in the field
+
+	m_pEntityMngr->ClearDimensionSetAll();
+	SafeDelete(m_pOctant);
+	m_pOctant = new MyOctant(m_uOctantLevels, 5);
+
 	for (size_t i = 0; i < mainPlayer->bullets.size(); i++)
 	{
 		//Updating the position of the bullet so it moves forward
@@ -167,8 +172,8 @@ void Application::Update(void)
 				{
 
 					//Setting the enemy to start shrinking
-					enemies[i]->Spin();
-					enemies[j]->Spin();
+					enemies[i]->PushAway(enemies[j]->curPos, true);
+					enemies[j]->PushAway(enemies[i]->curPos, false);
 
 					//Incrementing score
 					score++;
